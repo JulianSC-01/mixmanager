@@ -1,0 +1,83 @@
+<h1>
+  Login
+</h1>
+<app-alert
+  [condition]="form.submitted && loginForm.invalid"
+  [message]="getHeaderErrorMessage()"
+  [type]="'danger'">
+</app-alert>
+<form 
+  autocomplete="off"
+  #form="ngForm"
+  [formGroup]="loginForm" 
+  (ngSubmit)="login()">
+  <div class="form-row">
+    <div class="form-group col-sm-6">
+      <label for="loginEmail">
+        E-mail address
+        <span class="required">
+          (required)
+        </span>
+      </label>
+      <input
+        type="text" 
+        id="loginEmail"
+        formControlName="loginEmail"
+        [ngClass]="{
+          'form-control' : true, 
+          'is-invalid' : form.submitted && loginForm.controls.loginEmail.errors}">
+      <div 
+        class="invalid-feedback"
+        *ngIf="form.submitted && loginForm.controls.loginEmail.errors">
+        <ng-container 
+          *ngIf="loginForm.controls.loginEmail.errors.required">
+          Field is required.
+        </ng-container>
+        <ng-container 
+          *ngIf="loginForm.controls.loginEmail.errors.invalidEmail">
+          {{ loginErrorMessage }}
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-sm-6">
+      <label for="loginPassword">
+        Password
+        <span class="required">
+          (required)
+        </span>
+      </label>
+      <input
+        type="password" 
+        id="loginPassword"
+        formControlName="loginPassword"
+        [ngClass]="{
+          'form-control' : true, 
+          'is-invalid' : form.submitted && loginForm.controls.loginPassword.errors}">
+      <div 
+        class="invalid-feedback"
+        *ngIf="form.submitted && loginForm.controls.loginPassword.errors">
+        <ng-container 
+          *ngIf="loginForm.controls.loginPassword.errors.required">
+          Field is required.
+        </ng-container>
+        <ng-container 
+          *ngIf="loginForm.controls.loginPassword.errors.invalidPassword">
+          {{ loginErrorMessage }}
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="mt-2">
+    <button
+      class="btn btn-primary"
+      type="submit"
+      [disabled]="loginInProgress">
+      Login
+    </button>
+    <span *ngIf="loginInProgress" class="ml-2">
+      <app-spinner></app-spinner>
+    </span>
+  </div>
+</form>

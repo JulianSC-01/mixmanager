@@ -1,0 +1,12 @@
+h1 {
+    margin-bottom: 1rem!important;
+}
+label {
+    font-weight: bold;
+}
+.required {
+    color: red;
+}
+.icon-mb-1 .bi {
+    margin-bottom: .25rem!important;
+}

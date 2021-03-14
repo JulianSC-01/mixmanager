@@ -1,0 +1,13 @@
+#selectCol {
+    text-align: center;
+    width: 10%;
+}
+#trackCol {
+    width: 70%;
+}
+#bpmCol {
+    width: 10%;
+}
+#keyCol {
+    width: 10%;
+}

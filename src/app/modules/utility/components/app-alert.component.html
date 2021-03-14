@@ -1,0 +1,9 @@
+<div [ngClass]="{
+    'alert' : true, 
+    'alert-danger' : isDangerAlert(), 
+    'alert-success' : isSuccessAlert()
+  }"
+  role="alert"
+  *ngIf="condition">
+  {{ message }}
+</div>
