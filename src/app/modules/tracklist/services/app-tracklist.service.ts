@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, 
          DocumentData, DocumentReference } from '@angular/fire/firestore';
 
-import { Observable } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { map, take, takeUntil } from 'rxjs/operators';
 
 import { Tracklist } from '../dto/tracklist';
@@ -194,9 +194,38 @@ export class AppTracklistService {
       TRACK_COLLECTION + '/' + trackId).update(trackData);
   }
 
-  // --
+  swapTracks(
+    tracklistId : string,
+    trackIdFirst : string,
+    trackIdSecond : string) : Promise<void> {
+    let swapTracksPromise = new Promise<void>(
+      (resolve, reject) => {
+      forkJoin([
+        this.retrieveTrack(tracklistId, trackIdFirst).pipe(take(1)), 
+        this.retrieveTrack(tracklistId, trackIdSecond).pipe(take(1))]).
+          pipe(take(1)).subscribe(([trackOne, trackTwo]) => {
+            Promise.all([
+              this.updateTrack(tracklistId, trackIdFirst, this.getCoreData(trackTwo)),
+              this.updateTrack(tracklistId, trackIdSecond, this.getCoreData(trackOne))]
+            ).then(() => resolve(), () => reject());
+          }, () => reject())
+    });
+
+    return swapTracksPromise;
+  }
 
   getCurrentTimestamp() : firebase.firestore.Timestamp {
     return firebase.firestore.Timestamp.fromDate(new Date());
+  }
+
+  // --
+
+  private getCoreData(track : Track) : any {
+    return {
+        artist: track.artist,
+        title: track.title,
+        bpm: track.bpm,
+        key: track.key
+    };
   }
 }

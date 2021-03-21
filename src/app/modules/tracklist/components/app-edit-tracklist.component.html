@@ -79,7 +79,7 @@
   Tracks
 </h2>
 <div class="table-responsive">
-  <table class="table table-bordered table-striped mb-1">
+  <table class="table table-sm table-bordered table-striped mb-1">
     <caption>
       Table of {{ trackCount }} track(s)
     </caption>
@@ -151,13 +151,20 @@
     Edit selected
   </button>
   <button 
-    class="btn btn-secondary"
+    class="btn btn-secondary mr-1"
     type="button"
     [disabled]="tracksSelected.length < 1"
     (click)="removeTracks()">
     Remove selected
   </button>
-  <span *ngIf="tracksAreRemoving" class="ml-2">
+  <button 
+    class="btn btn-secondary"
+    type="button"
+    [disabled]="tracksSelected.length != 2"
+    (click)="swapTracks()">
+    Swap selected
+  </button>
+  <span *ngIf="tracksAreUpdating" class="ml-2">
     <app-spinner></app-spinner>
   </span>
 </div>

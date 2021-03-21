@@ -47,7 +47,8 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   private tracksSubscription : Subscription;
 
   // Remove Tracks
-  public tracksAreRemoving : boolean;
+  // Swap Tracks
+  public tracksAreUpdating : boolean;
 
   constructor(
     private ats : AppTracklistService,
@@ -201,7 +202,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   // -------------------
 
   removeTracks() : void {
-    this.tracksAreRemoving = true;
+    this.tracksAreUpdating = true;
     this.clearErrors();
 
     let tracksToRemove : number = this.tracksSelected.length;
@@ -222,8 +223,30 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
       }
     ).
     finally(
-      () => this.tracksAreRemoving = false
+      () => this.tracksAreUpdating = false
     );
+  }
+
+  // -----------------
+  // -- SWAP TRACKS --
+  // -----------------
+
+  swapTracks() : void {
+    this.tracksAreUpdating = true;
+    this.clearErrors();
+
+    this.ats.swapTracks(
+      this.tracklistId, 
+      this.tracksSelected[0], 
+      this.tracksSelected[1]).then(
+      () => this.tracklistSuccessMessage = 
+            AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL,
+      () => this.tracklistErrorMessage = 
+            AppTracklistMessages.MSG_SWAP_TRACKS_FAILED).
+    finally(() => {
+      this.tracksAreUpdating = false
+      this.tracksSelected = []
+    });
   }
 
   // --
