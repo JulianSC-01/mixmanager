@@ -1,27 +1,23 @@
-# MixManager
+# Mix Manager Web Client
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.12.
+## Overview
 
-## Development server
+The Mix Manager Web Client is an editor that creates music tracklists and their tracks. Tracklist data is stored on Firebase and the application is also hosted on Firebase.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+The user must login to the application to read or update their tracklists.
 
-## Code scaffolding
+The application is written in TypeScript and HTML using the Angular framework. (v11.0.5)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Supported Features
 
-## Build
+Secure Login
+- E-mail and password required.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Tracklist Editor
+- Add, Update or Delete tracklists. (Tracklist attributes include: Title, Tracks)
+- Add, Update or Delete tracks within tracklists. (Track attributes include: Artist, Title, BPM and Key.)
 
-## Running unit tests
+## Change Log
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+2021-03-14
+- Initial Version
