@@ -2,7 +2,7 @@
   {{ trackFormTitle }}
 </h1>
 <app-alert
-  [condition]="trackErrorMessage"
+  *ngIf="trackErrorMessage"
   [message]="trackErrorMessage"
   [type]="'danger'">
 </app-alert>

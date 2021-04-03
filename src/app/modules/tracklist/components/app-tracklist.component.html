@@ -2,12 +2,12 @@
   Tracklists
 </h1>
 <app-alert
-  [condition]="tracklistErrorMessage"
+  *ngIf="tracklistErrorMessage"
   [message]="tracklistErrorMessage"
   [type]="'danger'">
 </app-alert>
 <app-alert
-  [condition]="tracklistSuccessMessage"
+  *ngIf="tracklistSuccessMessage"
   [message]="tracklistSuccessMessage"
   [type]="'success'">
 </app-alert>

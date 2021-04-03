@@ -6,12 +6,10 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class AppAlertComponent implements OnInit {
 
-  @Input() condition : any;
   @Input() message : string;
   @Input() type : string;
 
   constructor() { 
-    this.condition = null;
     this.message = null;
     this.type = 'danger';
   }
