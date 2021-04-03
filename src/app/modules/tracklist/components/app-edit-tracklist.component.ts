@@ -202,29 +202,31 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   // -------------------
 
   removeTracks() : void {
-    this.tracksAreUpdating = true;
-    this.clearErrors();
+    if (this.tracksSelected.length > 0) {
+      this.tracksAreUpdating = true;
+      this.clearErrors();
 
-    let tracksToRemove : number = this.tracksSelected.length;
+      let tracksToRemove : number = this.tracksSelected.length;
 
-    this.ats.removeTracks(this.tracklistId, this.tracksSelected).
-    then(
-      () => {
-        this.tracklistSuccessMessage = 
-        tracksToRemove === 1 ?
-        AppTracklistMessages.MSG_REMOVE_SINGLE_SUCCESSFUL.
-        replace('{0}', this.trackSelected) :
-        AppTracklistMessages.MSG_REMOVE_TRACK_MULTIPLE_SUCCESSFUL.
-        replace('{0}', tracksToRemove.toString());
-      },
-      () => {
-        this.tracklistErrorMessage = 
-        AppTracklistMessages.MSG_REMOVE_TRACK_FAILED;
-      }
-    ).
-    finally(
-      () => this.tracksAreUpdating = false
-    );
+      this.ats.removeTracks(this.tracklistId, this.tracksSelected).
+      then(
+        () => {
+          this.tracklistSuccessMessage = 
+          tracksToRemove === 1 ?
+          AppTracklistMessages.MSG_REMOVE_SINGLE_SUCCESSFUL.
+          replace('{0}', this.trackSelected) :
+          AppTracklistMessages.MSG_REMOVE_TRACK_MULTIPLE_SUCCESSFUL.
+          replace('{0}', tracksToRemove.toString());
+        },
+        () => {
+          this.tracklistErrorMessage = 
+          AppTracklistMessages.MSG_REMOVE_TRACK_FAILED;
+        }
+      ).
+      finally(
+        () => this.tracksAreUpdating = false
+      );
+    }
   }
 
   // -----------------
@@ -232,21 +234,23 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   // -----------------
 
   swapTracks() : void {
-    this.tracksAreUpdating = true;
-    this.clearErrors();
+    if (this.tracksSelected.length === 2) {
+      this.tracksAreUpdating = true;
+      this.clearErrors();
 
-    this.ats.swapTracks(
-      this.tracklistId, 
-      this.tracksSelected[0], 
-      this.tracksSelected[1]).then(
-      () => this.tracklistSuccessMessage = 
-            AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL,
-      () => this.tracklistErrorMessage = 
-            AppTracklistMessages.MSG_SWAP_TRACKS_FAILED).
-    finally(() => {
-      this.tracksAreUpdating = false
-      this.tracksSelected = []
-    });
+      this.ats.swapTracks(
+        this.tracklistId, 
+        this.tracksSelected[0], 
+        this.tracksSelected[1]).then(
+        () => this.tracklistSuccessMessage = 
+              AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL,
+        () => this.tracklistErrorMessage = 
+              AppTracklistMessages.MSG_SWAP_TRACKS_FAILED).
+      finally(() => {
+        this.tracksAreUpdating = false
+        this.tracksSelected = []
+      });
+    }
   }
 
   // --
