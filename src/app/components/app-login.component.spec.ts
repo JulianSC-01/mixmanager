@@ -3,13 +3,14 @@ import { AngularFireModule } from '@angular/fire';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 
-import { AppUtilityModule } from '../../utility/app-utility.module';
+import { AppSharedModule } from '../modules/shared/app-shared.module';
 
 import { AppLoginComponent } from './app-login.component';
 
 import { AppLoginService } from 'src/app/services/app-login.service';
 
 import { environment } from 'src/environments/environment';
+
 
 describe('AppLoginComponent', () => {
   let component: AppLoginComponent;
@@ -19,7 +20,7 @@ describe('AppLoginComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        AppUtilityModule,
+        AppSharedModule,
         RouterTestingModule,
         ReactiveFormsModule
       ],

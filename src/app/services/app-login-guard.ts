@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanLoad, Router } from '@angular/router';
-
 import { AppLoginService } from './app-login.service';
-
 import { Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppLoginGuard implements CanActivate, CanLoad {
 
   constructor(

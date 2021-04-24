@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { AppSpinnerComponent } from './components/app-spinner.component';
 import { AppAlertComponent } from './components/app-alert.component';
 import { AppAddIconComponent } from './components/app-add-icon.component';
@@ -23,4 +22,4 @@ import { AppDeleteIconComponent } from './components/app-delete-icon.component';
     AppDeleteIconComponent
   ]
 })
-export class AppUtilityModule { }
+export class AppSharedModule { }

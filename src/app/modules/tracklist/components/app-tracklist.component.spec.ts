@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppLoginService } from 'src/app/services/app-login.service';
 
-import { AppUtilityModule } from '../../utility/app-utility.module';
+import { AppSharedModule } from '../../shared/app-shared.module';
 
 import { environment } from 'src/environments/environment';
 
@@ -20,7 +20,7 @@ describe('AppTracklistComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        AppUtilityModule,
+        AppSharedModule,
         RouterTestingModule,
         FormsModule
       ],

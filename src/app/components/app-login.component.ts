@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { AppLoginService } from 'src/app/services/app-login.service';
 
-import { FormUtility } from 'src/app/util/form-utility';
+import { FormHelper } from 'src/app/modules/shared/helper/form-helper';
 
 const LOGIN_EMAIL : string = "loginEmail";
 const LOGIN_PASSW : string  = "loginPassword";
@@ -22,7 +22,7 @@ export class AppLoginComponent implements OnInit {
   private loginFormBuilder : FormBuilder;
 
   getHeaderErrorMessage() {
-    return FormUtility.getHeaderErrorMessage(this.loginForm);
+    return FormHelper.getHeaderErrorMessage(this.loginForm);
   }
 
   constructor(

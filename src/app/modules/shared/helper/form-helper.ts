@@ -1,6 +1,6 @@
 import { FormGroup } from '@angular/forms';
 
-export class FormUtility {
+export class FormHelper {
   static getHeaderErrorMessage(form : FormGroup) : string {
     let count : number = 0;
     
