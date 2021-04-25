@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { AppLoginService } from 'src/app/services/app-login.service';
 
-import { FormHelper } from 'src/app/modules/shared/helper/form-helper';
+import { AppFormHelper } from 'src/app/modules/shared/helper/app-form-helper';
 
 const LOGIN_EMAIL : string = "loginEmail";
 const LOGIN_PASSW : string  = "loginPassword";
@@ -20,10 +20,6 @@ export class AppLoginComponent implements OnInit {
   public loginErrorMessage : string;
 
   private loginFormBuilder : FormBuilder;
-
-  getHeaderErrorMessage() {
-    return FormHelper.getHeaderErrorMessage(this.loginForm);
-  }
 
   constructor(
     private als : AppLoginService,
@@ -72,5 +68,9 @@ export class AppLoginComponent implements OnInit {
     }
         
     this.loginErrorMessage = err.message;
+  }
+
+  getHeaderErrorMessage() {
+    return AppFormHelper.getInstance().getHeaderErrorMessage(this.loginForm);
   }
 }

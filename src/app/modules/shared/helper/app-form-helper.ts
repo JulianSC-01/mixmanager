@@ -1,7 +1,18 @@
 import { FormGroup } from '@angular/forms';
 
-export class FormHelper {
-  static getHeaderErrorMessage(form : FormGroup) : string {
+export class AppFormHelper {
+  private static instance : AppFormHelper;
+
+  private constructor() {}
+
+  static getInstance() : AppFormHelper {
+    if (!AppFormHelper.instance) {
+      AppFormHelper.instance = new AppFormHelper();
+    }
+    return AppFormHelper.instance;
+  }
+
+  getHeaderErrorMessage(form : FormGroup) : string {
     let count : number = 0;
     
     for (const field in form.controls) {
