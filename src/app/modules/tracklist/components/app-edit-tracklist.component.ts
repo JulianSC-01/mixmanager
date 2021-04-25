@@ -5,8 +5,8 @@ import { Observable, Subscription } from 'rxjs';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { AppTracklistService } from '../services/app-tracklist.service';
 
-import { Tracklist } from '../dto/tracklist';
-import { Track } from '../dto/track';
+import { Tracklist } from '../interfaces/tracklist';
+import { Track } from '../interfaces/track';
 
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -223,9 +223,10 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
           AppTracklistMessages.MSG_REMOVE_TRACK_FAILED;
         }
       ).
-      finally(
-        () => this.tracksAreUpdating = false
-      );
+      finally(() => {
+        this.tracksAreUpdating = false
+        this.tracksSelected = []
+      });
     }
   }
 

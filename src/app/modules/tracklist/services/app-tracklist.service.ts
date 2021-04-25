@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentData, DocumentReference } from '@angular/fire/firestore';
 import { AppLoginService } from 'src/app/services/app-login.service';
-import { Tracklist } from '../dto/tracklist';
-import { Track } from '../dto/track';
+import { Tracklist } from '../interfaces/tracklist';
+import { Track } from '../interfaces/track';
 import { forkJoin, Observable } from 'rxjs';
 import { map, take, takeUntil } from 'rxjs/operators';
 import * as firebase from 'firebase/app';

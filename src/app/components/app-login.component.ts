@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { AppLoginService } from 'src/app/services/app-login.service';
 
-import { AppFormHelper } from 'src/app/modules/shared/helper/app-form-helper';
+import { AppFormHelper } from 'src/app/modules/shared/helpers/app-form-helper';
 
 const LOGIN_EMAIL : string = "loginEmail";
 const LOGIN_PASSW : string  = "loginPassword";

@@ -1,5 +1,7 @@
 export class AppTracklistMessages {
-  public static MSG_LOADING                                        = "Loading, please wait...";
+  private constructor() {}
+  
+  public static MSG_LOADING : string                               = "Loading, please wait...";
   public static MSG_RETRIEVE_TRACKLISTS_FAILED : string            = "Unable to retrieve tracklists. Please try again later.";
   public static MSG_RETRIEVE_TRACKLIST_FAILED : string             = "Unable to retrieve tracklist. Please try again later.";
   public static MSG_RETRIEVE_TRACKS_FAILED : string                = "Unable to retrieve tracks. Please try again later.";

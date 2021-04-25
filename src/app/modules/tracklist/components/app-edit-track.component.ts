@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Track } from '../dto/track';
+import { Track } from '../interfaces/track';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { AppTracklistService } from '../services/app-tracklist.service';
 
@@ -118,17 +118,9 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
 
     let trackInput = this.buildInput();
     trackInput.created = this.ats.getCurrentTimestamp();
-    
-    let trackData = {
-      title : trackInput.title,
-      artist : trackInput.artist,
-      bpm : trackInput.bpm,
-      key : trackInput.key,
-      created : trackInput.created
-    };
 
     this.ats.addTrack(
-      this.tracklistId, trackData).
+      this.tracklistId, trackInput).
       then(
         () => {
           this.ats.recentlyAddedTrackTitle = trackInput.title;
@@ -149,15 +141,8 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
 
     let trackInput = this.buildInput();
 
-    let trackData = {
-      title : trackInput.title,
-      artist : trackInput.artist,
-      bpm : trackInput.bpm,
-      key : trackInput.key,
-    };
-
     this.ats.updateTrack(
-      this.tracklistId, this.trackId, trackData).
+      this.tracklistId, this.trackId, trackInput).
       then(
         () => {
           this.ats.recentlyUpdatedTrackTitle = trackInput.title;
@@ -179,7 +164,7 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
 
   // --
 
-  buildInput() : Track {
+  buildInput() : any {
     let trackTitle = 
     this.trackTitle == null ? 
     null : this.trackTitle.trim();
@@ -203,8 +188,12 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
       trackArtist = ID_TRACK;
     }
 
-    return new Track(
-      null, trackTitle, trackArtist, trackBPM, trackKey, null);
+    return {
+      title : trackTitle,
+      artist : trackArtist,
+      bpm : trackBPM,
+      key : trackKey
+    };
   }
 
   // --

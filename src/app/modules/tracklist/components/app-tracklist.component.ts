@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { AppTracklistService } from '../services/app-tracklist.service';
 
-import { Tracklist } from '../dto/tracklist';
+import { Tracklist } from '../interfaces/tracklist';
 
 const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 
