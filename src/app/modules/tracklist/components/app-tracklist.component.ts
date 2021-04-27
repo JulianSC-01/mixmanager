@@ -1,11 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
 import { Observable, Subscription } from 'rxjs';
-
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { AppTracklistService } from '../services/app-tracklist.service';
-
 import { Tracklist } from '../interfaces/tracklist';
+import * as firebase from 'firebase/app';
 
 const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 
@@ -36,7 +34,7 @@ export class AppTracklistComponent implements OnInit, OnDestroy {
   public tracklistIsRemoving : boolean;
 
   constructor(
-    private ats : AppTracklistService) {
+    private tracklistService : AppTracklistService) {
   }
 
   // ---------------
@@ -47,7 +45,7 @@ export class AppTracklistComponent implements OnInit, OnDestroy {
     this.tracklistsAreLoading = true;
     this.tracklistCount = 0;
 
-    this.tracklists = this.ats.retrieveTracklists();
+    this.tracklists = this.tracklistService.retrieveTracklists();
 
     this.tracklistsSubscription = 
     this.tracklists.subscribe(
@@ -87,10 +85,10 @@ export class AppTracklistComponent implements OnInit, OnDestroy {
 
     let tracklistData = {
       title : tracklistTitle,
-      created : this.ats.getCurrentTimestamp()
+      created : firebase.firestore.Timestamp.fromDate(new Date())
     };
 
-    this.ats.addTracklist(
+    this.tracklistService.addTracklist(
     tracklistData).
     then(
       () => this.tracklistSuccessMessage =
@@ -119,7 +117,7 @@ export class AppTracklistComponent implements OnInit, OnDestroy {
     this.tracklistIsRemoving = true;
     this.clearErrors();
 
-    this.ats.removeTracklist(tracklistId).then(
+    this.tracklistService.removeTracklist(tracklistId).then(
       () => {
         this.tracklistSuccessMessage =
         AppTracklistMessages.MSG_REMOVE_SINGLE_SUCCESSFUL.

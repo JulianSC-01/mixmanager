@@ -1,14 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { AppTracklistService } from '../services/app-tracklist.service';
-
+import { AppTrackService } from '../services/app-track.service';
 import { Tracklist } from '../interfaces/tracklist';
 import { Track } from '../interfaces/track';
-
-import { ActivatedRoute, Router } from '@angular/router';
 
 const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 
@@ -51,9 +48,10 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   public tracksAreUpdating : boolean;
 
   constructor(
-    private ats : AppTracklistService,
     private activatedRoute : ActivatedRoute,
-    private rtr : Router) { 
+    private tracklistService : AppTracklistService,
+    private trackService : AppTrackService,
+    private router : Router) { 
     this.tracksSelected = [];
   }
 
@@ -69,7 +67,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
     this.trackCount = 0;
     
     this.tracklist = 
-    this.ats.retrieveTracklist(this.tracklistId);
+    this.tracklistService.retrieveTracklist(this.tracklistId);
 
     this.tracklistSubscription = 
     this.tracklist.subscribe(
@@ -85,13 +83,13 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
 
   initializeTracklist(data : Tracklist) : void {
     if (data == null) {
-      this.rtr.navigate(['/notfound']);
+      this.router.navigate(['/notfound']);
     } 
     else {
       this.tracklistTitle = data.title;
       
       this.tracks = 
-      this.ats.retrieveTracks(this.tracklistId);
+      this.trackService.retrieveTracks(this.tracklistId);
 
       this.tracksSubscription = 
       this.tracks.subscribe(
@@ -110,15 +108,15 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   }
 
   initializeMessages() : void {
-    if (this.ats.recentlyAddedTrackTitle) {
+    if (this.trackService.recentlyAddedTrackTitle) {
       this.tracklistSuccessMessage =
       AppTracklistMessages.MSG_ADD_SUCCESSFUL.
-      replace('{0}', this.ats.recentlyAddedTrackTitle);
+      replace('{0}', this.trackService.recentlyAddedTrackTitle);
     }
-    if (this.ats.recentlyUpdatedTrackTitle) {
+    if (this.trackService.recentlyUpdatedTrackTitle) {
       this.tracklistSuccessMessage =
       AppTracklistMessages.MSG_UPDATE_SUCCESSFUL.
-      replace('{0}', this.ats.recentlyUpdatedTrackTitle);
+      replace('{0}', this.trackService.recentlyUpdatedTrackTitle);
     }
   }
 
@@ -130,8 +128,8 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
       this.tracksSubscription.unsubscribe();
     }
 
-    this.ats.recentlyAddedTrackTitle = null;
-    this.ats.recentlyUpdatedTrackTitle = null;
+    this.trackService.recentlyAddedTrackTitle = null;
+    this.trackService.recentlyUpdatedTrackTitle = null;
   }
 
   // ----------------
@@ -163,7 +161,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
       title : newTracklistTitle
     };
 
-    this.ats.updateTracklist(
+    this.tracklistService.updateTracklist(
     this.tracklistId, tracklistData).
     then(
       () => this.tracklistSuccessMessage =
@@ -184,7 +182,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   // ---------------
 
   addTrack() : void {
-    this.rtr.navigate(['add'], { relativeTo: this.activatedRoute });
+    this.router.navigate(['add'], { relativeTo: this.activatedRoute });
   }
 
   // ----------------
@@ -193,7 +191,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
 
   editTrack() : void {
     if (this.tracksSelected.length === 1) {
-      this.rtr.navigate([this.tracksSelected[0]], { relativeTo: this.activatedRoute });
+      this.router.navigate([this.tracksSelected[0]], { relativeTo: this.activatedRoute });
     }
   }
 
@@ -208,7 +206,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
 
       let tracksToRemove : number = this.tracksSelected.length;
 
-      this.ats.removeTracks(this.tracklistId, this.tracksSelected).
+      this.trackService.removeTracks(this.tracklistId, this.tracksSelected).
       then(
         () => {
           this.tracklistSuccessMessage = 
@@ -239,7 +237,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
       this.tracksAreUpdating = true;
       this.clearErrors();
 
-      this.ats.swapTracks(
+      this.trackService.swapTracks(
         this.tracklistId, 
         this.tracksSelected[0], 
         this.tracksSelected[1]).then(

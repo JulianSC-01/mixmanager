@@ -9,6 +9,7 @@ import { AppEditTracklistComponent } from './components/app-edit-tracklist.compo
 import { AppEditTrackComponent } from './components/app-edit-track.component';
 import { AppTrackNumberPipe } from './pipes/app-track-number.pipe';
 import { AppTracklistService } from './services/app-tracklist.service';
+import { AppTrackService } from './services/app-track.service';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,9 @@ import { AppTracklistService } from './services/app-tracklist.service';
     AppSharedModule,
     AppTracklistRoutingModule
   ],
-  providers: [AppTracklistService]
+  providers: [
+    AppTracklistService,
+    AppTrackService
+  ]
 })
 export class AppTracklistModule { }

@@ -8,7 +8,6 @@ import { take, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AppLoginGuard implements CanActivate {
-
   constructor(
     private als : AppLoginService,
     private rtr : Router) { }

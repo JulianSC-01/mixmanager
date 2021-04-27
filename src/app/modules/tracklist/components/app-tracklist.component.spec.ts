@@ -11,6 +11,7 @@ import { environment } from 'src/environments/environment';
 import { AppTracklistService } from '../services/app-tracklist.service';
 
 import { AppTracklistComponent } from './app-tracklist.component';
+import { AppTrackService } from '../services/app-track.service';
 
 describe('AppTracklistComponent', () => {
   let component: AppTracklistComponent;
@@ -29,7 +30,8 @@ describe('AppTracklistComponent', () => {
       ],
       providers: [
         AppLoginService,
-        AppTracklistService
+        AppTracklistService,
+        AppTrackService
       ],
     })
     .compileComponents();

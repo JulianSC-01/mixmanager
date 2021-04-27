@@ -6,7 +6,6 @@ import { Observable, Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class AppLoginService {
-
   public ERR_INVALID_EMAIL : string = "auth/invalid-email";
   public ERR_USER_DISABLED : string = "auth/user-disabled";
   public ERR_USER_NOT_FOUND : string = "auth/user-not-found";

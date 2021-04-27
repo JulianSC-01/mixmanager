@@ -8,9 +8,8 @@ import { AppSharedModule } from '../../shared/app-shared.module';
 
 import { environment } from 'src/environments/environment';
 
-import { AppTracklistService } from '../services/app-tracklist.service';
-
 import { AppEditTrackComponent } from './app-edit-track.component';
+import { AppTrackService } from '../services/app-track.service';
 
 describe('AppEditTrackComponent', () => {
   let component: AppEditTrackComponent;
@@ -29,7 +28,7 @@ describe('AppEditTrackComponent', () => {
       ],
       providers: [
         AppLoginService,
-        AppTracklistService
+        AppTrackService
       ],
     })
     .compileComponents();

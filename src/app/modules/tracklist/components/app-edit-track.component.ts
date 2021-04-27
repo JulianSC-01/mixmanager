@@ -3,7 +3,8 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Router } from '@angular/router'
 import { Observable, Subscription } from 'rxjs';
 import { Track } from '../interfaces/track';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
-import { AppTracklistService } from '../services/app-tracklist.service';
+import { AppTrackService } from '../services/app-track.service';
+import * as firebase from 'firebase/app';
 
 const ADD_TRACK_TITLE : string = 'Add track';
 const EDIT_TRACK_TITLE : string = 'Edit track';
@@ -11,7 +12,7 @@ const EDIT_TRACK_TITLE : string = 'Edit track';
 const ID_TRACK : string = 'ID';
 
 @Component({
-  selector: 'app-app-edit-track',
+  selector: 'app-edit-track',
   templateUrl: './app-edit-track.component.html'
 })
 export class AppEditTrackComponent implements OnInit, OnDestroy {
@@ -42,9 +43,9 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
   public majorKeys : string[] = ['B','F#','Db','Ab','Eb','Bb','F','C','G','D','A','E'];
 
   constructor(
-    private ats : AppTracklistService,
     private activatedRoute : ActivatedRoute,
-    private rtr : Router) { 
+    private trackService : AppTrackService,
+    private router : Router) { 
   }
 
   ngOnInit(): void {
@@ -64,7 +65,7 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
       this.trackIsLoading = true;
       
       this.track = 
-      this.ats.retrieveTrack(this.tracklistId, this.trackId);
+      this.trackService.retrieveTrack(this.tracklistId, this.trackId);
   
       this.trackSubscription = 
       this.track.subscribe(
@@ -83,7 +84,7 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
 
   initializeTrack(data : Track) : void {
     if (data == null) {
-      this.rtr.navigate(['/notfound']);
+      this.router.navigate(['/notfound']);
     } 
     else {
       this.trackTitle = data.title;
@@ -117,13 +118,13 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
     this.trackIsUpdating = true;
 
     let trackInput = this.buildInput();
-    trackInput.created = this.ats.getCurrentTimestamp();
+    trackInput.created = firebase.firestore.Timestamp.fromDate(new Date());
 
-    this.ats.addTrack(
+    this.trackService.addTrack(
       this.tracklistId, trackInput).
       then(
         () => {
-          this.ats.recentlyAddedTrackTitle = trackInput.title;
+          this.trackService.recentlyAddedTrackTitle = trackInput.title;
           this.return(); 
         },
         () => {
@@ -141,11 +142,11 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
 
     let trackInput = this.buildInput();
 
-    this.ats.updateTrack(
+    this.trackService.updateTrack(
       this.tracklistId, this.trackId, trackInput).
       then(
         () => {
-          this.ats.recentlyUpdatedTrackTitle = trackInput.title;
+          this.trackService.recentlyUpdatedTrackTitle = trackInput.title;
           this.return(); 
         },
         () => {
@@ -159,7 +160,7 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
   }
 
   return() : void {
-    this.rtr.navigate(['/tracklists', this.tracklistId]);
+    this.router.navigate(['/tracklists', this.tracklistId]);
   }
 
   // --
