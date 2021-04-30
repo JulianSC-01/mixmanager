@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,11 +12,8 @@ export class AppLoginService {
   public ERR_TOO_MANY_REQ : string = "auth/too-many-requests";
   public ERR_PASSWORD_ERROR : string = "auth/wrong-password";
 
-  private logoutEmitter : Subject<void>;
-
   constructor(
     private afAuth : AngularFireAuth) { 
-    this.logoutEmitter = new Subject<void>();
   }
 
   login(username : string, password : string) : 
@@ -25,18 +22,10 @@ export class AppLoginService {
   }
 
   logout() : Promise<void> {
-    this.logoutEmitter.next();
-    this.logoutEmitter.complete();
     return this.afAuth.signOut();
   }
 
-  // --
-
   authState() : Observable<firebase.User> {
     return this.afAuth.authState;
-  }
-
-  logoutState() : Subject<void> {
-    return this.logoutEmitter;
   }
 }

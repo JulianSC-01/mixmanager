@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from '@angular/fire/firestore';
 import { DocumentData, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
-import { AppLoginService } from 'src/app/services/app-login.service';
+import { map } from 'rxjs/operators';
 import { AppTrackService } from './app-track.service';
 import { Tracklist } from '../interfaces/tracklist';
 
@@ -17,7 +16,6 @@ export class AppTracklistService {
 
   constructor(
     private firestoreService : AngularFirestore,
-    private loginService : AppLoginService,
     private trackService : AppTrackService) { 
   }
 
@@ -26,11 +24,10 @@ export class AppTracklistService {
     this.firestoreService.collection<Tracklist>(
       TRACKLIST_COLLECTION, ref => ref.orderBy(CREATION_FIELD));
 
-    return this.tracklistCollection.snapshotChanges().pipe(
-      takeUntil(this.loginService.logoutState()),
-      map(actions => actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
+    return this.tracklistCollection.snapshotChanges().
+      pipe(map(actions => actions.map(action => {
+          const data = action.payload.doc.data();
+          const id = action.payload.doc.id;
           return {id, ...data};
       }))
     );
@@ -41,8 +38,13 @@ export class AppTracklistService {
     this.tracklist = this.firestoreService.doc(
       TRACKLIST_COLLECTION + '/' + tracklistId);
 
-    return this.tracklist.valueChanges().pipe(
-      takeUntil(this.loginService.logoutState()));
+    return this.tracklist.snapshotChanges().
+      pipe(map(snapshot => {
+          const data = snapshot.payload.data();
+          const id = snapshot.payload.id;
+          return {id, ...data};
+      })
+    );
   }
 
   addTracklist(

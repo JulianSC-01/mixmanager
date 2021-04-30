@@ -17,17 +17,18 @@ const ID_TRACK : string = 'ID';
 })
 export class AppEditTrackComponent implements OnInit, OnDestroy {
 
-  public trackErrorMessage : string;
+  private activeSubscriptions : Subscription;
 
   private tracklistId : string;
   private trackId : string;
+
+  public trackErrorMessage : string;
 
   public trackIsLoading : boolean;
   public trackIsUpdating : boolean;
 
   // Retrieval (Track)
   public track : Observable<Track>;
-  private trackSubscription : Subscription;
 
   // Form Header
   public trackFormTitle : string;
@@ -46,6 +47,7 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
     private activatedRoute : ActivatedRoute,
     private trackService : AppTrackService,
     private router : Router) { 
+    this.activeSubscriptions = new Subscription();
   }
 
   ngOnInit(): void {
@@ -67,7 +69,7 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
       this.track = 
       this.trackService.retrieveTrack(this.tracklistId, this.trackId);
   
-      this.trackSubscription = 
+      this.activeSubscriptions.add(
       this.track.subscribe(
         data => {
           this.initializeTrack(data);
@@ -78,7 +80,7 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
           AppTracklistMessages.MSG_RETRIEVE_TRACK_FAILED;
           this.trackIsLoading = false;
         }
-      );
+      ));
     }
   }
 
@@ -95,9 +97,7 @@ export class AppEditTrackComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() : void {
-    if (this.trackSubscription != null && !this.trackSubscription.closed) {
-      this.trackSubscription.unsubscribe();
-    }
+    this.activeSubscriptions.unsubscribe();
   }
 
   //-

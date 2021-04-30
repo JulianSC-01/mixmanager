@@ -22,12 +22,7 @@ export class AppNavbarComponent implements OnInit {
 
   logout() : void {
     this.isLoggingOut = true;
-    this.als.logout().
-    then(
-      () => this.rtr.navigate(['/login'])
-    ).
-    finally(
-      () => this.isLoggingOut = false
-    )
+    this.rtr.navigate(['/login']);
+    this.als.logout().finally(() => this.isLoggingOut = false);
   }
 }

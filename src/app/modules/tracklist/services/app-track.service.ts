@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore} from '@angular/fire/firestore';
 import { DocumentData, DocumentReference } from '@angular/fire/firestore';
 import { forkJoin, Observable } from 'rxjs';
-import { takeUntil, map, take } from 'rxjs/operators';
-import { AppLoginService } from 'src/app/services/app-login.service';
+import { map, take } from 'rxjs/operators';
 import { Track } from '../interfaces/track';
 
 const CREATION_FIELD = 'created';
@@ -19,8 +18,7 @@ export class AppTrackService {
   public recentlyUpdatedTrackTitle : string;
 
   constructor(
-    private firestoreService : AngularFirestore,
-    private loginService : AppLoginService) { 
+    private firestoreService : AngularFirestore) { 
   }
 
   retrieveTracks(
@@ -30,11 +28,10 @@ export class AppTrackService {
       TRACKLIST_COLLECTION + '/' + tracklistId + '/' +
       TRACK_COLLECTION, ref => ref.orderBy(CREATION_FIELD));
 
-    return this.trackCollection.snapshotChanges().pipe(
-      takeUntil(this.loginService.logoutState()),
-      map(actions => actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
+    return this.trackCollection.snapshotChanges().
+      pipe(map(actions => actions.map(action => {
+          const data = action.payload.doc.data();
+          const id = action.payload.doc.id;
           return {id, ...data};
       }))
     );
@@ -46,8 +43,13 @@ export class AppTrackService {
     this.track = this.firestoreService.doc(
       TRACKLIST_COLLECTION + '/' + tracklistId + '/' + TRACK_COLLECTION + '/' + trackId);
 
-    return this.track.valueChanges().pipe(
-      takeUntil(this.loginService.logoutState()));
+    return this.track.snapshotChanges().
+      pipe(map(snapshot => {
+          const data = snapshot.payload.data();
+          const id = snapshot.payload.id;
+          return {id, ...data};
+      })
+    );
   }
 
   addTrack(

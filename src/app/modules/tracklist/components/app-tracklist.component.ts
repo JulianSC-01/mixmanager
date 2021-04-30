@@ -14,17 +14,16 @@ const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 })
 export class AppTracklistComponent implements OnInit, OnDestroy {
 
-  public loadingMessage = AppTracklistMessages.MSG_LOADING;
+  private activeSubscriptions : Subscription;
 
+  public loadingMessage = AppTracklistMessages.MSG_LOADING;
   public tracklistErrorMessage : string;
   public tracklistSuccessMessage : string;
   
   // Retrieval
   public tracklistsAreLoading : boolean;
   public tracklistCount : number;
-
   public tracklists : Observable<Tracklist[]>;
-  private tracklistsSubscription : Subscription;
 
   // Add
   public tracklistIsAdding : boolean;
@@ -35,6 +34,7 @@ export class AppTracklistComponent implements OnInit, OnDestroy {
 
   constructor(
     private tracklistService : AppTracklistService) {
+    this.activeSubscriptions = new Subscription();
   }
 
   // ---------------
@@ -45,9 +45,10 @@ export class AppTracklistComponent implements OnInit, OnDestroy {
     this.tracklistsAreLoading = true;
     this.tracklistCount = 0;
 
-    this.tracklists = this.tracklistService.retrieveTracklists();
+    this.tracklists = 
+    this.tracklistService.retrieveTracklists();
 
-    this.tracklistsSubscription = 
+    this.activeSubscriptions.add(
     this.tracklists.subscribe(
       data => {
         this.tracklistCount = data.length;
@@ -58,13 +59,11 @@ export class AppTracklistComponent implements OnInit, OnDestroy {
         AppTracklistMessages.MSG_RETRIEVE_TRACKLISTS_FAILED;
         this.tracklistsAreLoading = false;
       }
-    );
+    ));
   }
 
   ngOnDestroy() : void {
-    if (!this.tracklistsSubscription.closed) {
-      this.tracklistsSubscription.unsubscribe();
-    }
+    this.activeSubscriptions.unsubscribe();
   }
 
   // -------------------

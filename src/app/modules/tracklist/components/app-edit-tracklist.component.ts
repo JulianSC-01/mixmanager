@@ -16,19 +16,19 @@ const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 })
 export class AppEditTracklistComponent implements OnInit, OnDestroy {
 
-  public loadingMessage = AppTracklistMessages.MSG_LOADING;
+  private activeSubscriptions : Subscription;
   
+  private tracklistId : string;
+
+  public loadingMessage = AppTracklistMessages.MSG_LOADING;
   public tracklistErrorMessage : string;
   public tracklistSuccessMessage : string;
 
   public tracksSelected : string[];
   private trackSelected : string;
 
-  private tracklistId : string;
-
   // Retrieval (Tracklist)
   public tracklist : Observable<Tracklist>;
-  private tracklistSubscription : Subscription;
 
   // Edit Title
   public isTitleBeingEdited : boolean;
@@ -39,9 +39,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   // Retrieval (Tracks)
   public tracksAreLoading : boolean;
   public trackCount : number;
-
   public tracks : Observable<Track[]>;
-  private tracksSubscription : Subscription;
 
   // Remove Tracks
   // Swap Tracks
@@ -52,6 +50,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
     private tracklistService : AppTracklistService,
     private trackService : AppTrackService,
     private router : Router) { 
+    this.activeSubscriptions = new Subscription();
     this.tracksSelected = [];
   }
 
@@ -69,7 +68,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
     this.tracklist = 
     this.tracklistService.retrieveTracklist(this.tracklistId);
 
-    this.tracklistSubscription = 
+    this.activeSubscriptions.add( 
     this.tracklist.subscribe(
       data => {
         this.initializeTracklist(data);
@@ -78,7 +77,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
         this.tracklistErrorMessage = 
         AppTracklistMessages.MSG_RETRIEVE_TRACKLIST_FAILED;
       }
-    );
+    ));
   }
 
   initializeTracklist(data : Tracklist) : void {
@@ -91,7 +90,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
       this.tracks = 
       this.trackService.retrieveTracks(this.tracklistId);
 
-      this.tracksSubscription = 
+      this.activeSubscriptions.add(
       this.tracks.subscribe(
         data => {
           this.initializeMessages();
@@ -103,7 +102,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
           AppTracklistMessages.MSG_RETRIEVE_TRACKS_FAILED;
           this.tracksAreLoading = false;
         }
-      );
+      ));
     }
   }
 
@@ -121,13 +120,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() : void {
-    if (!this.tracklistSubscription.closed) {
-      this.tracklistSubscription.unsubscribe();
-    }
-    if (this.tracksSubscription != null && !this.tracksSubscription.closed) {
-      this.tracksSubscription.unsubscribe();
-    }
-
+    this.activeSubscriptions.unsubscribe();
     this.trackService.recentlyAddedTrackTitle = null;
     this.trackService.recentlyUpdatedTrackTitle = null;
   }
