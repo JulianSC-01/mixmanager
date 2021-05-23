@@ -3,15 +3,12 @@ import { AngularFireModule } from '@angular/fire';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppLoginService } from 'src/app/services/app-login.service';
-
 import { AppSharedModule } from '../../shared/app-shared.module';
-
-import { environment } from 'src/environments/environment';
-
-import { AppTracklistService } from '../services/app-tracklist.service';
-
 import { AppTracklistComponent } from './app-tracklist.component';
+import { AppTracklistTableComponent } from './subcomponents/app-tracklist-table.component';
+import { AppTracklistService } from '../services/app-tracklist.service';
 import { AppTrackService } from '../services/app-track.service';
+import { environment } from 'src/environments/environment';
 
 describe('AppTracklistComponent', () => {
   let component: AppTracklistComponent;
@@ -26,7 +23,8 @@ describe('AppTracklistComponent', () => {
         FormsModule
       ],
       declarations: [
-        AppTracklistComponent
+        AppTracklistComponent,
+        AppTracklistTableComponent
       ],
       providers: [
         AppLoginService,

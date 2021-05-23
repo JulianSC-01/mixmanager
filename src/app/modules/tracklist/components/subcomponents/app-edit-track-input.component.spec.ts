@@ -2,18 +2,15 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-import { AppSharedModule } from '../../shared/app-shared.module';
+import { AppSharedModule } from '../../../shared/app-shared.module';
 import { AppLoginService } from 'src/app/services/app-login.service';
-import { AppTrackService } from '../services/app-track.service';
-import { AppTracklistService } from '../services/app-tracklist.service';
-import { AppEditTracklistComponent } from './app-edit-tracklist.component';
-import { AppEditTracklistTitleComponent } from './subcomponents/app-edit-tracklist-title.component';
-import { AppEditTracklistTrackTableComponent } from './subcomponents/app-edit-tracklist-track-table.component';
+import { AppTrackService } from '../../services/app-track.service';
+import { AppEditTrackInputComponent } from './app-edit-track-input.component';
 import { environment } from 'src/environments/environment';
 
-describe('AppEditTracklistComponent', () => {
-  let component: AppEditTracklistComponent;
-  let fixture: ComponentFixture<AppEditTracklistComponent>;
+describe('AppEditTrackInputComponent', () => {
+  let component: AppEditTrackInputComponent;
+  let fixture: ComponentFixture<AppEditTrackInputComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -24,13 +21,10 @@ describe('AppEditTracklistComponent', () => {
         FormsModule
       ],
       declarations: [
-        AppEditTracklistComponent,
-        AppEditTracklistTitleComponent,
-        AppEditTracklistTrackTableComponent
+        AppEditTrackInputComponent
       ],
       providers: [
         AppLoginService,
-        AppTracklistService,
         AppTrackService
       ],
     })
@@ -38,7 +32,7 @@ describe('AppEditTracklistComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppEditTracklistComponent);
+    fixture = TestBed.createComponent(AppEditTrackInputComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

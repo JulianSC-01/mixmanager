@@ -3,7 +3,7 @@ import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore}
 import { DocumentData, DocumentReference } from '@angular/fire/firestore';
 import { forkJoin, Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { Track } from '../interfaces/track';
+import { Track, TrackBuilder } from '../objects/track';
 
 const CREATION_FIELD = 'created';
 const TRACK_COLLECTION = 'tracks';
@@ -32,7 +32,16 @@ export class AppTrackService {
       pipe(map(actions => actions.map(action => {
           const data = action.payload.doc.data();
           const id = action.payload.doc.id;
-          return {id, ...data};
+          if (data) {
+            return new TrackBuilder().
+                withId(id).
+                withTitle(data.title).
+                withArtist(data.artist).
+                withBPM(data.bpm).
+                withKey(data.key).
+                withCreationDate(data.created).
+                buildTrack();
+          }
       }))
     );
   }
@@ -47,7 +56,16 @@ export class AppTrackService {
       pipe(map(snapshot => {
           const data = snapshot.payload.data();
           const id = snapshot.payload.id;
-          return {id, ...data};
+          if (data) {
+            return new TrackBuilder().
+                withId(id).
+                withTitle(data.title).
+                withArtist(data.artist).
+                withBPM(data.bpm).
+                withKey(data.key).
+                withCreationDate(data.created).
+                buildTrack();
+          }
       })
     );
   }
@@ -129,21 +147,12 @@ export class AppTrackService {
         this.retrieveTrack(tracklistId, trackIdSecond).pipe(take(1))]).
           pipe(take(1)).subscribe(([trackOne, trackTwo]) => {
             Promise.all([
-              this.updateTrack(tracklistId, trackIdFirst, this.extractCoreData(trackTwo)),
-              this.updateTrack(tracklistId, trackIdSecond, this.extractCoreData(trackOne))]
+              this.updateTrack(tracklistId, trackIdFirst, trackTwo.buildCoreInput()),
+              this.updateTrack(tracklistId, trackIdSecond, trackOne.buildCoreInput())]
             ).then(() => resolve(), () => reject());
           }, () => reject())
     });
 
     return swapTracksPromise;
-  }
-
-  extractCoreData(track : Track) : any {
-    return {
-        artist: track.artist,
-        title: track.title,
-        bpm: track.bpm,
-        key: track.key
-    };
   }
 }

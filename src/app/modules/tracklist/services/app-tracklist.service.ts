@@ -4,7 +4,7 @@ import { DocumentData, DocumentReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppTrackService } from './app-track.service';
-import { Tracklist } from '../interfaces/tracklist';
+import { Tracklist, TracklistBuilder } from '../objects/tracklist';
 
 const CREATION_FIELD = 'created';
 const TRACKLIST_COLLECTION = 'tracklists';
@@ -28,7 +28,13 @@ export class AppTracklistService {
       pipe(map(actions => actions.map(action => {
           const data = action.payload.doc.data();
           const id = action.payload.doc.id;
-          return {id, ...data};
+          if (data) {
+            return new TracklistBuilder().
+              withId(id).
+              withTitle(data.title).
+              withCreationDate(data.created).
+              buildTracklist();
+          }
       }))
     );
   }
@@ -42,7 +48,13 @@ export class AppTracklistService {
       pipe(map(snapshot => {
           const data = snapshot.payload.data();
           const id = snapshot.payload.id;
-          return {id, ...data};
+          if (data) {
+            return new TracklistBuilder().
+              withId(id).
+              withTitle(data.title).
+              withCreationDate(data.created).
+              buildTracklist();
+          }
       })
     );
   }
