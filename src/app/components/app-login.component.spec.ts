@@ -2,15 +2,10 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
-
-import { AppSharedModule } from '../modules/shared/app-shared.module';
-
-import { AppLoginComponent } from './app-login.component';
-
-import { AppLoginService } from 'src/app/services/app-login.service';
-
 import { environment } from 'src/environments/environment';
-
+import { AppSharedModule } from '../modules/shared/app-shared.module';
+import { AppLoginComponent } from './app-login.component';
+import { AppLoginService } from 'src/app/services/app-login.service';
 
 describe('AppLoginComponent', () => {
   let component: AppLoginComponent;

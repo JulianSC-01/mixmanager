@@ -9,21 +9,17 @@ import { take, map } from 'rxjs/operators';
 })
 export class AppLoginGuard implements CanActivate {
   constructor(
-    private als : AppLoginService,
-    private rtr : Router) { }
+    private loginService : AppLoginService,
+    private router : Router) { }
     
   canActivate() : Observable<boolean> {
-    return this.loginCheck();
-  }
-
-  loginCheck() : Observable<boolean> {
-    return this.als.authState().pipe(
+    return this.loginService.authState().pipe(
       take(1), 
       map((userAuth:firebase.User) => {
         if (userAuth)
           return true;
         else {
-          this.rtr.navigate(['/login']);
+          this.router.navigate(['/login']);
           return false;
         }
       })

@@ -1,7 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { AppHomeComponent } from './app-home.component';
-
 import { AppLoginGuard } from '../services/app-login-guard';
 
 describe('AppHomeComponent', () => {

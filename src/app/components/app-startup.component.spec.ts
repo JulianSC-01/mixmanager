@@ -1,12 +1,10 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire';
-
-import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from '../app-routing.module';
+import { environment } from 'src/environments/environment';
 import { AppSharedModule } from '../modules/shared/app-shared.module';
-import { AppLoginService } from '../services/app-login.service';
-
 import { AppStartupComponent } from './app-startup.component';
+import { AppLoginService } from '../services/app-login.service';
 
 describe('AppStartupComponent', () => {
   let component: AppStartupComponent;

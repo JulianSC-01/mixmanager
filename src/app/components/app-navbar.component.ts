@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { AppLoginService } from '../services/app-login.service';
 
 @Component({
@@ -13,8 +12,8 @@ export class AppNavbarComponent implements OnInit {
   public isLoggingOut : boolean;
 
   constructor(
-    public  als : AppLoginService,
-    private rtr : Router) { }
+    public loginService : AppLoginService,
+    private router : Router) { }
 
   ngOnInit(): void {
     this.isLoggingOut = false;
@@ -22,7 +21,7 @@ export class AppNavbarComponent implements OnInit {
 
   logout() : void {
     this.isLoggingOut = true;
-    this.rtr.navigate(['/login']);
-    this.als.logout().finally(() => this.isLoggingOut = false);
+    this.router.navigate(['/login']);
+    this.loginService.logout().finally(() => this.isLoggingOut = false);
   }
 }
