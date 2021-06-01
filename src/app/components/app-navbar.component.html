@@ -3,7 +3,7 @@
     Mix Manager
   </span>
   <button 
-     *ngIf="als.authState() | async"
+     *ngIf="loginService.authState() | async"
      class="navbar-toggler" 
      type="button" 
      data-toggle="collapse" 
@@ -15,7 +15,7 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
-      <li *ngIf="als.authState() | async" class="nav-item">
+      <li *ngIf="loginService.authState() | async" class="nav-item">
         <a class="nav-link" 
            routerLink="/home" 
            routerLinkActive="active" 
@@ -23,7 +23,7 @@
           Home<span *ngIf="rlaHome.isActive" class="sr-only"> (current)</span>
         </a>
       </li>
-      <li *ngIf="als.authState() | async" class="nav-item">
+      <li *ngIf="loginService.authState() | async" class="nav-item">
         <a class="nav-link" 
            routerLink="/tracklists" 
            routerLinkActive="active" 
@@ -32,7 +32,7 @@
         </a>
       </li>
     </ul>
-    <span *ngIf="als.authState() | async" class="pull-right">
+    <span *ngIf="loginService.authState() | async" class="pull-right">
       <span *ngIf="isLoggingOut" class="navbar-spinner mr-2">
         <app-spinner></app-spinner>
       </span>

@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire';
-import { environment } from 'src/environments/environment';
-import { AppLoginService } from './app-login.service';
+import { AppTrackService } from './app-track.service';
+import { environment } from 'src/environments/environment'
 
-describe('AppLoginService', () => {
-  let service: AppLoginService;
+describe('AppTrackService', () => {
+  let service: AppTrackService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -12,10 +12,10 @@ describe('AppLoginService', () => {
         AngularFireModule.initializeApp(environment.firebaseConfig),
       ],
       providers: [
-        AppLoginService
+        AppTrackService
       ]
     });
-    service = TestBed.inject(AppLoginService);
+    service = TestBed.inject(AppTrackService);
   });
 
   it('should be created', () => {

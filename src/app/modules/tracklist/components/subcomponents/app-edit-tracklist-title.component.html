@@ -1,0 +1,68 @@
+<div class="mb-3">
+  <div *ngIf="isTitleBeingEdited; then titleEdit else titleReadOnly"></div>
+  <ng-template #titleEdit>
+    <form 
+      autocomplete="off" 
+      (ngSubmit)="saveTitle()">
+      <div class="form-row mb-2">
+        <div class="col-sm-6">
+          <label 
+            class="sr-only" 
+            for="tracklistTitle">
+            Tracklist title
+          </label>
+          <input
+            type="text"
+            id="tracklistTitle" 
+            name="tracklistTitle"
+            class="form-control"
+            [(ngModel)]="tracklistTitleToEdit">
+        </div>
+      </div>
+      <button 
+        class="btn btn-success mr-1" 
+        type="submit"
+        [disabled]="isTitleBeingSaved">
+        Save
+      </button>
+      <button 
+        class="btn btn-secondary" 
+        type="button"
+        [disabled]="isTitleBeingSaved"
+        (click)="onCancelEditTitle()">
+        Cancel
+      </button>
+      <span *ngIf="isTitleBeingSaved" class="ml-2">
+        <app-spinner></app-spinner>
+      </span>
+    </form>
+  </ng-template>
+  <ng-template #titleReadOnly>
+    <ng-container *ngIf="tracklistTitle else tracklistTitleLoading">
+      <p class="mb-2">
+        {{ tracklistTitle }}
+      </p>
+    </ng-container>
+    <ng-template #tracklistTitleLoading>
+      <ng-container *ngIf="tracklistIsLoading else tracklistNoTitle">
+        <p class="mb-2">
+          <app-spinner 
+            [label]="'Loading, please wait...'">
+          </app-spinner>
+        </p>
+      </ng-container>
+      <ng-template #tracklistNoTitle>
+        <p class="mb-2">
+          No title available
+        </p>
+      </ng-template>
+    </ng-template>
+    <button 
+      class="btn btn-secondary" 
+      type="button"
+      [disabled]="tracklistIsLoading"
+      (click)="onEditTitle()">
+      Edit title
+    </button>
+  </ng-template>
+</div>

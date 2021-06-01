@@ -2,7 +2,7 @@
   Login
 </h1>
 <app-alert
-  [condition]="form.submitted && loginForm.invalid"
+  *ngIf="form.submitted && loginForm.invalid"
   [message]="getHeaderErrorMessage()"
   [type]="'danger'">
 </app-alert>

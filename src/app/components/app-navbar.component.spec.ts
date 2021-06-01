@@ -1,11 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire';
 import { RouterTestingModule } from '@angular/router/testing';
-
 import { environment } from 'src/environments/environment';
-
 import { AppNavbarComponent } from './app-navbar.component';
-
 import { AppLoginService } from '../services/app-login.service';
 
 describe('AppNavbarComponent', () => {

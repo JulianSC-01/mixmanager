@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
+import { PreloadAllModules, Routes, RouterModule } from '@angular/router';
 import { AppHomeComponent } from './components/app-home.component';
 import { AppNotFoundComponent } from './components/app-not-found.component';
 import { AppStartupComponent } from './components/app-startup.component';
-
+import { AppLoginComponent } from './components/app-login.component';
 import { AppLoginGuard } from './services/app-login-guard';
 
 const routes: Routes = [
@@ -16,15 +15,12 @@ const routes: Routes = [
     canActivate : [AppLoginGuard] 
   },
   { path : 'login', 
-    loadChildren: () => 
-      import('./modules/login/app-login.module').then(
-        m => m.AppLoginModule)
+    component : AppLoginComponent,
   }, 
   { path : 'tracklists', 
     loadChildren: () => 
       import('./modules/tracklist/app-tracklist.module').then(
-        m => m.AppTracklistModule),
-    canLoad : [AppLoginGuard] 
+        m => m.AppTracklistModule)
   },
   { path : 'notfound', 
     component : AppNotFoundComponent 
@@ -35,7 +31,10 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
+  imports: [
+    RouterModule.forRoot(routes, { 
+      preloadingStrategy: PreloadAllModules 
+  })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

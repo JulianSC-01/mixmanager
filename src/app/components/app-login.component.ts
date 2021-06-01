@@ -1,10 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { AppFormHelper } from 'src/app/modules/shared/helpers/app-form-helper';
 import { AppLoginService } from 'src/app/services/app-login.service';
-
-import { FormUtility } from 'src/app/util/form-utility';
 
 const LOGIN_EMAIL : string = "loginEmail";
 const LOGIN_PASSW : string  = "loginPassword";
@@ -13,7 +11,7 @@ const LOGIN_PASSW : string  = "loginPassword";
   selector: 'app-login',
   templateUrl: './app-login.component.html'
 })
-export class AppLoginComponent implements OnInit {
+export class AppLoginComponent {
 
   public loginForm : FormGroup;
   public loginInProgress : boolean;
@@ -21,13 +19,9 @@ export class AppLoginComponent implements OnInit {
 
   private loginFormBuilder : FormBuilder;
 
-  getHeaderErrorMessage() {
-    return FormUtility.getHeaderErrorMessage(this.loginForm);
-  }
-
   constructor(
-    private als : AppLoginService,
-    private rtr : Router) { 
+    private loginService : AppLoginService,
+    private router : Router) { 
       
     this.loginFormBuilder = new FormBuilder();
         
@@ -39,18 +33,15 @@ export class AppLoginComponent implements OnInit {
     this.loginInProgress = false;
   }
 
-  ngOnInit(): void {
-  }
-
   login() : void {
     if (this.loginForm.valid) {
       this.loginInProgress = true;
-      this.als.login(
+      this.loginService.login(
         this.loginForm.controls[LOGIN_EMAIL].value,
         this.loginForm.controls[LOGIN_PASSW].value).
         then( 
           () => {
-            this.rtr.navigate(['/home']);
+            this.router.navigate(['/home']);
             this.loginInProgress = false;
           }, 
           err => { 
@@ -62,7 +53,7 @@ export class AppLoginComponent implements OnInit {
 
   loginErrors(err : any) : void {
     switch (err.code) {
-    case this.als.ERR_PASSWORD_ERROR:
+    case AppLoginService.ERR_PASSWORD_ERROR:
         this.loginForm.controls[LOGIN_PASSW].
           setErrors({invalidPassword : true}); 
         break;
@@ -72,5 +63,9 @@ export class AppLoginComponent implements OnInit {
     }
         
     this.loginErrorMessage = err.message;
+  }
+
+  getHeaderErrorMessage() {
+    return AppFormHelper.getInstance().getHeaderErrorMessage(this.loginForm);
   }
 }

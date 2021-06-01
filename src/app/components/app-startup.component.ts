@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { take } from 'rxjs/operators';
-
 import { AppLoginService } from '../services/app-login.service';
 
 @Component({
@@ -12,17 +10,17 @@ import { AppLoginService } from '../services/app-login.service';
 export class AppStartupComponent implements OnInit {
 
   constructor(
-    private als : AppLoginService,
-    private rtr : Router) { }
+    private loginService : AppLoginService,
+    private router : Router) { }
 
   ngOnInit(): void {
-    this.als.authState().pipe(
+    this.loginService.authState().pipe(
       take(1)).subscribe(
         userAuth => {
           if (userAuth)
-              this.rtr.navigate(['/home']);
+              this.router.navigate(['/home']);
           else
-              this.rtr.navigate(['/login']);
+              this.router.navigate(['/login']);
         }
       );
   }

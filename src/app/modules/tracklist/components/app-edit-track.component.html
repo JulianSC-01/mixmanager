@@ -2,100 +2,16 @@
   {{ trackFormTitle }}
 </h1>
 <app-alert
-  [condition]="trackErrorMessage"
+  *ngIf="trackErrorMessage"
   [message]="trackErrorMessage"
   [type]="'danger'">
 </app-alert>
-<form
-  (ngSubmit)="submit()">
-  <div class="form-row">
-    <div class="form-group col-sm-6">
-      <label for="trackTitle">
-        Title
-      </label>
-      <input
-        type="text" 
-        id="trackTitle"
-        name="trackTitle"
-        class="form-control"
-        [(ngModel)]="trackTitle">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-sm-6">
-      <label for="trackArtist">
-        Artist
-      </label>
-      <input
-        type="text" 
-        id="trackArtist"
-        name="trackArtist"
-        class="form-control"
-        [(ngModel)]="trackArtist">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-xs-2">
-      <label for="trackBPM">
-        BPM
-      </label>
-      <input
-        type="number" 
-        id="trackBPM"
-        name="trackBPM"
-        min="120"
-        max="145"
-        class="form-control"
-        [(ngModel)]="trackBPM">
-    </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-xs-3">
-      <label for="trackKey">
-        Key
-      </label>
-      <select
-        id="trackKey"
-        name="trackKey"
-        class="form-control"
-        [(ngModel)]="trackKey">
-        <option
-          value="?">
-          Select
-        </option>
-        <optgroup label="Minor Keys">
-          <option 
-            *ngFor="let minorKey of minorKeys; let i = index"
-            [value]="(i+1) + 'A'">
-            {{ (i+1) + 'A' }} - {{ minorKey }} Minor
-          </option>
-        </optgroup>
-        <optgroup label="Major Keys">
-          <option 
-            *ngFor="let majorKey of majorKeys; let i = index"
-            [value]="(i+1) + 'B'">
-            {{ (i+1) + 'B' }} - {{ majorKey }} Major
-          </option>
-        </optgroup>
-      </select>
-    </div>
-  </div>
-  <div class="mt-2">
-    <button
-      class="btn btn-primary mr-1"
-      type="submit"
-      [disabled]="isWorking()">
-      Submit
-    </button>
-    <button
-      class="btn btn-secondary"
-      type="button"
-      [disabled]="isWorking()"
-      (click)="return()">
-      Cancel
-    </button>
-    <span *ngIf="isWorking()" class="ml-2">
-      <app-spinner></app-spinner>
-    </span>
-  </div>
-</form>
+<app-edit-track-input
+  [tracklistId]="tracklistId"
+  [trackId]="trackId"
+  (onError)="displayErrorMessage($event)"
+  (onCancelClick)="displayPreviousPage()"
+  (onTrackAdded)="setTrackNameAdded($event)"
+  (onTrackUpdated)="setTrackNameUpdated($event)"
+  (onTrackNotFound)="displayNotFoundPage()">
+</app-edit-track-input>

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { AppNotFoundComponent } from './app-not-found.component';
 
 describe('AppNotFoundComponent', () => {

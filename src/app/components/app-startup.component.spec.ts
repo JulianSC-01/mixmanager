@@ -1,13 +1,10 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire';
-import { RouterTestingModule } from '@angular/router/testing';
-
-import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from '../app-routing.module';
-import { AppUtilityModule } from '../modules/utility/app-utility.module';
-import { AppLoginService } from '../services/app-login.service';
-
+import { environment } from 'src/environments/environment';
+import { AppSharedModule } from '../modules/shared/app-shared.module';
 import { AppStartupComponent } from './app-startup.component';
+import { AppLoginService } from '../services/app-login.service';
 
 describe('AppStartupComponent', () => {
   let component: AppStartupComponent;
@@ -17,7 +14,7 @@ describe('AppStartupComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        AppUtilityModule,
+        AppSharedModule,
         AppRoutingModule
       ],
       declarations: [ 

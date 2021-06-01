@@ -1,22 +1,26 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'src/environments/environment';
-import { AppLoginService } from '../services/app-login.service';
-import { AppFooterComponent } from './app-footer.component';
+import { AppSharedModule } from '../modules/shared/app-shared.module';
+import { AppLoginComponent } from './app-login.component';
+import { AppLoginService } from 'src/app/services/app-login.service';
 
-describe('AppFooterComponent', () => {
-  let component: AppFooterComponent;
-  let fixture: ComponentFixture<AppFooterComponent>;
+describe('AppLoginComponent', () => {
+  let component: AppLoginComponent;
+  let fixture: ComponentFixture<AppLoginComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        RouterTestingModule
+        AppSharedModule,
+        RouterTestingModule,
+        ReactiveFormsModule
       ],
       declarations: [
-        AppFooterComponent
+        AppLoginComponent
       ],
       providers: [
         AppLoginService
@@ -26,7 +30,7 @@ describe('AppFooterComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppFooterComponent);
+    fixture = TestBed.createComponent(AppLoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

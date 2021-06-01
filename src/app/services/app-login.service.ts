@@ -1,42 +1,31 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
 
-import { Observable, Subject } from 'rxjs';
-
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppLoginService {
-
-  public ERR_INVALID_EMAIL : string = "auth/invalid-email";
-  public ERR_USER_DISABLED : string = "auth/user-disabled";
-  public ERR_USER_NOT_FOUND : string = "auth/user-not-found";
-  public ERR_TOO_MANY_REQ : string = "auth/too-many-requests";
-  public ERR_PASSWORD_ERROR : string = "auth/wrong-password";
-
-  private logoutEmitter : Subject<void>;
+  public static ERR_INVALID_EMAIL : string = "auth/invalid-email";
+  public static ERR_USER_DISABLED : string = "auth/user-disabled";
+  public static ERR_USER_NOT_FOUND : string = "auth/user-not-found";
+  public static ERR_TOO_MANY_REQ : string = "auth/too-many-requests";
+  public static ERR_PASSWORD_ERROR : string = "auth/wrong-password";
 
   constructor(
-    private afAuth : AngularFireAuth) { 
-    this.logoutEmitter = new Subject<void>();
+    private fireAuth : AngularFireAuth) { 
   }
 
   login(username : string, password : string) : 
     Promise<firebase.auth.UserCredential> {
-    return this.afAuth.signInWithEmailAndPassword(username, password);
+    return this.fireAuth.signInWithEmailAndPassword(username, password);
   }
 
   logout() : Promise<void> {
-    this.logoutEmitter.next();
-    this.logoutEmitter.complete();
-    return this.afAuth.signOut();
+    return this.fireAuth.signOut();
   }
-
-  // --
 
   authState() : Observable<firebase.User> {
-    return this.afAuth.authState;
-  }
-
-  logoutState() : Subject<void> {
-    return this.logoutEmitter;
+    return this.fireAuth.authState;
   }
 }
