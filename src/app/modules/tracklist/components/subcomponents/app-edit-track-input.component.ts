@@ -14,14 +14,29 @@ const UNKNOWN_VALUE = '?';
 })
 export class AppEditTrackInputComponent implements OnInit, OnDestroy {
 
+  /*
+   * Input Data
+   *
+   * tracklistId: The tracklist ID
+   * trackId: The track ID
+   */
   @Input() tracklistId : string;
   @Input() trackId : string;
 
+  /*
+   * Output Emitters
+   *
+   * onError: On any error (Emits error message)
+   * onAdded: When a track is added (Emits track name)
+   * onUpdated: When a track is updated (Emits track name)
+   * onCancel: When the user clicks the Cancel button
+   * onNotFound: When the track is not found
+   */
   @Output() onError = new EventEmitter<string>();
-  @Output() onCancelClick = new EventEmitter<void>();
-  @Output() onTrackAdded = new EventEmitter<string>();
-  @Output() onTrackUpdated = new EventEmitter<string>();
-  @Output() onTrackNotFound = new EventEmitter<void>();
+  @Output() onAdded = new EventEmitter<string>();
+  @Output() onUpdated = new EventEmitter<string>();
+  @Output() onCancel = new EventEmitter<void>();
+  @Output() onNotFound = new EventEmitter<void>();
 
   public trackIsLoading : boolean;
   public trackIsUpdating : boolean;
@@ -61,7 +76,7 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
               this.trackBPM = data.bpm;
               this.trackKey = data.key;
             } else {
-              this.onTrackNotFound.emit();
+              this.onNotFound.emit();
             }
             this.trackIsLoading = false;
           },
@@ -113,21 +128,21 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
   
       this.trackService.addTrack(
         this.tracklistId, trackInput).then(
-        () => this.onTrackAdded.emit(trackInput.title),
+        () => this.onAdded.emit(trackInput.title),
         () => this.onError.emit(AppTracklistMessages.MSG_ADD_TRACK_FAILED)).
         finally(() => this.trackIsUpdating = false);
     }
     else {
       this.trackService.updateTrack(
         this.tracklistId, this.trackId, trackInput).then(
-        () => this.onTrackUpdated.emit(trackInput.title),
+        () => this.onUpdated.emit(trackInput.title),
         () => this.onError.emit(AppTracklistMessages.MSG_UPDATE_TRACK_FAILED)).
         finally(() => this.trackIsUpdating = false);
     }
   }
 
   cancel() : void {
-    this.onCancelClick.emit();
+    this.onCancel.emit();
   }
 
   isWorking() : boolean {

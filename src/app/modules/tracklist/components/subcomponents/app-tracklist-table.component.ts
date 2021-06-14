@@ -14,9 +14,16 @@ const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 })
 export class AppTracklistTableComponent implements OnInit, OnDestroy {
 
+  /*
+   * Output Emitters
+   *
+   * onError: On any error (Emits error message)
+   * onAdded: When a tracklist is added (Emits tracklist name)
+   * onRemoved: When a tracklist is removed (Emits tracklist name)
+   */
   @Output() onError = new EventEmitter<string>();
-  @Output() onTracklistAdded = new EventEmitter<string>();
-  @Output() onTracklistRemoved = new EventEmitter<string>();
+  @Output() onAdded = new EventEmitter<string>();
+  @Output() onRemoved = new EventEmitter<string>();
   
   public tracklistsAreLoading : boolean;
   public tracklistCount : number;
@@ -60,23 +67,23 @@ export class AppTracklistTableComponent implements OnInit, OnDestroy {
   addTracklist() : void {
     this.tracklistIsAdding = true;
 
-    let tracklistTitle = 
+    let tracklistName = 
     this.tracklistToAdd == null ? 
     null : this.tracklistToAdd.trim();
 
-    if (tracklistTitle === null || tracklistTitle === '') {
-        tracklistTitle = UNTITLED_TRACKLIST;
+    if (tracklistName === null || tracklistName === '') {
+      tracklistName = UNTITLED_TRACKLIST;
     }
 
     let tracklistData = 
       new TracklistBuilder().
-        withTitle(tracklistTitle).
+        withTitle(tracklistName).
         withCreationDate(firebase.firestore.Timestamp.fromDate(new Date())).
         buildInput();
 
     this.tracklistService.addTracklist(
       tracklistData).then(
-      () => this.onTracklistAdded.emit(tracklistData.title),
+      () => this.onAdded.emit(tracklistName),
       () => this.onError.emit(AppTracklistMessages.MSG_ADD_TRACKLIST_FAILED)).
       finally(
       () => {
@@ -89,7 +96,7 @@ export class AppTracklistTableComponent implements OnInit, OnDestroy {
   removeTracklist(tracklistId : string, tracklistName : string) : void {
     this.tracklistService.removeTracklist(
       tracklistId).then(
-      () => this.onTracklistRemoved.emit(tracklistName),
+      () => this.onRemoved.emit(tracklistName),
       () => this.onError.emit(AppTracklistMessages.MSG_REMOVE_TRACKLIST_FAILED));
   }
 }

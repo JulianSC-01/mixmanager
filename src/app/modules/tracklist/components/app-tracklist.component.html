@@ -13,6 +13,6 @@
 </app-alert>
 <app-tracklist-table
   (onError)="displayErrorMessage($event)"
-  (onTracklistAdded)="displayAddMessage($event)"
-  (onTracklistRemoved)="displayRemoveMessage($event)">
+  (onAdded)="displayAddMessage($event)"
+  (onRemoved)="displayRemoveMessage($event)">
 </app-tracklist-table>

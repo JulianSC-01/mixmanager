@@ -11,14 +11,29 @@ import { AppTrackService } from '../../services/app-track.service';
 })
 export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
 
+  /*
+   * Input Data
+   *
+   * tracklistId: The tracklist ID
+   */
   @Input() tracklistId : string;
 
-  @Output() onError = new EventEmitter<string>();
-  @Output() onAddClick = new EventEmitter<void>();
-  @Output() onEditClick = new EventEmitter<string>();
-  @Output() onTracksRemoved = new EventEmitter<string[]>();
-  @Output() onTracksSwapped = new EventEmitter<void>();
-  @Output() onTracksNotFound = new EventEmitter<void>();
+  /*
+   * Output Emitters
+   *
+   * onError: On any error (Emits error message)
+   * onAdd: When the user clicks the Add button
+   * onEdit: When the user clicks the Edit button (Emits Track ID)
+   * onRemoved: When tracks are removed (Emits Track IDs)
+   * onSwapped: When tracks are swapped (Emits Track IDs)
+   * onNotFound: When the tracks are not found
+   */
+  @Output() onError = new EventEmitter<string>();  
+  @Output() onAdd = new EventEmitter<void>();
+  @Output() onEdit = new EventEmitter<string>();
+  @Output() onRemoved = new EventEmitter<string[]>();
+  @Output() onSwapped = new EventEmitter<string[]>();
+  @Output() onNotFound = new EventEmitter<void>();
 
   public tracksAreLoading : boolean;
   public trackCount : number;
@@ -49,7 +64,7 @@ export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
           if (data) {
             this.trackCount = data.length;
           } else {
-            this.onTracksNotFound.emit();
+            this.onNotFound.emit();
           }
           this.tracksAreLoading = false;
         },
@@ -66,12 +81,12 @@ export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
   }
 
   addTrack() : void {
-    this.onAddClick.emit();
+    this.onAdd.emit();
   }
 
   editTrack() : void {
     if (this.tracksSelected.length === 1) {
-      this.onEditClick.emit(this.tracksSelected[0]);
+      this.onEdit.emit(this.tracksSelected[0]);
     }
   }
 
@@ -81,7 +96,11 @@ export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
       
       this.trackService.removeTracks(
         this.tracklistId, this.tracksSelected).then(
-        () => this.onTracksRemoved.emit(this.tracksSelected), 
+        () => {
+          if (this.trackSelected)
+            this.trackService.recentlyRemovedTrackTitle = this.trackSelected
+          this.onRemoved.emit(this.tracksSelected)
+        },
         () => this.onError.emit(AppTracklistMessages.MSG_REMOVE_TRACK_FAILED)).
         finally(() => {
           this.tracksAreUpdating = false
@@ -99,7 +118,7 @@ export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
         this.tracklistId, 
         this.tracksSelected[0], 
         this.tracksSelected[1]).then(
-        () => this.onTracksSwapped.emit(),
+        () => this.onSwapped.emit(this.tracksSelected),
         () => this.onError.emit(AppTracklistMessages.MSG_SWAP_TRACKS_FAILED)).
         finally(() => {
           this.tracksAreUpdating = false

@@ -17,8 +17,8 @@
 <app-edit-tracklist-title
   [tracklistId]="tracklistId"
   (onError)="displayErrorMessage($event)"
-  (onTitleUpdated)="displayTitleUpdatedMessage()"
-  (onTitleNotFound)="displayNotFoundPage()">
+  (onUpdated)="displayTitleUpdatedMessage()"
+  (onNotFound)="displayNotFoundPage()">
 </app-edit-tracklist-title>
 <h2>
   Tracks
@@ -26,11 +26,11 @@
 <app-edit-tracklist-track-table
   [tracklistId]="tracklistId"
   (onError)="displayErrorMessage($event)"
-  (onAddClick)="addTrack()"
-  (onEditClick)="editTrack($event)"
-  (onTracksRemoved)="displayTracksRemovedMessage($event)"
-  (onTracksSwapped)="displayTracksSwappedMessage()"
-  (onTracksNotFound)="displayNotFoundPage()">
+  (onAdd)="addTrack()"
+  (onEdit)="editTrack($event)"
+  (onRemoved)="displayTracksRemovedMessage($event)"
+  (onSwapped)="displayTracksSwappedMessage($event)"
+  (onNotFound)="displayNotFoundPage()">
 </app-edit-tracklist-track-table>
 <div class="mb-2 mt-4">
   Return to: <a routerLink="/tracklists">Tracklists</a>

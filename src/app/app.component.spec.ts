@@ -1,6 +1,7 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AppSharedModule } from './modules/shared/app-shared.module';
 import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
 import { AppFooterComponent } from './components/app-footer.component';
@@ -12,6 +13,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebaseConfig),
+        AppSharedModule,
         RouterTestingModule
       ],
       declarations: [

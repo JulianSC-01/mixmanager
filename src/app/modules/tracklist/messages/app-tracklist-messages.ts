@@ -13,10 +13,10 @@ export class AppTracklistMessages {
   public static MSG_ADD_TRACKLIST_FAILED : string                  = "Unable to add tracklist. Please try again later.";
   public static MSG_ADD_TRACK_FAILED : string                      = "Unable to add track. Please try again later.";
   public static MSG_UPDATE_TRACK_FAILED : string                   = "Unable to update track. Please try again later.";
-  public static MSG_REMOVE_TRACK_SUCCESSFUL : string               = "Successfully removed {0} track(s).";
+  public static MSG_REMOVE_TRACKS_SUCCESSFUL : string              = "Successfully removed {0} track(s).";
   public static MSG_REMOVE_TRACKLIST_FAILED : string               = "Unable to remove tracklist. Please try again later.";
   public static MSG_REMOVE_TRACK_FAILED : string                   = "Unable to remove 1 or more tracks. Please try again later.";
-  public static MSG_SWAP_TRACKS_SUCCESSFUL : string                = "Successfully swapped 2 tracks.";
+  public static MSG_SWAP_TRACKS_SUCCESSFUL : string                = "Successfully swapped {0} tracks.";
   public static MSG_SWAP_TRACKS_FAILED : string                    = "Unable to swap tracks. Please try again later.";
   public static MSG_UPDATE_TITLE_SUCCESSFUL : string               = "Title updated successfully.";
   public static MSG_UPDATE_TITLE_FAILED : string                   = "Unable to update title. Please try again later.";

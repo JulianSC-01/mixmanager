@@ -16,6 +16,7 @@ export class AppTrackService {
 
   public recentlyAddedTrackTitle : string;
   public recentlyUpdatedTrackTitle : string;
+  public recentlyRemovedTrackTitle : string;
 
   constructor(
     private firestoreService : AngularFirestore) { 

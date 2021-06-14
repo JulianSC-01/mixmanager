@@ -10,8 +10,8 @@
   [tracklistId]="tracklistId"
   [trackId]="trackId"
   (onError)="displayErrorMessage($event)"
-  (onCancelClick)="displayPreviousPage()"
-  (onTrackAdded)="setTrackNameAdded($event)"
-  (onTrackUpdated)="setTrackNameUpdated($event)"
-  (onTrackNotFound)="displayNotFoundPage()">
+  (onAdded)="setTrackNameAdded($event)"
+  (onUpdated)="setTrackNameUpdated($event)"
+  (onCancel)="displayPreviousPage()"
+  (onNotFound)="displayNotFoundPage()">
 </app-edit-track-input>

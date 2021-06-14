@@ -12,11 +12,23 @@ const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 })
 export class AppEditTracklistTitleComponent implements OnInit, OnDestroy {
 
+  /*
+   * Input Data
+   *
+   * tracklistId: The tracklist ID
+   */
   @Input() tracklistId : string;
   
+  /*
+   * Output Emitters
+   *
+   * onError: On any error (Emits error message)
+   * onUpdated: When the title is updated (Emits title)
+   * onNotFound: When the title is not found
+   */
   @Output() onError = new EventEmitter<string>();
-  @Output() onTitleUpdated = new EventEmitter<void>();
-  @Output() onTitleNotFound = new EventEmitter<void>();
+  @Output() onUpdated = new EventEmitter<string>();
+  @Output() onNotFound = new EventEmitter<void>();
 
   public tracklistIsLoading : boolean;
   public isTitleBeingEdited : boolean;
@@ -45,7 +57,7 @@ export class AppEditTracklistTitleComponent implements OnInit, OnDestroy {
           if (data) {
             this.tracklistTitle = data.title;
           } else {
-            this.onTitleNotFound.emit();
+            this.onNotFound.emit();
           }
           this.tracklistIsLoading = false;
         },
@@ -88,7 +100,7 @@ export class AppEditTracklistTitleComponent implements OnInit, OnDestroy {
 
     this.tracklistService.updateTracklist(
       this.tracklistId, tracklistData).then(
-      () => this.onTitleUpdated.emit(),
+      () => this.onUpdated.emit(newTracklistTitle),
       () => this.onError.emit(AppTracklistMessages.MSG_UPDATE_TITLE_FAILED)).
       finally(() => {
         this.isTitleBeingEdited = false;

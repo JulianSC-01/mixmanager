@@ -38,6 +38,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   ngOnDestroy() : void {
     this.trackService.recentlyAddedTrackTitle = null;
     this.trackService.recentlyUpdatedTrackTitle = null;
+    this.trackService.recentlyRemovedTrackTitle = null;
   }
 
   addTrack() : void {
@@ -54,13 +55,18 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   }
 
   displayTracksRemovedMessage(tracksRemoved : string[]) {
-    this.displaySuccessMessage(
-      AppTracklistMessages.MSG_REMOVE_TRACK_SUCCESSFUL.replace('{0}', tracksRemoved.length.toString()));
+    if (this.trackService.recentlyRemovedTrackTitle) {
+      this.displaySuccessMessage(
+        AppTracklistMessages.MSG_REMOVE_SUCCESSFUL.replace('{0}', this.trackService.recentlyRemovedTrackTitle));
+    } else {
+      this.displaySuccessMessage(
+        AppTracklistMessages.MSG_REMOVE_TRACKS_SUCCESSFUL.replace('{0}', tracksRemoved.length.toString()));
+    }
   }
 
-  displayTracksSwappedMessage() {
+  displayTracksSwappedMessage(tracksSwapped : string[]) {
     this.displaySuccessMessage(
-      AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL);
+      AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL.replace('{0}', tracksSwapped.length.toString()));
   }
 
   displayNotFoundPage() : void {
