@@ -1,5 +1,7 @@
 h1 {
+    border-bottom: 1px solid darkgray;
     margin-bottom: 1rem!important;
+    padding-bottom: .2em;
 }
 label {
     font-weight: bold;
