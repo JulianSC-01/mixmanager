@@ -53,28 +53,28 @@
 </div>
 <div>
   <button 
-    class="btn btn-primary block-button mr-1"
+    class="btn btn-primary btn-wrap mr-1"
     type="button"
     [disabled]="tracksAreLoading"
     (click)="addTrack()">
     Add track
   </button>
   <button 
-    class="btn btn-secondary block-button mr-1"
+    class="btn btn-secondary btn-wrap mr-1"
     type="button"
     [disabled]="tracksSelected.length != 1"
     (click)="editTrack()">
     Edit selected
   </button>
   <button 
-    class="btn btn-secondary block-button mr-1"
+    class="btn btn-secondary btn-wrap mr-1"
     type="button"
     [disabled]="tracksSelected.length < 1"
     (click)="removeTracks()">
     Remove selected
   </button>
   <button 
-    class="btn btn-secondary block-button"
+    class="btn btn-secondary btn-wrap"
     type="button"
     [disabled]="tracksSelected.length != 2"
     (click)="swapTracks()">

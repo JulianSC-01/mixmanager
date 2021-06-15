@@ -64,10 +64,8 @@
               class="btn btn-primary" 
               type="submit"
               [disabled]="this.tracklistsAreLoading || this.tracklistIsAdding">
-              <span class="icon-mb-1">
-                <app-add-icon></app-add-icon>
-                Add
-              </span>
+              <app-add-icon></app-add-icon>
+              Add
             </button>
             <span *ngIf="tracklistIsAdding" class="ml-2">
               <app-spinner></app-spinner>
