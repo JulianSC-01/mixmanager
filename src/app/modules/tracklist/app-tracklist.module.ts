@@ -18,13 +18,14 @@ import { AppTrackService } from './services/app-track.service';
 @NgModule({
   declarations: [
     AppTracklistComponent,
-    AppTracklistTableComponent,
     AppEditTracklistComponent,
+    AppEditTrackComponent,
+    AppTrackNumberPipe,
+    // Subcomponents
+    AppTracklistTableComponent,
     AppEditTracklistTitleComponent,
     AppEditTracklistTrackTableComponent,
-    AppEditTrackComponent,
     AppEditTrackInputComponent,
-    AppTrackNumberPipe,
   ],
   imports: [
     AngularFirestoreModule,

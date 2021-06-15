@@ -39,7 +39,7 @@ export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
   public trackCount : number;
   public tracksAreUpdating : boolean;
   public tracksSelected : string[];
-  private trackSelected : string;
+  private trackTitleSelected : string;
 
   public tracks : Observable<Track[]>;
   
@@ -97,8 +97,8 @@ export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
       this.trackService.removeTracks(
         this.tracklistId, this.tracksSelected).then(
         () => {
-          if (this.trackSelected)
-            this.trackService.recentlyRemovedTrackTitle = this.trackSelected
+          if (this.trackTitleSelected)
+            this.trackService.recentlyRemovedTrackTitle = this.trackTitleSelected
           this.onRemoved.emit(this.tracksSelected)
         },
         () => this.onError.emit(AppTracklistMessages.MSG_REMOVE_TRACK_FAILED)).
@@ -140,8 +140,8 @@ export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
       }
     }
     if (this.tracksSelected.length === 1)
-      this.trackSelected = trackTitle;
+      this.trackTitleSelected = trackTitle;
     else
-      this.trackSelected = null;
+      this.trackTitleSelected = null;
   }
 }
