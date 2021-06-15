@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Track, TrackBuilder } from '../../objects/track';
 import { AppTracklistMessages } from '../../messages/app-tracklist-messages';
 import { AppTrackService } from '../../services/app-track.service';
@@ -49,13 +50,10 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
   public majorKeys : string[] = ['B','F#','Db','Ab','Eb','Bb','F','C','G','D','A','E'];
 
   public track : Observable<Track>;
-  
-  private activeSubscriptions : Subscription;
+  private trackEnd : Subject<void>;
   
   constructor(
-    private trackService : AppTrackService) { 
-    this.activeSubscriptions = new Subscription();
-  }
+    private trackService : AppTrackService) { }
 
   ngOnInit(): void {
     if (!this.trackId) {
@@ -64,33 +62,37 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
     else {
       this.trackIsLoading = true;
       
+      this.trackEnd = new Subject<void>();
+
       this.track = 
-      this.trackService.retrieveTrack(this.tracklistId, this.trackId);
+      this.trackService.retrieveTrack(
+        this.tracklistId, this.trackId).pipe(takeUntil(this.trackEnd));
   
-      this.activeSubscriptions.add(
-        this.track.subscribe(
-          data => {
-            if (data) {
-              this.trackTitle = data.title;
-              this.trackArtist = data.artist;
-              this.trackBPM = data.bpm;
-              this.trackKey = data.key;
-            } else {
-              this.onNotFound.emit();
-            }
-            this.trackIsLoading = false;
-          },
-          () => {
-            this.onError.emit(AppTracklistMessages.MSG_RETRIEVE_TRACK_FAILED)
-            this.trackIsLoading = false;
+      this.track.subscribe(
+        data => {
+          if (data) {
+            this.trackTitle = data.title;
+            this.trackArtist = data.artist;
+            this.trackBPM = data.bpm;
+            this.trackKey = data.key;
+          } else {
+            this.onNotFound.emit();
           }
-        )
+          this.trackIsLoading = false;
+        },
+        () => {
+          this.onError.emit(AppTracklistMessages.MSG_RETRIEVE_TRACK_FAILED)
+          this.trackIsLoading = false;
+        }
       );
     }
   }
 
   ngOnDestroy() : void {
-    this.activeSubscriptions.unsubscribe();
+    if (this.trackEnd) {
+      this.trackEnd.next();
+      this.trackEnd.complete();
+    }
   }
 
   submit() : void {

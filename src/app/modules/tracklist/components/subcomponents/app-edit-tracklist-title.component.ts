@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit, Output, EventEmitter } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Tracklist, TracklistBuilder } from '../../objects/tracklist';
 import { AppTracklistMessages } from '../../messages/app-tracklist-messages';
 import { AppTracklistService } from '../../services/app-tracklist.service';
@@ -37,40 +38,39 @@ export class AppEditTracklistTitleComponent implements OnInit, OnDestroy {
   public tracklistTitleToEdit : string;
 
   private tracklist : Observable<Tracklist>;
-  
-  private activeSubscriptions : Subscription;
+  private tracklistEnd : Subject<void>;
 
   constructor(
-    private tracklistService : AppTracklistService) { 
-    this.activeSubscriptions = new Subscription();
-  }
+    private tracklistService : AppTracklistService) { }
 
   ngOnInit(): void {
     this.tracklistIsLoading = true;
     
-    this.tracklist = 
-    this.tracklistService.retrieveTracklist(this.tracklistId);
+    this.tracklistEnd = new Subject<void>();
 
-    this.activeSubscriptions.add( 
-      this.tracklist.subscribe(
-        data => {
-          if (data) {
-            this.tracklistTitle = data.title;
-          } else {
-            this.onNotFound.emit();
-          }
-          this.tracklistIsLoading = false;
-        },
-        () => {
-          this.tracklistIsLoading = false;
-          this.onError.emit(AppTracklistMessages.MSG_RETRIEVE_TITLE_FAILED)
+    this.tracklist = 
+    this.tracklistService.retrieveTracklist(
+      this.tracklistId).pipe(takeUntil(this.tracklistEnd));
+
+    this.tracklist.subscribe(
+      data => {
+        if (data) {
+          this.tracklistTitle = data.title;
+        } else {
+          this.onNotFound.emit();
         }
-      )
+        this.tracklistIsLoading = false;
+      },
+      () => {
+        this.tracklistIsLoading = false;
+        this.onError.emit(AppTracklistMessages.MSG_RETRIEVE_TITLE_FAILED)
+      }
     );
   }
 
   ngOnDestroy() : void {
-    this.activeSubscriptions.unsubscribe();
+    this.tracklistEnd.next();
+    this.tracklistEnd.complete();
   }
 
   onEditTitle() : void {

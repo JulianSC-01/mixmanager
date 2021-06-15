@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { Track } from '../../objects/track';
 import { AppTracklistMessages } from '../../messages/app-tracklist-messages';
 import { AppTrackService } from '../../services/app-track.service';
@@ -42,42 +43,41 @@ export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
   private trackTitleSelected : string;
 
   public tracks : Observable<Track[]>;
-  
-  private activeSubscriptions : Subscription;
+  private tracksEnd : Subject<void>;
 
   constructor(
-    private trackService : AppTrackService) {
-    this.activeSubscriptions = new Subscription();
-    this.tracksSelected = [];
-  }
+    private trackService : AppTrackService) { }
 
   ngOnInit(): void {
     this.tracksAreLoading = true;
     this.trackCount = 0;
+    this.tracksSelected = [];
+
+    this.tracksEnd = new Subject<void>();
     
     this.tracks = 
-    this.trackService.retrieveTracks(this.tracklistId);
+    this.trackService.retrieveTracks(
+      this.tracklistId).pipe(takeUntil(this.tracksEnd));
 
-    this.activeSubscriptions.add(
-      this.tracks.subscribe(
-        data => {
-          if (data) {
-            this.trackCount = data.length;
-          } else {
-            this.onNotFound.emit();
-          }
-          this.tracksAreLoading = false;
-        },
-        () => {
-          this.tracksAreLoading = false;
-          this.onError.emit(AppTracklistMessages.MSG_RETRIEVE_TRACKS_FAILED);
+    this.tracks.subscribe(
+      data => {
+        if (data) {
+          this.trackCount = data.length;
+        } else {
+          this.onNotFound.emit();
         }
-      )
+        this.tracksAreLoading = false;
+      },
+      () => {
+        this.tracksAreLoading = false;
+        this.onError.emit(AppTracklistMessages.MSG_RETRIEVE_TRACKS_FAILED);
+      }
     );
   }
 
   ngOnDestroy() : void {
-    this.activeSubscriptions.unsubscribe();
+    this.tracksEnd.next();
+    this.tracksEnd.complete();
   }
 
   addTrack() : void {
