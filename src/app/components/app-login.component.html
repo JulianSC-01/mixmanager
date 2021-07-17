@@ -31,11 +31,11 @@
         *ngIf="form.submitted && loginForm.controls.loginEmail.errors">
         <ng-container 
           *ngIf="loginForm.controls.loginEmail.errors.required">
-          Field is required.
+          Error: Field is required.
         </ng-container>
         <ng-container 
-          *ngIf="loginForm.controls.loginEmail.errors.invalidEmail">
-          {{ loginErrorMessage }}
+          *ngIf="loginForm.controls.loginEmail.errors.badEmailFormat">
+          Error: The e-mail address is badly formatted.
         </ng-container>
       </div>
     </div>
@@ -60,11 +60,7 @@
         *ngIf="form.submitted && loginForm.controls.loginPassword.errors">
         <ng-container 
           *ngIf="loginForm.controls.loginPassword.errors.required">
-          Field is required.
-        </ng-container>
-        <ng-container 
-          *ngIf="loginForm.controls.loginPassword.errors.invalidPassword">
-          {{ loginErrorMessage }}
+          Error: Field is required.
         </ng-container>
       </div>
     </div>

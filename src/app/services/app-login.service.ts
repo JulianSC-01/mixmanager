@@ -6,11 +6,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AppLoginService {
-  public static ERR_INVALID_EMAIL : string = "auth/invalid-email";
-  public static ERR_USER_DISABLED : string = "auth/user-disabled";
-  public static ERR_USER_NOT_FOUND : string = "auth/user-not-found";
-  public static ERR_TOO_MANY_REQ : string = "auth/too-many-requests";
-  public static ERR_PASSWORD_ERROR : string = "auth/wrong-password";
+  public static ERR_BAD_EMAIL_FORMAT : string = "auth/invalid-email";
+  public static ERR_TOO_MANY_REQUESTS : string = "auth/too-many-requests";
 
   constructor(
     private fireAuth : AngularFireAuth) { 

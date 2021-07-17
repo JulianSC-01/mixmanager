@@ -12,7 +12,7 @@ export class AppFormHelper {
     return AppFormHelper.instance;
   }
 
-  getHeaderErrorMessage(form : FormGroup) : string {
+  getErrorCountHeaderMessage(form : FormGroup) : string {
     let count : number = 0;
     
     for (const field in form.controls) {
