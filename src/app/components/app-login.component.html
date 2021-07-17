@@ -3,8 +3,8 @@
 </h1>
 <app-alert
   *ngIf="form.submitted && loginForm.invalid"
-  [message]="getHeaderErrorMessage()"
   [type]="'danger'">
+  {{ getHeaderErrorMessage() }}
 </app-alert>
 <form 
   autocomplete="off"

@@ -6,11 +6,5 @@ import { Component, Input } from '@angular/core';
 })
 export class AppSpinnerComponent {
 
-  @Input() isLarge : boolean;
-  @Input() label : string;
-
-  constructor() { 
-    this.isLarge = false;
-    this.label = null;
-  }
+  @Input() isLarge : boolean = false;
 }

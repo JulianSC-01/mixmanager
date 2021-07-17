@@ -1,8 +1,10 @@
 <div [ngClass]="{
-    'alert' : true, 
-    'alert-danger' : isDangerAlert(), 
-    'alert-success' : isSuccessAlert()
+     'alert' : true,
+     'alert-danger' : isDangerAlert(),
+     'alert-success' : isSuccessAlert()
   }"
   role="alert">
-  {{ message }}
+  <p>
+    <ng-content></ng-content>
+  </p>
 </div>

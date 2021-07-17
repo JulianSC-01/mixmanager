@@ -10,13 +10,7 @@ import { Component, Input } from '@angular/core';
 })
 export class AppMusicIconComponent {
 
-  @Input() width : number;
-  @Input() height : number;
-  @Input() title : string;
-
-  constructor() { 
-    this.height = 16;
-    this.width = 16;
-    this.title = 'Music Note';
-  }
+  @Input() width : number = 16;
+  @Input() height : number = 16;
+  @Input() title : string = 'Music Note';
 }

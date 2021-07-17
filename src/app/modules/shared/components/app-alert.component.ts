@@ -2,17 +2,12 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-alert',
-  templateUrl: './app-alert.component.html'
+  templateUrl: './app-alert.component.html',
+  styleUrls: ['./app-alert.component.css']
 })
 export class AppAlertComponent {
 
-  @Input() message : string;
-  @Input() type : string;
-
-  constructor() { 
-    this.message = null;
-    this.type = 'danger';
-  }
+  @Input() type : string = 'danger';
 
   isDangerAlert() : boolean {
     return this.type === 'danger';

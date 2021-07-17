@@ -3,13 +3,13 @@
 </h1>
 <app-alert
   *ngIf="tracklistErrorMessage"
-  [message]="tracklistErrorMessage"
   [type]="'danger'">
+  {{ tracklistErrorMessage }}
 </app-alert>
 <app-alert
   *ngIf="tracklistSuccessMessage"
-  [message]="tracklistSuccessMessage"
   [type]="'success'">
+  {{ tracklistSuccessMessage }}
 </app-alert>
 <h2>
   Title
