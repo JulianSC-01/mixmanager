@@ -11,6 +11,6 @@ export class AppHomeComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() : void {
-    this.focusService.focusMainHeader();
+    this.focusService.focusNavbar();
   }
 }

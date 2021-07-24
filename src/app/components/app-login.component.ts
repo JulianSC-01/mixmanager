@@ -37,7 +37,7 @@ export class AppLoginComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() : void {
-    this.focusService.focusMainHeader();
+    this.focusService.focusNavbar();
   }
 
   login() : void {

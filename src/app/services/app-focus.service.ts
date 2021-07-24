@@ -7,6 +7,10 @@ export class AppFocusService {
 
   constructor() { }
 
+  focusNavbar() : void {
+    this.focusElement('#mainNavbarLink');
+  }
+
   focusMainHeader() : void {
     this.focusElement('#mainHeader');
   }
