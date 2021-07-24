@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppFocusService } from '../services/app-focus.service';
 import { AppLoginService } from '../services/app-login.service';
 
 @Component({
@@ -12,11 +13,16 @@ export class AppNavbarComponent implements OnInit {
   public isLoggingOut : boolean;
 
   constructor(
+    private focusService : AppFocusService,
     public loginService : AppLoginService,
     private router : Router) { }
 
-  ngOnInit(): void {
+  ngOnInit() : void {
     this.isLoggingOut = false;
+  }
+
+  skipToContent() : void {
+    this.focusService.focusMainHeader();
   }
 
   logout() : void {
