@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppFormHelper } from 'src/app/modules/shared/helpers/app-form-helper';
+import { AppFocusService } from '../services/app-focus.service';
 import { AppLoginService } from 'src/app/services/app-login.service';
 import { AppMessages } from '../messages/app-messages';
 
@@ -12,7 +13,7 @@ const LOGIN_PASSW : string  = "loginPassword";
   selector: 'app-login',
   templateUrl: './app-login.component.html'
 })
-export class AppLoginComponent {
+export class AppLoginComponent implements AfterViewInit {
 
   public loginForm : FormGroup;
   public loginInProgress : boolean;
@@ -21,6 +22,7 @@ export class AppLoginComponent {
   private loginFormBuilder : FormBuilder;
 
   constructor(
+    private focusService : AppFocusService,
     private loginService : AppLoginService,
     private router : Router) { 
       
@@ -32,6 +34,10 @@ export class AppLoginComponent {
     });
 
     this.loginInProgress = false;
+  }
+
+  ngAfterViewInit() : void {
+    this.focusService.focusMainHeader();
   }
 
   login() : void {
@@ -48,8 +54,11 @@ export class AppLoginComponent {
           err => { 
             this.loginErrors(err);
             this.loginInProgress = false; 
+            this.focusService.focusErrorHeader();
           }
         );
+    } else {
+      this.focusService.focusErrorHeader();
     }
   }
 
@@ -73,7 +82,7 @@ export class AppLoginComponent {
     }
   }
 
-  getHeaderErrorMessage() {
+  getHeaderErrorMessage() : string {
     return this.loginErrorMessageHeader ? this.loginErrorMessageHeader : 
            AppFormHelper.getInstance().getErrorCountHeaderMessage(this.loginForm);
   }

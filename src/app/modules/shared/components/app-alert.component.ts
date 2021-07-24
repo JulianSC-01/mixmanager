@@ -7,6 +7,7 @@ import { Component, Input } from '@angular/core';
 })
 export class AppAlertComponent {
 
+  @Input() id : string = '';
   @Input() type : string = 'danger';
 
   isDangerAlert() : boolean {

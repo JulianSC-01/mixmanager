@@ -1,8 +1,9 @@
-<h1>
+<app-header>
   Login
-</h1>
+</app-header>
 <app-alert
   *ngIf="form.submitted && loginForm.invalid"
+  [id]="'errorHeader'"
   [type]="'danger'">
   {{ getHeaderErrorMessage() }}
 </app-alert>
@@ -23,12 +24,15 @@
         type="text" 
         id="loginEmail"
         formControlName="loginEmail"
+        aria-errormessage="loginEmailError"
+        [attr.aria-invalid]="form.submitted && loginForm.controls.loginEmail.invalid"
         [ngClass]="{
           'form-control' : true, 
-          'is-invalid' : form.submitted && loginForm.controls.loginEmail.errors}">
-      <div 
+          'is-invalid' : form.submitted && loginForm.controls.loginEmail.invalid}">
+      <div
         class="invalid-feedback"
-        *ngIf="form.submitted && loginForm.controls.loginEmail.errors">
+        id="loginEmailError"
+        *ngIf="form.submitted && loginForm.controls.loginEmail.invalid">
         <ng-container 
           *ngIf="loginForm.controls.loginEmail.errors.required">
           Error: Field is required.
@@ -52,12 +56,15 @@
         type="password" 
         id="loginPassword"
         formControlName="loginPassword"
+        aria-errormessage="loginPasswordError"
+        [attr.aria-invalid]="form.submitted && loginForm.controls.loginPassword.invalid"
         [ngClass]="{
           'form-control' : true, 
-          'is-invalid' : form.submitted && loginForm.controls.loginPassword.errors}">
-      <div 
+          'is-invalid' : form.submitted && loginForm.controls.loginPassword.invalid}">
+      <div
         class="invalid-feedback"
-        *ngIf="form.submitted && loginForm.controls.loginPassword.errors">
+        id="loginPasswordError"
+        *ngIf="form.submitted && loginForm.controls.loginPassword.invalid">
         <ng-container 
           *ngIf="loginForm.controls.loginPassword.errors.required">
           Error: Field is required.
