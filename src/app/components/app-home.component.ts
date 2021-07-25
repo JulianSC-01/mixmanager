@@ -1,16 +1,9 @@
-import { AfterViewInit, Component } from '@angular/core';
-import { AppFocusService } from '../services/app-focus.service';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './app-home.component.html'
 })
-export class AppHomeComponent implements AfterViewInit {
-  constructor(
-    private focusService : AppFocusService) {
-  }
-
-  ngAfterViewInit() : void {
-    this.focusService.focusNavbar();
-  }
+export class AppHomeComponent {
+  constructor() { }
 }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppFormHelper } from 'src/app/modules/shared/helpers/app-form-helper';
@@ -13,7 +13,7 @@ const LOGIN_PASSW : string  = "loginPassword";
   selector: 'app-login',
   templateUrl: './app-login.component.html'
 })
-export class AppLoginComponent implements AfterViewInit {
+export class AppLoginComponent {
 
   public loginForm : FormGroup;
   public loginInProgress : boolean;
@@ -34,10 +34,6 @@ export class AppLoginComponent implements AfterViewInit {
     });
 
     this.loginInProgress = false;
-  }
-
-  ngAfterViewInit() : void {
-    this.focusService.focusNavbar();
   }
 
   login() : void {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { AppHeaderComponent } from './app-header.component';
+import { AppFocusService } from 'src/app/services/app-focus.service';
 
 describe('AppHeaderComponent', () => {
   let component: AppHeaderComponent;
@@ -8,7 +8,8 @@ describe('AppHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AppHeaderComponent ]
+      declarations: [ AppHeaderComponent ],
+      providers: [ AppFocusService ]
     })
     .compileComponents();
   });
