@@ -23,7 +23,7 @@ export class AppLoginComponent implements AfterViewInit {
 
   constructor(
     private focusService : AppFocusService,
-    private loginService : AppLoginService,
+    public loginService : AppLoginService,
     private router : Router) { 
       
     this.loginFormBuilder = new FormBuilder();
@@ -50,6 +50,7 @@ export class AppLoginComponent implements AfterViewInit {
           () => {
             this.router.navigate(['/home']);
             this.loginInProgress = false;
+            this.loginService.loggedOut.next(false);
           },
           err => { 
             this.loginErrors(err);

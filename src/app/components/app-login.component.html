@@ -1,6 +1,12 @@
 <app-header>
   Login
 </app-header>
+<div
+  *ngIf="loginService.loggedOut | async"
+  class="alert alert-success"
+  role="alert">
+  You have successfully logged out.
+</div>
 <app-alert
   *ngIf="form.submitted && loginForm.invalid"
   [id]="'errorHeader'"
