@@ -10,6 +10,6 @@ export class AppNotFoundComponent implements AfterViewInit {
     private focusService : AppFocusService) { }
 
   ngAfterViewInit() : void {
-    this.focusService.focusMainHeader();
+    this.focusService.focusNavbar();
   }
 }

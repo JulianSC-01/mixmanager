@@ -1,20 +1,17 @@
 <header class="navbar navbar-expand-lg navbar-dark bg-dark mb-3">
   <nav class="container" aria-label="Main navigation">
-    <a id="mainNavbarLink" class="navbar-brand mr-2" routerLink="/home" aria-label="Mix Manager">
+    <button
+      id="mainNavbarLink"
+      type="button"
+      class="btn btn-outline-light mr-2 mt-1"
+      aria-label="Mix Manager (skips to main content)"
+      (click)="skipToContent()">
       <app-music-icon
         [width]="32"
         [height]="32"
         [title]="'Mix Manager'">
       </app-music-icon>
-    </a>
-    <div class="skip-to-content">
-      <button
-        type="button"
-        class="btn btn-outline-light"
-        (click)="skipToContent()">
-        Skip to main content
-      </button>
-    </div>
+    </button>
     <button 
        *ngIf="loginService.authState() | async"
        class="navbar-toggler" 
@@ -45,7 +42,7 @@
           </a>
         </li>
       </ul>
-      <span class="pull-right">
+      <span class="pull-right mt-1">
         <span *ngIf="isLoggingOut" class="navbar-spinner mr-2">
           <app-spinner></app-spinner>
         </span>
