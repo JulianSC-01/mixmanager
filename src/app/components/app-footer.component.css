@@ -4,7 +4,12 @@ footer {
     background-color: lightgray;
     margin-top: 2.5rem!important;
 }
-.footer-container {
-    padding-bottom: 1rem!important;
-    padding-top: 1rem!important;
+dl {
+    margin-top: 1rem!important;
+}
+dt {
+    margin-right: .25rem!important;
+}
+dd {
+    margin-bottom: 0!important;
 }
