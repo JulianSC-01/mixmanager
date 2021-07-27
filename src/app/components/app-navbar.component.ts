@@ -29,8 +29,8 @@ export class AppNavbarComponent implements OnInit {
     this.isLoggingOut = true;
     this.router.navigate(['/login']);
 
-    this.loginService.logout().then(
-    () => this.loginService.loggedOut.next(true)).
-    finally(() => this.isLoggingOut = false);
+    this.loginService.logout().then(() =>
+      this.loginService.loggedOut.next(true)).finally(() =>
+        this.isLoggingOut = false);
   }
 }

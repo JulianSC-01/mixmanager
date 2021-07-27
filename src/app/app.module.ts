@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, Title } from '@angular/platform-browser';
 import { environment } from '../environments/environment';
 import { AppSharedModule } from './modules/shared/app-shared.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -30,6 +30,7 @@ import { AppStartupComponent } from './components/app-startup.component';
     AppSharedModule,
     AppRoutingModule
   ],
+  providers: [Title],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

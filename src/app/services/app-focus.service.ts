@@ -22,7 +22,8 @@ export class AppFocusService {
   focusElement(elementId : string) : void {
     setTimeout(() => {
       const element = <HTMLElement>document.querySelector(elementId);
-      element.focus();
+      if (element)
+        element.focus();
     }, 100);
   }
 }
