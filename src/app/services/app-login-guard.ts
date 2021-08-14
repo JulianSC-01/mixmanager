@@ -3,6 +3,7 @@ import { CanActivate, Router } from '@angular/router';
 import { AppLoginService } from './app-login.service';
 import { Observable } from 'rxjs';
 import { take, map } from 'rxjs/operators';
+import firebase from 'firebase/app';
 
 @Injectable({
   providedIn: 'root'

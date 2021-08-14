@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 export class Tracklist {
     public id : string;
     public title : string;

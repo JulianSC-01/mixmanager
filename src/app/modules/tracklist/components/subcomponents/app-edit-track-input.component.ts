@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Track, TrackBuilder } from '../../objects/track';
 import { AppTracklistMessages } from '../../messages/app-tracklist-messages';
 import { AppTrackService } from '../../services/app-track.service';
-import * as firebase from 'firebase/app';
+import firebase from 'firebase/app';
 
 const ID_TRACK : string = 'ID';
 const UNKNOWN_VALUE = '?';

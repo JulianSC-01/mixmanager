@@ -4,14 +4,12 @@
 <app-alert
   *ngIf="tracklistErrorMessage"
   [id]="'errorHeader'"
-  [role]="'note'"
   [type]="'danger'">
   {{ tracklistErrorMessage }}
 </app-alert>
 <app-alert
   *ngIf="tracklistSuccessMessage"
   [id]="'successHeader'"
-  [role]="'note'"
   [type]="'success'">
   {{ tracklistSuccessMessage }}
 </app-alert>

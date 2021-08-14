@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 export class Track {
     public id : string;
     public title : string;
