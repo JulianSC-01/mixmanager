@@ -3,6 +3,7 @@ import { Observable, Subject, Subscription } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Tracklist, TracklistBuilder } from '../../objects/tracklist';
 import { AppTracklistMessages } from '../../messages/app-tracklist-messages';
+import { AppFocusService } from 'src/app/services/app-focus.service';
 import { AppTracklistService } from '../../services/app-tracklist.service';
 
 const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
@@ -41,6 +42,7 @@ export class AppEditTracklistTitleComponent implements OnInit, OnDestroy {
   private tracklistEnd : Subject<void>;
 
   constructor(
+    private focusService : AppFocusService,
     private tracklistService : AppTracklistService) { }
 
   ngOnInit(): void {
@@ -76,10 +78,12 @@ export class AppEditTracklistTitleComponent implements OnInit, OnDestroy {
   onEditTitle() : void {
     this.tracklistTitleToEdit = this.tracklistTitle;
     this.isTitleBeingEdited = true;
+    this.focusService.focusElement("#tracklistTitle");
   }
 
   onCancelEditTitle() : void {
     this.isTitleBeingEdited = false;
+    this.focusService.focusElement("#editTitleButton");
   }
 
   saveTitle() : void {

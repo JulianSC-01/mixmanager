@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AppFocusService } from 'src/app/services/app-focus.service';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 
 @Component({
@@ -10,7 +11,8 @@ export class AppTracklistComponent {
   public tracklistErrorMessage : string;
   public tracklistSuccessMessage : string;
 
-  constructor() {}
+  constructor(
+    private focusService : AppFocusService) {}
 
   displayAddMessage(tracklistName : string) {
     this.displaySuccessMessage(
@@ -24,9 +26,11 @@ export class AppTracklistComponent {
 
   displaySuccessMessage(successMessage : string) {
     this.tracklistSuccessMessage = successMessage;
+    this.focusService.focusSuccessHeader();
   }
 
   displayErrorMessage(errorMessage : string) {
     this.tracklistErrorMessage = errorMessage;
+    this.focusService.focusErrorHeader();
   }
 }

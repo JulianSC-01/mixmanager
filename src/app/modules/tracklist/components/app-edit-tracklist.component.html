@@ -1,13 +1,17 @@
-<h1>
+<app-header>
   Edit tracklist
-</h1>
+</app-header>
 <app-alert
   *ngIf="tracklistErrorMessage"
+  [id]="'errorHeader'"
+  [role]="'note'"
   [type]="'danger'">
   {{ tracklistErrorMessage }}
 </app-alert>
 <app-alert
   *ngIf="tracklistSuccessMessage"
+  [id]="'successHeader'"
+  [role]="'note'"
   [type]="'success'">
   {{ tracklistSuccessMessage }}
 </app-alert>
@@ -33,5 +37,5 @@
   (onNotFound)="displayNotFoundPage()">
 </app-edit-tracklist-track-table>
 <div class="mb-2 mt-3">
-  Return to: <a routerLink="/tracklists">Tracklists</a>
+  Return to: <a routerLink="/tracklists" aria-label="Return to tracklists page">Tracklists</a>
 </div>

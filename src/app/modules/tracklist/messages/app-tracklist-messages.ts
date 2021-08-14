@@ -18,6 +18,6 @@ export class AppTracklistMessages {
   public static MSG_REMOVE_TRACK_FAILED : string                   = "Unable to remove 1 or more tracks. Please try again later.";
   public static MSG_SWAP_TRACKS_SUCCESSFUL : string                = "Successfully swapped {0} tracks.";
   public static MSG_SWAP_TRACKS_FAILED : string                    = "Unable to swap tracks. Please try again later.";
-  public static MSG_UPDATE_TITLE_SUCCESSFUL : string               = "Title updated successfully.";
+  public static MSG_UPDATE_TITLE_SUCCESSFUL : string               = "Tracklist title updated successfully.";
   public static MSG_UPDATE_TITLE_FAILED : string                   = "Unable to update title. Please try again later.";
 }

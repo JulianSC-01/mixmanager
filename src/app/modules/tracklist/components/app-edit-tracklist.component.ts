@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppFocusService } from 'src/app/services/app-focus.service';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { AppTrackService } from '../services/app-track.service';
 
@@ -7,7 +8,7 @@ import { AppTrackService } from '../services/app-track.service';
   selector: 'app-edit-tracklist',
   templateUrl: './app-edit-tracklist.component.html'
 })
-export class AppEditTracklistComponent implements OnInit, OnDestroy {
+export class AppEditTracklistComponent implements AfterViewInit, OnDestroy {
   
   public tracklistId : string;
 
@@ -16,13 +17,14 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
 
   constructor(
     private activatedRoute : ActivatedRoute,
+    private focusService : AppFocusService,
     private trackService : AppTrackService,
     private router : Router) {
     this.tracklistId = 
     this.activatedRoute.snapshot.params['tracklistId'];
   }
 
-  ngOnInit() : void {
+  ngAfterViewInit() : void {
     if (this.trackService.recentlyAddedTrackTitle) {
       this.displaySuccessMessage(
       AppTracklistMessages.MSG_ADD_SUCCESSFUL.
@@ -75,9 +77,11 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
 
   displaySuccessMessage(successMessage : string) {
     this.tracklistSuccessMessage = successMessage;
+    this.focusService.focusSuccessHeader();
   }
 
   displayErrorMessage(errorMessage : string) {
     this.tracklistErrorMessage = errorMessage;
+    this.focusService.focusErrorHeader();
   }
 }

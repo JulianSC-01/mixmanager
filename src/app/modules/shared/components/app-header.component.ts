@@ -15,7 +15,7 @@ export class AppHeaderComponent implements AfterViewInit {
     private titleService : Title) { }
 
   ngAfterViewInit() : void {
-    this.focusService.focusNavbar();
+    this.focusService.focusMainHeader();
     this.titleService.setTitle(this.header.nativeElement.innerText);
   }
 }

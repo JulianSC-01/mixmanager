@@ -9,7 +9,7 @@
           <label 
             class="sr-only" 
             for="tracklistTitle">
-            Tracklist title
+            Enter a new tracklist title
           </label>
           <input
             type="text"
@@ -22,12 +22,14 @@
       <button 
         class="btn btn-success mr-1" 
         type="submit"
+        aria-label="Save tracklist title"
         [disabled]="isTitleBeingSaved">
         Save
       </button>
       <button 
         class="btn btn-secondary" 
         type="button"
+        aria-label="Cancel edit tracklist title"
         [disabled]="isTitleBeingSaved"
         (click)="onCancelEditTitle()">
         Cancel
@@ -58,8 +60,10 @@
       </ng-template>
     </ng-template>
     <button 
-      class="btn btn-secondary" 
+      class="btn btn-secondary"
+      id="editTitleButton"
       type="button"
+      aria-label="Edit tracklist title"
       [disabled]="tracklistIsLoading"
       (click)="onEditTitle()">
       Edit title

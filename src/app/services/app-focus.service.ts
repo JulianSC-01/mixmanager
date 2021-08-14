@@ -19,6 +19,10 @@ export class AppFocusService {
     this.focusElement('#errorHeader');
   }
 
+  focusSuccessHeader() : void {
+    this.focusElement('#successHeader');
+  }
+
   focusElement(elementId : string) : void {
     setTimeout(() => {
       const element = <HTMLElement>document.querySelector(elementId);

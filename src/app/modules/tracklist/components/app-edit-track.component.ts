@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppFocusService } from 'src/app/services/app-focus.service';
 import { AppTrackService } from '../services/app-track.service';
 
 const ADD_TRACK_TITLE : string = 'Add track';
@@ -20,6 +21,7 @@ export class AppEditTrackComponent implements OnInit {
 
   constructor(
     private activatedRoute : ActivatedRoute,
+    private focusService : AppFocusService,
     private trackService : AppTrackService,
     private router : Router) { 
     this.tracklistId = this.activatedRoute.snapshot.params['tracklistId'];
@@ -54,5 +56,6 @@ export class AppEditTrackComponent implements OnInit {
 
   displayErrorMessage(errorMessage : string) {
     this.trackErrorMessage = errorMessage;
+    this.focusService.focusErrorHeader();
   }
 }

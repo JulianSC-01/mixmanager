@@ -1,8 +1,10 @@
-<h1>
+<app-header>
   {{ trackFormTitle }}
-</h1>
+</app-header>
 <app-alert
   *ngIf="trackErrorMessage"
+  [id]="'errorHeader'"
+  [role]="'note'"
   [type]="'danger'">
   {{ trackErrorMessage }}
 </app-alert>

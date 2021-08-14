@@ -1,93 +1,99 @@
 <form
   (ngSubmit)="submit()">
-  <div class="form-row">
-    <div class="form-group col-sm-6">
-      <label for="trackTitle">
-        Title
-      </label>
-      <input
-        type="text" 
-        id="trackTitle"
-        name="trackTitle"
-        class="form-control"
-        [(ngModel)]="trackTitle">
+  <fieldset>
+    <legend class="sr-only">
+      Track details
+    </legend>
+    <div class="form-row">
+      <div class="form-group col-sm-6">
+        <label for="trackTitle">
+          Track title
+        </label>
+        <input
+          type="text"
+          id="trackTitle"
+          name="trackTitle"
+          class="form-control"
+          [(ngModel)]="trackTitle">
+      </div>
     </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-sm-6">
-      <label for="trackArtist">
-        Artist
-      </label>
-      <input
-        type="text" 
-        id="trackArtist"
-        name="trackArtist"
-        class="form-control"
-        [(ngModel)]="trackArtist">
+    <div class="form-row">
+      <div class="form-group col-sm-6">
+        <label for="trackArtist">
+          Track artist
+        </label>
+        <input
+          type="text"
+          id="trackArtist"
+          name="trackArtist"
+          class="form-control"
+          [(ngModel)]="trackArtist">
+      </div>
     </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-xs-2">
-      <label for="trackBPM">
-        BPM
-      </label>
-      <input
-        type="number" 
-        id="trackBPM"
-        name="trackBPM"
-        min="120"
-        max="145"
-        class="form-control"
-        [(ngModel)]="trackBPM">
+    <div class="form-row">
+      <div class="form-group col-xs-2">
+        <label for="trackBPM">
+          Track BPM
+          <span class="small">(beats per minute)</span>
+        </label>
+        <input
+          type="number"
+          id="trackBPM"
+          name="trackBPM"
+          min="120"
+          max="145"
+          class="form-control"
+          [(ngModel)]="trackBPM">
+      </div>
     </div>
-  </div>
-  <div class="form-row">
-    <div class="form-group col-xs-3">
-      <label for="trackKey">
-        Key
-      </label>
-      <select
-        id="trackKey"
-        name="trackKey"
-        class="form-control"
-        [(ngModel)]="trackKey">
-        <option
-          value="?">
-          Select
-        </option>
-        <optgroup label="Minor Keys">
-          <option 
-            *ngFor="let minorKey of minorKeys; let i = index"
-            [value]="(i+1) + 'A'">
-            {{ (i+1) + 'A' }} - {{ minorKey }} Minor
+    <div class="form-row">
+      <div class="form-group col-xs-3">
+        <label for="trackKey">
+          Track key
+        </label>
+        <select
+          id="trackKey"
+          name="trackKey"
+          class="form-control"
+          [(ngModel)]="trackKey">
+          <option
+            value="?">
+            Select
           </option>
-        </optgroup>
-        <optgroup label="Major Keys">
-          <option 
-            *ngFor="let majorKey of majorKeys; let i = index"
-            [value]="(i+1) + 'B'">
-            {{ (i+1) + 'B' }} - {{ majorKey }} Major
-          </option>
-        </optgroup>
-      </select>
+          <optgroup label="Minor Keys">
+            <option
+              *ngFor="let minorKey of minorKeys; let i = index"
+              [value]="(i+1) + 'A'">
+              {{ (i+1) + 'A' }} - {{ minorKey }} Minor
+            </option>
+          </optgroup>
+          <optgroup label="Major Keys">
+            <option
+              *ngFor="let majorKey of majorKeys; let i = index"
+              [value]="(i+1) + 'B'">
+              {{ (i+1) + 'B' }} - {{ majorKey }} Major
+            </option>
+          </optgroup>
+        </select>
+      </div>
     </div>
-  </div>
-  <div class="mt-2">
-    <button
-      class="btn btn-primary mb-1 mr-1"
-      type="submit"
-      [disabled]="isWorking()">
-      Submit
-    </button>
-    <button
-      class="btn btn-secondary mb-1"
-      type="button"
-      [disabled]="isWorking()"
-      (click)="cancel()">
-      Cancel
-    </button>
-    <span *ngIf="isWorking()" class="ml-2">
-      <app-spinner></app-spinner>
-    </span>
-  </div>
+    <div class="mt-2">
+      <button
+        class="btn btn-primary mb-1 mr-1"
+        type="submit"
+        [disabled]="isWorking()">
+        Submit
+      </button>
+      <button
+        class="btn btn-secondary mb-1"
+        type="button"
+        [disabled]="isWorking()"
+        (click)="cancel()">
+        Cancel
+      </button>
+      <span *ngIf="isWorking()" class="ml-2">
+        <app-spinner></app-spinner>
+      </span>
+    </div>
+  </fieldset>
 </form>
