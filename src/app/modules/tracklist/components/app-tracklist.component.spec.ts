@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
+import { AppFocusService } from 'src/app/services/app-focus.service';
 import { AppLoginService } from 'src/app/services/app-login.service';
 import { AppSharedModule } from '../../shared/app-shared.module';
 import { AppTracklistComponent } from './app-tracklist.component';
@@ -27,6 +28,7 @@ describe('AppTracklistComponent', () => {
         AppTracklistTableComponent
       ],
       providers: [
+        AppFocusService,
         AppLoginService,
         AppTracklistService,
         AppTrackService
