@@ -8,7 +8,7 @@ import { Component, Input } from '@angular/core';
 export class AppAlertComponent {
 
   @Input() id : string = '';
-  @Input() role : string = 'note';
+  @Input() role : string = 'alert';
   @Input() type : string = 'danger';
 
   isDangerAlert() : boolean {

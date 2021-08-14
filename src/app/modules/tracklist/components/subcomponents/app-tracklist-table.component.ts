@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
-import { Observable, Subject, Subscription } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Tracklist, TracklistBuilder } from '../../objects/tracklist';
 import { AppTracklistMessages } from '../../messages/app-tracklist-messages';

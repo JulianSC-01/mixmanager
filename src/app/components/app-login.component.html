@@ -4,13 +4,13 @@
 <app-alert
   *ngIf="loginService.loggedOut | async"
   [id]="'successHeader'"
-  [role]="'alert'"
   [type]="'success'">
   You have successfully logged out.
 </app-alert>
 <app-alert
   *ngIf="form.submitted && loginForm.invalid"
   [id]="'errorHeader'"
+  [role]="'note'"
   [type]="'danger'">
   {{ getHeaderErrorMessage() }}
 </app-alert>
