@@ -4,7 +4,8 @@ import { AppFocusService } from 'src/app/services/app-focus.service';
 
 @Component({
   selector: 'app-header',
-  templateUrl: './app-header.component.html'
+  templateUrl: './app-header.component.html',
+  styles: ['h1 { outline: none; }']
 })
 export class AppHeaderComponent implements AfterViewInit {
 
