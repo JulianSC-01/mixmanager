@@ -19,5 +19,14 @@ Tracklist Editor
 
 ## Change Log
 
-2021-03-14
+2021-06-01 (v1.1)
+- Latest Version
+  - Added "Swap Tracks" function.
+  - Added module preloading for improved navigation.
+  - Updated the user interface for certain pages.
+  - Updated the standard page footer.
+  - Module, component and service refactoring.
+  - Small bug fixes.
+
+2021-03-14 (v1.0)
 - Initial Version
