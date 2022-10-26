@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AngularFireModule } from '@angular/fire';
+import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from 'src/environments/environment';
 import { AppLoginService } from './app-login.service';
 

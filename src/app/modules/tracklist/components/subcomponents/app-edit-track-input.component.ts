@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Track, TrackBuilder } from '../../objects/track';
 import { AppTracklistMessages } from '../../messages/app-tracklist-messages';
 import { AppTrackService } from '../../services/app-track.service';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 
 const ID_TRACK : string = 'ID';
 const UNKNOWN_VALUE = '?';

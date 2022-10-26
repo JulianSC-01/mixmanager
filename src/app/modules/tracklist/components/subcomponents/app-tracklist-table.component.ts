@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { Tracklist, TracklistBuilder } from '../../objects/tracklist';
 import { AppTracklistMessages } from '../../messages/app-tracklist-messages';
 import { AppTracklistService } from '../../services/app-tracklist.service';
-import firebase from 'firebase/app';
+import firebase from 'firebase/compat/app';
 
 const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 

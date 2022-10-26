@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AngularFireModule } from '@angular/fire';
+import { AngularFireModule } from '@angular/fire/compat';
 import { AppRoutingModule } from '../app-routing.module';
 import { environment } from 'src/environments/environment';
 import { AppSharedModule } from '../modules/shared/app-shared.module';

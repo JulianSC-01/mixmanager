@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore} from '@angular/fire/firestore';
-import { DocumentData, DocumentReference } from '@angular/fire/firestore';
+import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore} from '@angular/fire/compat/firestore';
+import { DocumentData, DocumentReference } from '@angular/fire/compat/firestore';
 import { forkJoin, Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { Track, TrackBuilder } from '../objects/track';

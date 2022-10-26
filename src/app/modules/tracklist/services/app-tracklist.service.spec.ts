@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { AngularFireModule } from '@angular/fire';
+import { AngularFireModule } from '@angular/fire/compat';
 import { AppTracklistService } from './app-tracklist.service';
 import { AppTrackService } from './app-track.service';
 import { environment } from 'src/environments/environment';
