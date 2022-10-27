@@ -146,13 +146,17 @@ export class AppTrackService {
       forkJoin([
         this.retrieveTrack(tracklistId, trackIdFirst).pipe(take(1)), 
         this.retrieveTrack(tracklistId, trackIdSecond).pipe(take(1))]).
-          pipe(take(1)).subscribe(([trackOne, trackTwo]) => {
+        pipe(take(1)).subscribe({
+          next: ([trackOne, trackTwo]) => {
             Promise.all([
               this.updateTrack(tracklistId, trackIdFirst, trackTwo.buildCoreInput()),
               this.updateTrack(tracklistId, trackIdSecond, trackOne.buildCoreInput())]
             ).then(() => resolve(), () => reject());
-          }, () => reject())
-    });
+          }, 
+          error: () => reject()
+        })
+      }
+    );
 
     return swapTracksPromise;
   }

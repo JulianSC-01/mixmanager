@@ -47,16 +47,16 @@ export class AppTracklistTableComponent implements OnInit, OnDestroy {
     this.tracklistService.retrieveTracklists().
       pipe(takeUntil(this.tracklistsEnd));
 
-    this.tracklists.subscribe(
-      data => {
+    this.tracklists.subscribe({
+      next: data => {
         this.tracklistCount = data.length;
         this.tracklistsAreLoading = false;
       },
-      () => {
+      error: () => {
         this.onError.emit(AppTracklistMessages.MSG_RETRIEVE_TRACKLISTS_FAILED)
         this.tracklistsAreLoading = false;
       }
-    );
+    });
   }
 
   ngOnDestroy() : void {

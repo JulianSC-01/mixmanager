@@ -54,8 +54,8 @@ export class AppEditTracklistTitleComponent implements OnInit, OnDestroy {
     this.tracklistService.retrieveTracklist(
       this.tracklistId).pipe(takeUntil(this.tracklistEnd));
 
-    this.tracklist.subscribe(
-      data => {
+    this.tracklist.subscribe({
+      next: data => {
         if (data) {
           this.tracklistTitle = data.title;
         } else {
@@ -63,11 +63,11 @@ export class AppEditTracklistTitleComponent implements OnInit, OnDestroy {
         }
         this.tracklistIsLoading = false;
       },
-      () => {
+      error: () => {
         this.tracklistIsLoading = false;
         this.onError.emit(AppTracklistMessages.MSG_RETRIEVE_TITLE_FAILED)
       }
-    );
+    });
   }
 
   ngOnDestroy() : void {

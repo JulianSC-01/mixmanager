@@ -68,8 +68,8 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
       this.trackService.retrieveTrack(
         this.tracklistId, this.trackId).pipe(takeUntil(this.trackEnd));
   
-      this.track.subscribe(
-        data => {
+      this.track.subscribe({
+        next: data => {
           if (data) {
             this.trackTitle = data.title;
             this.trackArtist = data.artist;
@@ -80,11 +80,11 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
           }
           this.trackIsLoading = false;
         },
-        () => {
+        error: () => {
           this.onError.emit(AppTracklistMessages.MSG_RETRIEVE_TRACK_FAILED)
           this.trackIsLoading = false;
         }
-      );
+      });
     }
   }
 

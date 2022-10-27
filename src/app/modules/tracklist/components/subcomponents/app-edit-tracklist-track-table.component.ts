@@ -59,8 +59,8 @@ export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
     this.trackService.retrieveTracks(
       this.tracklistId).pipe(takeUntil(this.tracksEnd));
 
-    this.tracks.subscribe(
-      data => {
+    this.tracks.subscribe({
+      next: data => {
         if (data) {
           this.trackCount = data.length;
         } else {
@@ -68,11 +68,11 @@ export class AppEditTracklistTrackTableComponent implements OnInit, OnDestroy {
         }
         this.tracksAreLoading = false;
       },
-      () => {
+      error: () => {
         this.tracksAreLoading = false;
         this.onError.emit(AppTracklistMessages.MSG_RETRIEVE_TRACKS_FAILED);
       }
-    );
+    });
   }
 
   ngOnDestroy() : void {
