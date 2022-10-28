@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppFormHelper } from 'src/app/modules/shared/helpers/app-form-helper';
 import { AppFocusService } from '../services/app-focus.service';
@@ -15,18 +15,18 @@ const LOGIN_PASSW : string  = "loginPassword";
 })
 export class AppLoginComponent {
 
-  public loginForm : FormGroup;
+  public loginForm : UntypedFormGroup;
   public loginInProgress : boolean;
   public loginErrorMessageHeader : string;
 
-  private loginFormBuilder : FormBuilder;
+  private loginFormBuilder : UntypedFormBuilder;
 
   constructor(
     private focusService : AppFocusService,
     public loginService : AppLoginService,
     private router : Router) { 
       
-    this.loginFormBuilder = new FormBuilder();
+    this.loginFormBuilder = new UntypedFormBuilder();
         
     this.loginForm = this.loginFormBuilder.group({
         loginEmail : ['', Validators.required],

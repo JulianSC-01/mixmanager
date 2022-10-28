@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 export class AppFormHelper {
   private static instance : AppFormHelper;
@@ -12,7 +12,7 @@ export class AppFormHelper {
     return AppFormHelper.instance;
   }
 
-  getErrorCountHeaderMessage(form : FormGroup) : string {
+  getErrorCountHeaderMessage(form : UntypedFormGroup) : string {
     let count : number = 0;
     
     for (const field in form.controls) {
