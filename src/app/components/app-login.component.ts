@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppFormHelper } from 'src/app/modules/shared/helpers/app-form-helper';
 import { AppFocusService } from '../services/app-focus.service';
 import { AppLoginService } from 'src/app/services/app-login.service';
 import { AppMessages } from '../messages/app-messages';
 
-const LOGIN_EMAIL : string = "loginEmail";
-const LOGIN_PASSW : string  = "loginPassword";
+interface LoginForm {
+  loginEmail: FormControl<string>;
+  loginPassword: FormControl<string>;
+}
 
 @Component({
   selector: 'app-login',
@@ -15,22 +17,21 @@ const LOGIN_PASSW : string  = "loginPassword";
 })
 export class AppLoginComponent {
 
-  public loginForm : UntypedFormGroup;
+  public loginForm : FormGroup<LoginForm>;
   public loginInProgress : boolean;
   public loginErrorMessageHeader : string;
-
-  private loginFormBuilder : UntypedFormBuilder;
 
   constructor(
     private focusService : AppFocusService,
     public loginService : AppLoginService,
+    private formBuilder : FormBuilder,
     private router : Router) { 
-      
-    this.loginFormBuilder = new UntypedFormBuilder();
         
-    this.loginForm = this.loginFormBuilder.group({
-        loginEmail : ['', Validators.required],
-        loginPassword : ['', Validators.required]
+    this.loginForm = this.formBuilder.group<LoginForm>({
+        loginEmail : this.formBuilder.control(
+          '', Validators.required),
+        loginPassword : this.formBuilder.control(
+          '', Validators.required),
     });
 
     this.loginInProgress = false;
@@ -40,8 +41,8 @@ export class AppLoginComponent {
     if (this.loginForm.valid) {
       this.loginInProgress = true;
       this.loginService.login(
-        this.loginForm.controls[LOGIN_EMAIL].value,
-        this.loginForm.controls[LOGIN_PASSW].value).
+        this.loginForm.controls.loginEmail.value,
+        this.loginForm.controls.loginPassword.value,).
         then( 
           () => {
             this.router.navigate(['/home']);
@@ -64,7 +65,7 @@ export class AppLoginComponent {
 
     switch (err.code) {
     case AppLoginService.ERR_BAD_EMAIL_FORMAT:
-      this.loginForm.controls[LOGIN_EMAIL].
+      this.loginForm.controls.loginEmail.
         setErrors({badEmailFormat : true});
       break;
     case AppLoginService.ERR_TOO_MANY_REQUESTS:
@@ -81,6 +82,6 @@ export class AppLoginComponent {
 
   getHeaderErrorMessage() : string {
     return this.loginErrorMessageHeader ? this.loginErrorMessageHeader : 
-           AppFormHelper.getInstance().getErrorCountHeaderMessage(this.loginForm);
+      AppFormHelper.getInstance().getErrorCountHeaderMessage(this.loginForm);
   }
 }
