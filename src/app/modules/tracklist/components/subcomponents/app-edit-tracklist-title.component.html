@@ -20,7 +20,7 @@
         </div>
       </div>
       <button 
-        class="btn btn-success mr-1" 
+        class="btn btn-success me-1" 
         type="submit"
         aria-label="Save tracklist title"
         [disabled]="isTitleBeingSaved">
@@ -34,7 +34,7 @@
         (click)="onCancelEditTitle()">
         Cancel
       </button>
-      <span *ngIf="isTitleBeingSaved" class="ml-2">
+      <span *ngIf="isTitleBeingSaved" class="ms-2">
         <app-spinner></app-spinner>
       </span>
     </form>

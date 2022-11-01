@@ -4,37 +4,35 @@
     <legend class="sr-only">
       Track details
     </legend>
-    <div class="form-row">
-      <div class="form-group col-sm-6">
-        <label for="trackTitle">
-          Track title
-        </label>
-        <input
-          type="text"
-          id="trackTitle"
-          name="trackTitle"
-          class="form-control"
-          [(ngModel)]="trackTitle">
-      </div>
+    <div class="col-sm-6 mb-3">
+      <label class="form-label" for="trackArtist">
+        Track artist
+      </label>
+      <input
+        type="text"
+        id="trackArtist"
+        name="trackArtist"
+        class="form-control"
+        [(ngModel)]="trackArtist">
     </div>
-    <div class="form-row">
-      <div class="form-group col-sm-6">
-        <label for="trackArtist">
-          Track artist
-        </label>
-        <input
-          type="text"
-          id="trackArtist"
-          name="trackArtist"
-          class="form-control"
-          [(ngModel)]="trackArtist">
-      </div>
+    <div class="col-sm-6 mb-3">
+      <label class="form-label" for="trackTitle">
+        Track title
+      </label>
+      <input
+        type="text"
+        id="trackTitle"
+        name="trackTitle"
+        class="form-control"
+        [(ngModel)]="trackTitle">
     </div>
-    <div class="form-row">
-      <div class="form-group col-xs-2">
-        <label for="trackBPM">
+    <div class="d-flex">
+      <div class="mb-3">
+        <label class="form-label" for="trackBPM">
           Track BPM
-          <span class="small">(beats per minute)</span>
+          <span class="fst-italic fw-normal small">
+            (beats per minute)
+          </span>
         </label>
         <input
           type="number"
@@ -44,15 +42,15 @@
           [(ngModel)]="trackBPM">
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group col-xs-3">
-        <label for="trackKey">
+    <div class="d-flex">
+      <div class="mb-3">
+        <label class="form-label" for="trackKey">
           Track key
         </label>
         <select
           id="trackKey"
           name="trackKey"
-          class="form-control"
+          class="form-select"
           [(ngModel)]="trackKey">
           <option
             value="?">
@@ -77,7 +75,7 @@
     </div>
     <div class="mt-2">
       <button
-        class="btn btn-primary mb-1 mr-1"
+        class="btn btn-primary mb-1 me-1"
         type="submit"
         [disabled]="isWorking()">
         Submit
@@ -89,7 +87,7 @@
         (click)="cancel()">
         Cancel
       </button>
-      <span *ngIf="isWorking()" class="ml-2">
+      <span *ngIf="isWorking()" class="ms-2">
         <app-spinner></app-spinner>
       </span>
     </div>

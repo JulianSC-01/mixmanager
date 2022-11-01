@@ -23,64 +23,60 @@
     <legend class="sr-only">
       Login credentials
     </legend>
-    <div class="form-row">
-      <div class="form-group col-sm-6">
-        <label for="loginEmail">
-          E-mail address
-          <span class="required">
-            (required)
-          </span>
-        </label>
-        <input
-          type="text"
-          id="loginEmail"
-          formControlName="loginEmail"
-          aria-errormessage="loginEmailError"
-          [attr.aria-invalid]="form.submitted && loginForm.controls.loginEmail.invalid"
-          [ngClass]="{
-            'form-control' : true,
-            'is-invalid' : form.submitted && loginForm.controls.loginEmail.invalid}">
-        <div
-          class="invalid-feedback"
-          id="loginEmailError"
-          *ngIf="form.submitted && loginForm.controls.loginEmail.invalid">
-          <ng-container
-            *ngIf="loginForm.controls.loginEmail.errors.required">
-            Error: Field is required.
-          </ng-container>
-          <ng-container
-            *ngIf="loginForm.controls.loginEmail.errors.badEmailFormat">
-            Error: The e-mail address is badly formatted.
-          </ng-container>
-        </div>
+    <div class="col-sm-6 mb-3">
+      <label class="form-label" for="loginEmail">
+        E-mail address
+        <span class="required">
+          (required)
+        </span>
+      </label>
+      <input
+        type="text"
+        id="loginEmail"
+        formControlName="loginEmail"
+        aria-errormessage="loginEmailError"
+        [attr.aria-invalid]="form.submitted && loginForm.controls.loginEmail.invalid"
+        [ngClass]="{
+          'form-control' : true,
+          'is-invalid' : form.submitted && loginForm.controls.loginEmail.invalid}">
+      <div
+        class="invalid-feedback"
+        id="loginEmailError"
+        *ngIf="form.submitted && loginForm.controls.loginEmail.invalid">
+        <ng-container
+          *ngIf="loginForm.controls.loginEmail.errors.required">
+          Error: Field is required.
+        </ng-container>
+        <ng-container
+          *ngIf="loginForm.controls.loginEmail.errors.badEmailFormat">
+          Error: The e-mail address is badly formatted.
+        </ng-container>
       </div>
     </div>
-    <div class="form-row">
-      <div class="form-group col-sm-6">
-        <label for="loginPassword">
-          Password
-          <span class="required">
-            (required)
-          </span>
-        </label>
-        <input
-          type="password"
-          id="loginPassword"
-          formControlName="loginPassword"
-          aria-errormessage="loginPasswordError"
-          [attr.aria-invalid]="form.submitted && loginForm.controls.loginPassword.invalid"
-          [ngClass]="{
-            'form-control' : true,
-            'is-invalid' : form.submitted && loginForm.controls.loginPassword.invalid}">
-        <div
-          class="invalid-feedback"
-          id="loginPasswordError"
-          *ngIf="form.submitted && loginForm.controls.loginPassword.invalid">
-          <ng-container
-            *ngIf="loginForm.controls.loginPassword.errors.required">
-            Error: Field is required.
-          </ng-container>
-        </div>
+    <div class="col-sm-6 mb-3">
+      <label class="form-label" for="loginPassword">
+        Password
+        <span class="required">
+          (required)
+        </span>
+      </label>
+      <input
+        type="password"
+        id="loginPassword"
+        formControlName="loginPassword"
+        aria-errormessage="loginPasswordError"
+        [attr.aria-invalid]="form.submitted && loginForm.controls.loginPassword.invalid"
+        [ngClass]="{
+          'form-control' : true,
+          'is-invalid' : form.submitted && loginForm.controls.loginPassword.invalid}">
+      <div
+        class="invalid-feedback"
+        id="loginPasswordError"
+        *ngIf="form.submitted && loginForm.controls.loginPassword.invalid">
+        <ng-container
+          *ngIf="loginForm.controls.loginPassword.errors.required">
+          Error: Field is required.
+        </ng-container>
       </div>
     </div>
   </fieldset>
@@ -91,7 +87,7 @@
       [disabled]="loginInProgress">
       Login
     </button>
-    <span *ngIf="loginInProgress" class="ml-2">
+    <span *ngIf="loginInProgress" class="ms-2">
       <app-spinner></app-spinner>
     </span>
   </div>

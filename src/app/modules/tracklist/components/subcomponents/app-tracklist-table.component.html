@@ -3,8 +3,8 @@
   (ngSubmit)="addTracklist()">
   <div class="table-responsive">
     <table class="table table-bordered table-striped mb-1">
-      <caption>
-        Table of {{ tracklistCount }} tracklists
+      <caption *ngIf="tracklists | async as tracklistArray">
+        Table of {{ tracklistArray.length }} tracklists
       </caption>
       <thead>
         <tr>
@@ -34,7 +34,7 @@
             </td>
             <td class="align-middle">
               <button
-                class="btn btn-outline-secondary"
+                class="btn btn-outline-danger"
                 title="Remove tracklist"
                 type="button"
                 (click)="removeTracklist(tracklist.id, tracklist.title)">
@@ -68,7 +68,7 @@
               <app-add-icon></app-add-icon>
               Add
             </button>
-            <span *ngIf="tracklistIsAdding" class="ml-2">
+            <span *ngIf="tracklistIsAdding" class="ms-2">
               <app-spinner></app-spinner>
             </span>
           </td>

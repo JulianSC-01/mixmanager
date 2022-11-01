@@ -8,8 +8,10 @@ dl {
     margin-top: 1rem!important;
 }
 dt {
+    display: inline;
     margin-right: .25rem!important;
 }
 dd {
+    display: inline;
     margin-bottom: 0!important;
 }
