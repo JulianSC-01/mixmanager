@@ -3,6 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Track, TrackBuilder } from '../../objects/track';
 import { AppTracklistMessages } from '../../messages/app-tracklist-messages';
+import { AppTrackHelper } from '../../helpers/app-track-helper';
 import { AppTrackService } from '../../services/app-track.service';
 import firebase from 'firebase/compat/app';
 
@@ -41,10 +42,13 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
 
   public trackIsLoading : boolean;
   public trackIsUpdating : boolean;
+
   public trackTitle : string;
   public trackArtist : string;
   public trackBPM : number;
   public trackKey : string;
+  public trackStartTime : number[];
+  public trackEndTime : number[];
 
   public minorKeys : string[] = ['Ab','Eb','Bb','F','C','G','D','A','E','B','F#','Db'];
   public majorKeys : string[] = ['B','F#','Db','Ab','Eb','Bb','F','C','G','D','A','E'];
@@ -53,21 +57,23 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
   private trackEnd : Subject<void>;
   
   constructor(
-    private trackService : AppTrackService) { }
+    private trackService : AppTrackService) {
+    this.trackKey = UNKNOWN_VALUE;
+    this.trackStartTime = [null, null, null];
+    this.trackEndTime = [null, null, null];
+  }
 
   ngOnInit(): void {
-    if (!this.trackId) {
-      this.trackKey = UNKNOWN_VALUE;
-    }
-    else {
+    if (this.trackId) {
       this.trackIsLoading = true;
       
       this.trackEnd = new Subject<void>();
 
       this.track = 
       this.trackService.retrieveTrack(
-        this.tracklistId, this.trackId).pipe(takeUntil(this.trackEnd));
-  
+        this.tracklistId, this.trackId).pipe(
+          takeUntil(this.trackEnd));
+
       this.track.subscribe({
         next: data => {
           if (data) {
@@ -75,6 +81,12 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
             this.trackArtist = data.artist;
             this.trackBPM = data.bpm;
             this.trackKey = data.key;
+            this.trackStartTime =
+              AppTrackHelper.getInstance().
+                getLengthHHMMSS(data.startTime);
+            this.trackEndTime =
+              AppTrackHelper.getInstance().
+                getLengthHHMMSS(data.endTime);
           } else {
             this.onNotFound.emit();
           }
@@ -99,16 +111,22 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
     this.trackIsUpdating = true;
 
     let trackTitle = 
-    this.trackTitle == null ? null : this.trackTitle.trim();
+      this.trackTitle == null ? null : this.trackTitle.trim();
 
     let trackArtist = 
-    this.trackArtist == null ? null : this.trackArtist.trim();
+      this.trackArtist == null ? null : this.trackArtist.trim();
 
     let trackBPM = 
-    this.trackBPM == null ? 0 : this.trackBPM;
+      this.trackBPM == null ? 0 : this.trackBPM;
     
     let trackKey = 
-    this.trackKey === '' ? UNKNOWN_VALUE : this.trackKey;
+      this.trackKey === '' ? UNKNOWN_VALUE : this.trackKey;
+
+    let trackStartTime =
+      AppTrackHelper.getInstance().getLengthSeconds(this.trackStartTime);
+
+    let trackEndTime =
+      AppTrackHelper.getInstance().getLengthSeconds(this.trackEndTime);
 
     if (trackTitle === null || trackTitle === '') {
       trackTitle = ID_TRACK;
@@ -123,6 +141,8 @@ export class AppEditTrackInputComponent implements OnInit, OnDestroy {
         withArtist(trackArtist).
         withBPM(trackBPM).
         withKey(trackKey).
+        withStartTime(trackStartTime).
+        withEndTime(trackEndTime).
         buildInput();
 
     if (!this.trackId) {

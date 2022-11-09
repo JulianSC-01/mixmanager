@@ -6,6 +6,10 @@ h1 {
 label {
     font-weight: bold;
 }
+legend {
+    font-size: 1rem!important;
+    font-weight: bold;
+}
 .required {
     color: red;
 }

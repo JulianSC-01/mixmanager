@@ -1,3 +1,19 @@
+@media (min-width: 0px) {
+    .track-detail-responsive {
+        display: block;
+    }
+    .track-length-responsive {
+        display: block;
+    }
+}
+@media (min-width: 992px) {
+    .track-detail-responsive {
+        display: inline;
+    }
+    .track-length-responsive {
+        float: right;
+    }
+}
 #selectCol {
     text-align: center;
     width: 6%;

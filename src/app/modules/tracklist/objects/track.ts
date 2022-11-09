@@ -6,6 +6,8 @@ export class Track {
     public artist : string;
     public bpm : number;
     public key : string;
+    public startTime : number;
+    public endTime : number;
     public created : firebase.firestore.Timestamp;
 
     constructor(builder : TrackBuilder) { 
@@ -14,6 +16,8 @@ export class Track {
         this.artist = builder.artist;
         this.bpm = builder.bpm;
         this.key = builder.key;
+        this.startTime = builder.startTime;
+        this.endTime = builder.endTime;
         this.created = builder.created;
     }
 
@@ -32,6 +36,8 @@ export class TrackBuilder {
     artist : string;
     bpm : number;
     key : string;
+    startTime : number;
+    endTime : number;
     created : firebase.firestore.Timestamp;
 
     private input : any;
@@ -67,6 +73,18 @@ export class TrackBuilder {
     withKey(key : string) : TrackBuilder {
         this.key = key;
         this.input.key = key
+        return this;
+    }
+
+    withStartTime(startTime : number) : TrackBuilder {
+        this.startTime = startTime;
+        this.input.startTime = startTime;
+        return this;
+    }
+
+    withEndTime(endTime : number) : TrackBuilder {
+        this.endTime = endTime;
+        this.input.endTime = endTime;
         return this;
     }
 

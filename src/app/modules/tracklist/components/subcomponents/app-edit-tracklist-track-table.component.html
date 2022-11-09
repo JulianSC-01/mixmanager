@@ -38,12 +38,40 @@
             <label 
               class="sr-only" 
               [for]="'chk' + i">
-              Select {{ track.artist }} - {{ track.title }}
+              Select track {{ (i+1) }}. {{ track.artist }} - {{ track.title }}
             </label>
           </td>
-          <td>{{ (i+1) | trackNumber }}. {{ track.artist }} - {{ track.title }}</td>
-          <td>{{ track.bpm }}</td>
-          <td>{{ track.key }}</td>
+          <td>
+            <span aria-hidden="true" class="opacity-75">
+              [{{ track.startTime | trackLength }}]
+            </span>
+            <span class="track-detail-responsive">
+              <span aria-hidden="true">
+                {{ (i+1) | trackNumber }}.
+              </span>
+              <span class="sr-only">
+                Track {{ (i+1) }}
+              </span>
+              <span>
+                {{ track.artist }} - {{ track.title }}
+              </span>
+              <span class="sr-only">
+                Track starts at {{ (track.startTime) | trackLengthAccessible }}
+                Track length is {{ (track.endTime - track.startTime) | trackLengthAccessible }}
+              </span>
+            </span>
+            <span class="track-length-responsive">
+              <span aria-hidden="true" class="opacity-75">
+                ({{ (track.endTime - track.startTime) | trackLength }})
+              </span>
+            </span>
+          </td>
+          <td>
+            {{ track.bpm }}
+          </td>
+          <td>
+            {{ track.key }}
+          </td>
         </tr>
       </ng-template>
     </tbody>

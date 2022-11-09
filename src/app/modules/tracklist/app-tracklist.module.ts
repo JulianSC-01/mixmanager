@@ -11,6 +11,8 @@ import { AppTracklistTableComponent } from './components/subcomponents/app-track
 import { AppEditTracklistTitleComponent } from './components/subcomponents/app-edit-tracklist-title.component';
 import { AppEditTracklistTrackTableComponent } from './components/subcomponents/app-edit-tracklist-track-table.component';
 import { AppEditTrackInputComponent } from './components/subcomponents/app-edit-track-input.component';
+import { AppTrackLengthAccessiblePipe } from './pipes/app-track-length-accessible.pipe';
+import { AppTrackLengthPipe } from './pipes/app-track-length.pipe';
 import { AppTrackNumberPipe } from './pipes/app-track-number.pipe';
 import { AppTracklistService } from './services/app-tracklist.service';
 import { AppTrackService } from './services/app-track.service';
@@ -20,12 +22,14 @@ import { AppTrackService } from './services/app-track.service';
     AppTracklistComponent,
     AppEditTracklistComponent,
     AppEditTrackComponent,
+    AppTrackLengthAccessiblePipe,
+    AppTrackLengthPipe,
     AppTrackNumberPipe,
     // Subcomponents
     AppTracklistTableComponent,
     AppEditTracklistTitleComponent,
     AppEditTracklistTrackTableComponent,
-    AppEditTrackInputComponent,
+    AppEditTrackInputComponent
   ],
   imports: [
     AngularFirestoreModule,

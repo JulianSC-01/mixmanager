@@ -40,6 +40,8 @@ export class AppTrackService {
                 withArtist(data.artist).
                 withBPM(data.bpm).
                 withKey(data.key).
+                withStartTime(data.startTime).
+                withEndTime(data.endTime).
                 withCreationDate(data.created).
                 buildTrack();
           }
@@ -64,6 +66,8 @@ export class AppTrackService {
                 withArtist(data.artist).
                 withBPM(data.bpm).
                 withKey(data.key).
+                withStartTime(data.startTime).
+                withEndTime(data.endTime).
                 withCreationDate(data.created).
                 buildTrack();
           }
