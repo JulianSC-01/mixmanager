@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire/compat';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppSharedModule } from '../../../shared/app-shared.module';
 import { AppLoginService } from 'src/app/services/app-login.service';
@@ -18,7 +18,7 @@ describe('AppEditTrackInputComponent', () => {
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AppSharedModule,
         RouterTestingModule,
-        FormsModule
+        ReactiveFormsModule
       ],
       declarations: [
         AppEditTrackInputComponent

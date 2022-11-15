@@ -6,8 +6,8 @@ import { AppTrackHelper } from '../helpers/app-track-helper';
 })
 export class AppTrackLengthAccessiblePipe implements PipeTransform {
   transform(totalSeconds: number): string {
-    if (isNaN(totalSeconds) || totalSeconds < 0) {
-      return 'invalid';
+    if (totalSeconds === null || totalSeconds < 0) {
+      return 'undefined';
     } else {
       let hoursMinutesSeconds : number[] =
         AppTrackHelper.getInstance().getLengthHHMMSS(totalSeconds);

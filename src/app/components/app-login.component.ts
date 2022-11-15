@@ -22,16 +22,20 @@ export class AppLoginComponent {
   public loginErrorMessageHeader : string;
 
   constructor(
-    private focusService : AppFocusService,
     public loginService : AppLoginService,
+    private focusService : AppFocusService,
     private formBuilder : FormBuilder,
     private router : Router) { 
         
     this.loginForm = this.formBuilder.group<LoginForm>({
-        loginEmail : this.formBuilder.control(
-          '', Validators.required),
-        loginPassword : this.formBuilder.control(
-          '', Validators.required),
+        loginEmail : this.formBuilder.control('', {
+          nonNullable: true, 
+          validators: Validators.required
+        }),
+        loginPassword : this.formBuilder.control('', {
+          nonNullable: true, 
+          validators: Validators.required
+        }),
     });
 
     this.loginInProgress = false;

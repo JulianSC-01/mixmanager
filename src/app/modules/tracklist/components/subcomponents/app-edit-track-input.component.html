@@ -1,4 +1,13 @@
+<app-alert
+  *ngIf="form.submitted && trackForm.invalid"
+  [id]="'errorHeader'"
+  [role]="'note'"
+  [type]="'danger'">
+  {{ getHeaderErrorMessage() }}
+</app-alert>
 <form
+  #form="ngForm"
+  [formGroup]="trackForm" 
   (ngSubmit)="submit()">
   <fieldset>
     <legend class="sr-only">
@@ -9,22 +18,20 @@
         Track artist
       </label>
       <input
-        type="text"
-        id="trackArtist"
-        name="trackArtist"
         class="form-control"
-        [(ngModel)]="trackArtist">
+        formControlName="trackArtist"
+        id="trackArtist"
+        type="text">
     </div>
     <div class="col-lg-6 mb-3">
       <label class="form-label" for="trackTitle">
         Track title
       </label>
       <input
-        type="text"
-        id="trackTitle"
-        name="trackTitle"
         class="form-control"
-        [(ngModel)]="trackTitle">
+        formControlName="trackTitle"
+        id="trackTitle"
+        type="text">
     </div>
     <div class="d-flex">
       <div class="mb-3">
@@ -35,11 +42,21 @@
           </span>
         </label>
         <input
-          type="number"
+          aria-errormessage="trackBPMError"
+          formControlName="trackBPM"
           id="trackBPM"
-          name="trackBPM"
-          class="form-control"
-          [(ngModel)]="trackBPM">
+          type="number"
+          [attr.aria-invalid]=
+            "form.submitted && trackForm.controls.trackBPM.invalid"
+          [ngClass]="{
+            'form-control' : true,
+            'is-invalid' : form.submitted && trackForm.controls.trackBPM.invalid}">
+        <div
+          class="invalid-feedback"
+          id="trackBPMError"
+          *ngIf="form.submitted && trackForm.controls.trackBPM.invalid">
+          Error: Track BPM is invalid
+        </div>
       </div>
     </div>
     <div class="d-flex">
@@ -48,12 +65,11 @@
           Track key
         </label>
         <select
-          id="trackKey"
-          name="trackKey"
           class="form-select"
-          [(ngModel)]="trackKey">
+          formControlName="trackKey"
+          id="trackKey">
           <option
-            value="?">
+            value="">
             Select
           </option>
           <optgroup label="Minor Keys">
@@ -73,7 +89,9 @@
         </select>
       </div>
     </div>
-    <div class="d-flex">
+    <div 
+      class="d-flex" 
+      [formGroup]="trackStartTimeForm">
       <div class="mb-3">
         <fieldset>
           <legend>
@@ -82,15 +100,21 @@
               (hours minutes seconds)
             </span>
           </legend>
-          <div class="input-group">
+          <div [ngClass]="{
+            'input-group' : true,
+            'is-invalid' : form.submitted && trackStartTimeForm.invalid}">
             <input
-              type="number"
+              aria-errormessage="trackStartHoursError"
+              formControlName="trackHours"
               id="trackStartTimeHours"
-              name="trackStartTimeHours"
               min="0"
               max="99"
-              class="form-control"
-              [(ngModel)]="trackStartTime[0]">
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackStartTimeForm.controls.trackHours.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackStartTimeForm.controls.trackHours.invalid}">
             <label class="sr-only" for="trackStartTimeHours">
               Hours
             </label>
@@ -101,13 +125,17 @@
               Minutes
             </label>
             <input
-              type="number"
+              aria-errormessage="trackStartMinutesError"
+              formControlName="trackMinutes"
               id="trackStartTimeMinutes"
-              name="trackStartTimeMinutes"
               min="0"
               max="59"
-              class="form-control"
-              [(ngModel)]="trackStartTime[1]">
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackStartTimeForm.controls.trackMinutes.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackStartTimeForm.controls.trackMinutes.invalid}">
             <div class="input-group-append">
               <span class="input-group-text">:</span>
             </div>
@@ -115,18 +143,46 @@
               Seconds
             </label>
             <input
-              type="number"
+              aria-errormessage="trackStartSecondsError"
+              formControlName="trackSeconds"
               id="trackStartTimeSeconds"
-              name="trackStartTimeSeconds"
               min="0"
               max="59"
-              class="form-control"
-              [(ngModel)]="trackStartTime[2]">
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackStartTimeForm.controls.trackSeconds.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackStartTimeForm.controls.trackSeconds.invalid}">
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.submitted && trackStartTimeForm.invalid">
+            <span
+              class="d-block"
+              id="trackStartHoursError"
+              *ngIf="trackStartTimeForm.controls.trackHours.invalid">
+              Error: Hours is invalid
+            </span>
+            <span
+              class="d-block"
+              id="trackStartMinutesError"
+              *ngIf="trackStartTimeForm.controls.trackMinutes.invalid">
+              Error: Minutes is invalid
+            </span>
+            <span
+              class="d-block"
+              id="trackStartSecondsError"
+              *ngIf="trackStartTimeForm.controls.trackSeconds.invalid">
+              Error: Seconds is invalid
+            </span>
           </div>
         </fieldset>
       </div>
     </div>
-    <div class="d-flex">
+    <div
+      class="d-flex" 
+      [formGroup]="trackEndTimeForm">
       <div class="mb-3">
         <fieldset>
           <legend>
@@ -135,15 +191,21 @@
               (hours minutes seconds)
             </span>
           </legend>
-          <div class="input-group">
+          <div [ngClass]="{
+            'input-group' : true,
+            'is-invalid' : form.submitted && trackEndTimeForm.invalid}">
             <input
-              type="number"
+              aria-errormessage="trackEndHoursError"
+              formControlName="trackHours"
               id="trackEndTimeHours"
-              name="trackEndTimeHours"
               min="0"
               max="99"
-              class="form-control"
-              [(ngModel)]="trackEndTime[0]">
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackEndTimeForm.controls.trackHours.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackEndTimeForm.controls.trackHours.invalid}">
             <label class="sr-only" for="trackEndTimeHours">
               Hours
             </label>
@@ -154,13 +216,17 @@
               Minutes
             </label>
             <input
-              type="number"
+              aria-errormessage="trackEndMinutesError"
+              formControlName="trackMinutes"
               id="trackEndTimeMinutes"
-              name="trackEndTimeMinutes"
               min="0"
               max="59"
-              class="form-control"
-              [(ngModel)]="trackEndTime[1]">
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackEndTimeForm.controls.trackMinutes.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackEndTimeForm.controls.trackMinutes.invalid}">
             <div class="input-group-append">
               <span class="input-group-text">:</span>
             </div>
@@ -168,13 +234,39 @@
               Seconds
             </label>
             <input
-              type="number"
+              aria-errormessage="trackEndSecondsError"
+              formControlName="trackSeconds"
               id="trackEndTimeSeconds"
-              name="trackEndTimeSeconds"
               min="0"
               max="59"
-              class="form-control"
-              [(ngModel)]="trackEndTime[2]">
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackEndTimeForm.controls.trackSeconds.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackEndTimeForm.controls.trackSeconds.invalid}">
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.submitted && trackEndTimeForm.invalid">
+            <span
+              class="d-block"
+              id="trackEndHoursError"
+              *ngIf="trackEndTimeForm.controls.trackHours.invalid">
+              Error: Hours is invalid
+            </span>
+            <span
+              class="d-block"
+              id="trackEndMinutesError"
+              *ngIf="trackEndTimeForm.controls.trackMinutes.invalid">
+              Error: Minutes is invalid
+            </span>
+            <span
+              class="d-block"
+              id="trackEndSecondsError"
+              *ngIf="trackEndTimeForm.controls.trackSeconds.invalid">
+              Error: Seconds is invalid
+            </span>
           </div>
         </fieldset>
       </div>

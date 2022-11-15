@@ -67,23 +67,25 @@ export class AppTracklistTableComponent implements OnInit, OnDestroy {
   addTracklist() : void {
     this.tracklistIsAdding = true;
 
-    let tracklistName = 
-    this.tracklistToAdd == null ? 
-    null : this.tracklistToAdd.trim();
+    let tracklistTitle = 
+      this.tracklistToAdd === null ? 
+        null : this.tracklistToAdd.trim();
 
-    if (tracklistName === null || tracklistName === '') {
-      tracklistName = UNTITLED_TRACKLIST;
+    if (tracklistTitle === null || tracklistTitle === '') {
+      tracklistTitle = UNTITLED_TRACKLIST;
     }
 
     let tracklistData = 
       new TracklistBuilder().
-        withTitle(tracklistName).
-        withCreationDate(firebase.firestore.Timestamp.fromDate(new Date())).
-        buildInput();
+        withTitle(tracklistTitle).
+        buildTracklist().
+        buildDocument();
+
+    tracklistData.created = firebase.firestore.Timestamp.fromDate(new Date());
 
     this.tracklistService.addTracklist(
       tracklistData).then(
-      () => this.onAdded.emit(tracklistName),
+      () => this.onAdded.emit(tracklistTitle),
       () => this.onError.emit(AppTracklistMessages.MSG_ADD_TRACKLIST_FAILED)).
       finally(
       () => {

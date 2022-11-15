@@ -35,15 +35,15 @@ export class AppTrackService {
           const id = action.payload.doc.id;
           if (data) {
             return new TrackBuilder().
-                withId(id).
-                withTitle(data.title).
-                withArtist(data.artist).
-                withBPM(data.bpm).
-                withKey(data.key).
-                withStartTime(data.startTime).
-                withEndTime(data.endTime).
-                withCreationDate(data.created).
-                buildTrack();
+              withId(id).
+              withArtist(data.artist).
+              withTitle(data.title).
+              withBPM(data.bpm).
+              withKey(data.key).
+              withStartTime(data.startTime).
+              withEndTime(data.endTime).
+              withCreationDate(data.created).
+              buildTrack();
           }
       }))
     );
@@ -61,15 +61,15 @@ export class AppTrackService {
           const id = snapshot.payload.id;
           if (data) {
             return new TrackBuilder().
-                withId(id).
-                withTitle(data.title).
-                withArtist(data.artist).
-                withBPM(data.bpm).
-                withKey(data.key).
-                withStartTime(data.startTime).
-                withEndTime(data.endTime).
-                withCreationDate(data.created).
-                buildTrack();
+              withId(id).
+              withArtist(data.artist).
+              withTitle(data.title).
+              withBPM(data.bpm).
+              withKey(data.key).
+              withStartTime(data.startTime).
+              withEndTime(data.endTime).
+              withCreationDate(data.created).
+              buildTrack();
           }
       })
     );
@@ -153,8 +153,10 @@ export class AppTrackService {
         pipe(take(1)).subscribe({
           next: ([trackOne, trackTwo]) => {
             Promise.all([
-              this.updateTrack(tracklistId, trackIdFirst, trackTwo.buildCoreInput()),
-              this.updateTrack(tracklistId, trackIdSecond, trackOne.buildCoreInput())]
+              this.updateTrack(
+                tracklistId, trackIdFirst, trackTwo.buildDocumentForSwap()),
+              this.updateTrack(
+                tracklistId, trackIdSecond, trackOne.buildDocumentForSwap())]
             ).then(() => resolve(), () => reject());
           }, 
           error: () => reject()

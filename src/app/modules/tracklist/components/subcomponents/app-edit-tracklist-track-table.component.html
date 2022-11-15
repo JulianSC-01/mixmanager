@@ -56,13 +56,13 @@
                 {{ track.artist }} - {{ track.title }}
               </span>
               <span class="sr-only">
-                Track starts at {{ (track.startTime) | trackLengthAccessible }}
-                Track length is {{ (track.endTime - track.startTime) | trackLengthAccessible }}
+                Track start time is {{ track.startTime | trackLengthAccessible }}
+                Track length is {{ track.getLength() | trackLengthAccessible }}
               </span>
             </span>
             <span class="track-length-responsive">
               <span aria-hidden="true" class="opacity-75">
-                ({{ (track.endTime - track.startTime) | trackLength }})
+                ({{ track.getLength() | trackLength }})
               </span>
             </span>
           </td>

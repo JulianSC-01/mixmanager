@@ -100,7 +100,8 @@ export class AppEditTracklistTitleComponent implements OnInit, OnDestroy {
     let tracklistData = 
       new TracklistBuilder().
         withTitle(newTracklistTitle).
-        buildInput();
+        buildTracklist().
+        buildDocument();
 
     this.tracklistService.updateTracklist(
       this.tracklistId, tracklistData).then(

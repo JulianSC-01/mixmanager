@@ -1,50 +1,49 @@
+import { DocumentData } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 
 export class Tracklist {
-    public id : string;
-    public title : string;
-    public created : firebase.firestore.Timestamp;
+  public id : string;
+  public title : string;
+  public created : firebase.firestore.Timestamp;
 
-    constructor(builder : TracklistBuilder) { 
-        this.id = builder.id;
-        this.title = builder.title;
-        this.created = builder.created;
-    }
+  constructor(builder : TracklistBuilder) { 
+    this.id = builder.id;
+    this.title = builder.title;
+    this.created = builder.created;
+  }
+
+  buildDocument() : DocumentData {
+    let documentData : DocumentData = {};
+
+    documentData.title = this.title;
+    
+    return documentData;
+  }
 }
+
 export class TracklistBuilder {
-    id : string;
-    title : string;
-    created : firebase.firestore.Timestamp;
+  id : string;
+  title : string;
+  created : firebase.firestore.Timestamp;
 
-    private input : any;
+  constructor() { }
 
-    constructor() { 
-        this.input = {};
-    }
+  withId(id : string) : TracklistBuilder {
+    this.id  = id;
+    return this;
+  }
 
-    withId(id : string) : TracklistBuilder {
-        this.id  = id;
-        this.input.id = id;
-        return this;
-    }
+  withTitle(title : string) : TracklistBuilder {
+    this.title = title;
+    return this;
+  }
 
-    withTitle(title : string) : TracklistBuilder {
-        this.title = title;
-        this.input.title = title
-        return this;
-    }
+  withCreationDate(created : firebase.firestore.Timestamp) : TracklistBuilder {
+    this.created = created;
+    return this;
+  }
 
-    withCreationDate(created : firebase.firestore.Timestamp) : TracklistBuilder {
-        this.created = created;
-        this.input.created = created
-        return this;
-    }
-
-    buildInput() : any {
-        return this.input;
-    }
-
-    buildTracklist() : Tracklist {
-        return new Tracklist(this);
-    }
+  buildTracklist() : Tracklist {
+    return new Tracklist(this);
+  }
 }
