@@ -1,8 +1,8 @@
 <app-alert
   *ngIf="form.submitted && trackForm.invalid"
-  [id]="'errorHeader'"
-  [role]="'note'"
-  [type]="'danger'">
+  [alertId]="'errorHeader'"
+  [alertRole]="'note'"
+  [alertType]="'alert-danger'">
   {{ getHeaderErrorMessage() }}
 </app-alert>
 <form
@@ -286,7 +286,9 @@
         Cancel
       </button>
       <span *ngIf="isWorking()" class="ms-2">
-        <app-spinner></app-spinner>
+        <app-spinner
+          [spinnerSmall]="true">
+        </app-spinner>
       </span>
     </div>
   </fieldset>

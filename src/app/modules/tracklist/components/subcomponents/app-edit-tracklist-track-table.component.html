@@ -15,7 +15,8 @@
       <tr *ngIf="tracksAreLoading else trackListing">
         <td></td>
         <td colspan="3">
-          <app-spinner>
+          <app-spinner
+            [spinnerSmall]="true">
             Loading, please wait...
           </app-spinner>
         </td>
@@ -110,6 +111,8 @@
     Swap selected
   </button>
   <span *ngIf="tracksAreUpdating" class="ms-2">
-    <app-spinner></app-spinner>
+    <app-spinner
+      [spinnerSmall]="true">
+    </app-spinner>
   </span>
 </div>

@@ -44,7 +44,9 @@
       </ul>
       <span class="d-flex mt-1">
         <span *ngIf="isLoggingOut" class="navbar-spinner me-2">
-          <app-spinner></app-spinner>
+          <app-spinner
+            [spinnerSmall]="true">
+          </app-spinner>
         </span>
         <button 
           type="button" 

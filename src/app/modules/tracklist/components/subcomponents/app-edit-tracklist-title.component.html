@@ -35,7 +35,9 @@
         Cancel
       </button>
       <span *ngIf="isTitleBeingSaved" class="ms-2">
-        <app-spinner></app-spinner>
+        <app-spinner
+          [spinnerSmall]="true">
+        </app-spinner>
       </span>
     </form>
   </ng-template>
@@ -48,7 +50,8 @@
     <ng-template #tracklistTitleLoading>
       <ng-container *ngIf="tracklistIsLoading else tracklistNoTitle">
         <p class="mb-2">
-          <app-spinner>
+          <app-spinner
+            [spinnerSmall]="true">
             Loading, please wait...
           </app-spinner>
         </p>

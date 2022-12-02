@@ -1,16 +1,16 @@
-<app-header>
+<app-page-header>
   Edit tracklist
-</app-header>
+</app-page-header>
 <app-alert
   *ngIf="tracklistErrorMessage"
-  [id]="'errorHeader'"
-  [type]="'danger'">
+  [alertId]="'errorHeader'"
+  [alertType]="'alert-danger'">
   {{ tracklistErrorMessage }}
 </app-alert>
 <app-alert
   *ngIf="tracklistSuccessMessage"
-  [id]="'successHeader'"
-  [type]="'success'">
+  [alertId]="'successHeader'"
+  [alertType]="'alert-success'">
   {{ tracklistSuccessMessage }}
 </app-alert>
 <h2>

@@ -15,7 +15,8 @@
       <tbody>
         <tr *ngIf="tracklistsAreLoading else tracklistListing">
           <td>
-            <app-spinner>
+            <app-spinner 
+              [spinnerSmall]="true">
               Loading, please wait...
             </app-spinner>
           </td>
@@ -69,7 +70,9 @@
               Add
             </button>
             <span *ngIf="tracklistIsAdding" class="ms-2">
-              <app-spinner></app-spinner>
+              <app-spinner
+                [spinnerSmall]="true">
+              </app-spinner>
             </span>
           </td>
         </tr>

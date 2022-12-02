@@ -1,31 +1,24 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AppAddIconComponent } from './components/app-add-icon.component';
-import { AppAlertComponent } from './components/app-alert.component';
 import { AppDeleteIconComponent } from './components/app-delete-icon.component';
-import { AppHeaderComponent } from './components/app-header.component';
 import { AppMusicIconComponent } from './components/app-music-icon.component';
-import { AppSpinnerComponent } from './components/app-spinner.component';
+import { SharedModule } from 'js-shared';
 
 @NgModule({
   declarations: [
     AppAddIconComponent,
-    AppAlertComponent,
     AppDeleteIconComponent,
-    AppHeaderComponent,
-    AppMusicIconComponent,
-    AppSpinnerComponent
+    AppMusicIconComponent
   ],
   imports: [
     CommonModule
   ],
   exports: [
     AppAddIconComponent,
-    AppAlertComponent,
     AppDeleteIconComponent,
-    AppHeaderComponent,
     AppMusicIconComponent,
-    AppSpinnerComponent
+    SharedModule
   ]
 })
 export class AppSharedModule { }

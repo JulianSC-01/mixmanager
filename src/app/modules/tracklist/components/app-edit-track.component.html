@@ -1,11 +1,11 @@
-<app-header>
+<app-page-header>
   {{ trackFormTitle }}
-</app-header>
+</app-page-header>
 <app-alert
   *ngIf="trackErrorMessage"
-  [id]="'errorHeader'"
-  [role]="'note'"
-  [type]="'danger'">
+  [alertId]="'errorHeader'"
+  [alertRole]="'note'"
+  [alertType]="'alert-danger'">
   {{ trackErrorMessage }}
 </app-alert>
 <app-edit-track-input

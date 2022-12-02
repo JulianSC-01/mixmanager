@@ -1,17 +1,17 @@
-<app-header>
+<app-page-header>
   Login
-</app-header>
+</app-page-header>
 <app-alert
   *ngIf="loginService.loggedOut | async"
-  [id]="'successHeader'"
-  [type]="'success'">
+  [alertId]="'successHeader'"
+  [alertType]="'alert-success'">
   You have successfully logged out.
 </app-alert>
 <app-alert
   *ngIf="form.submitted && loginForm.invalid"
-  [id]="'errorHeader'"
-  [role]="'note'"
-  [type]="'danger'">
+  [alertId]="'errorHeader'"
+  [alertRole]="'note'"
+  [alertType]="'alert-danger'">
   {{ getHeaderErrorMessage() }}
 </app-alert>
 <form 
@@ -90,7 +90,9 @@
       Login
     </button>
     <span *ngIf="loginInProgress" class="ms-2">
-      <app-spinner></app-spinner>
+      <app-spinner
+        [spinnerSmall]="true">
+      </app-spinner>
     </span>
   </div>
 </form>
