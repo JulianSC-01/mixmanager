@@ -42,7 +42,7 @@
           </span>
         </label>
         <input
-          aria-errormessage="trackBPMError"
+          aria-describedby="trackBPMError"
           formControlName="trackBPM"
           id="trackBPM"
           type="number"
@@ -104,7 +104,7 @@
             'input-group' : true,
             'is-invalid' : form.submitted && trackStartTimeForm.invalid}">
             <input
-              aria-errormessage="trackStartHoursError"
+              aria-describedby="trackStartHoursError"
               formControlName="trackHours"
               id="trackStartTimeHours"
               min="0"
@@ -125,7 +125,7 @@
               Minutes
             </label>
             <input
-              aria-errormessage="trackStartMinutesError"
+              aria-describedby="trackStartMinutesError"
               formControlName="trackMinutes"
               id="trackStartTimeMinutes"
               min="0"
@@ -143,7 +143,7 @@
               Seconds
             </label>
             <input
-              aria-errormessage="trackStartSecondsError"
+              aria-describedby="trackStartSecondsError"
               formControlName="trackSeconds"
               id="trackStartTimeSeconds"
               min="0"
@@ -195,7 +195,7 @@
             'input-group' : true,
             'is-invalid' : form.submitted && trackEndTimeForm.invalid}">
             <input
-              aria-errormessage="trackEndHoursError"
+              aria-describedby="trackEndHoursError"
               formControlName="trackHours"
               id="trackEndTimeHours"
               min="0"
@@ -216,7 +216,7 @@
               Minutes
             </label>
             <input
-              aria-errormessage="trackEndMinutesError"
+              aria-describedby="trackEndMinutesError"
               formControlName="trackMinutes"
               id="trackEndTimeMinutes"
               min="0"
@@ -234,7 +234,7 @@
               Seconds
             </label>
             <input
-              aria-errormessage="trackEndSecondsError"
+              aria-describedby="trackEndSecondsError"
               formControlName="trackSeconds"
               id="trackEndTimeSeconds"
               min="0"
