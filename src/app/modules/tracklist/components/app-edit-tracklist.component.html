@@ -131,7 +131,7 @@
               class="form-check-input"
               [id]="'chk' + i" 
               [value]="track.id"
-              (change)="onTrackSelected($event.target.checked, track.title, track.id)">
+              (change)="onTrackSelected($event, track.title, track.id)">
             <label 
               class="sr-only" 
               [for]="'chk' + i">

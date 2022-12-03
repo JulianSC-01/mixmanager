@@ -233,7 +233,10 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
     }
   }
 
-  onTrackSelected(selected : boolean, trackTitle : string, trackId : string) {
+  onTrackSelected(event : Event, trackTitle : string, trackId : string) {
+    const selected =
+      (<HTMLInputElement>event.target).checked
+
     if (selected)
       this.tracksSelected.push(trackId);
     else {
@@ -244,6 +247,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
         }
       }
     }
+    
     if (this.tracksSelected.length === 1)
       this.trackTitleSelected = trackTitle;
     else
