@@ -7,7 +7,6 @@ import { AppLoginService } from 'src/app/services/app-login.service';
 import { AppTrackService } from '../services/app-track.service';
 import { AppSharedModule } from '../../shared/app-shared.module';
 import { AppEditTrackComponent } from './app-edit-track.component';
-import { AppEditTrackInputComponent } from './subcomponents/app-edit-track-input.component';
 import { environment } from 'src/environments/environment';
 
 describe('AppEditTrackComponent', () => {
@@ -23,8 +22,7 @@ describe('AppEditTrackComponent', () => {
         ReactiveFormsModule
       ],
       declarations: [
-        AppEditTrackComponent,
-        AppEditTrackInputComponent
+        AppEditTrackComponent
       ],
       providers: [
         AppFocusService,

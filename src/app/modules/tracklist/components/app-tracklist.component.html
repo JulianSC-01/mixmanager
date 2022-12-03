@@ -15,8 +15,85 @@
   [alertType]="'alert-success'">
   {{ tracklistSuccessMessage }}
 </app-alert>
-<app-tracklist-table
-  (onError)="displayErrorMessage($event)"
-  (onAdded)="displayAddMessage($event)"
-  (onRemoved)="displayRemoveMessage($event)">
-</app-tracklist-table>
+<form 
+  autocomplete="off" 
+  (ngSubmit)="addTracklist()">
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped mb-1">
+      <caption *ngIf="tracklists | async as tracklistArray">
+        Table of {{ tracklistArray.length }} tracklists
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col" id="nameCol">Name</th>
+          <th scope="col" id="actionCol">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="tracklistsAreLoading else tracklistListing">
+          <td>
+            <app-spinner 
+              [spinnerSmall]="true">
+              Loading, please wait...
+            </app-spinner>
+          </td>
+          <td></td>
+        </tr>
+        <ng-template #tracklistListing>
+          <tr *ngIf="tracklistCount === 0">
+            <td>No tracklists available.</td>
+            <td></td>
+          </tr>
+          <tr *ngFor="let tracklist of tracklists | async; let i = index">
+            <td class="align-middle">
+              <a [routerLink]="[tracklist.id]">
+                {{ tracklist.title ? tracklist.title : 'No title available' }}
+              </a>
+            </td>
+            <td class="align-middle">
+              <button
+                class="btn btn-danger"
+                title="Remove tracklist"
+                type="button"
+                (click)="removeTracklist(tracklist.id, tracklist.title)">
+                <app-delete-icon></app-delete-icon>
+                <span class="sr-only">Remove tracklist {{ tracklist.title }}</span>
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+        <tr>
+          <td>
+            <label 
+              class="sr-only" 
+              for="nameToAdd">
+              Enter a tracklist name to add
+            </label>
+            <input
+              type="text"
+              id="nameToAdd" 
+              name="nameToAdd"
+              class="form-control"
+              placeholder="Enter a tracklist name to add"
+              [(ngModel)]="tracklistToAdd">
+          </td>
+          <td>
+            <button 
+              class="btn btn-primary" 
+              type="submit"
+              aria-label="Add tracklist"
+              [disabled]="this.tracklistsAreLoading || this.tracklistIsAdding">
+              <app-add-icon></app-add-icon>
+              Add
+            </button>
+            <span *ngIf="tracklistIsAdding" class="ms-2">
+              <app-spinner
+                [spinnerSmall]="true">
+              </app-spinner>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</form>

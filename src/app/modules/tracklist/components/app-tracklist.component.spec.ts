@@ -6,7 +6,6 @@ import { AppFocusService } from 'src/app/services/app-focus.service';
 import { AppLoginService } from 'src/app/services/app-login.service';
 import { AppSharedModule } from '../../shared/app-shared.module';
 import { AppTracklistComponent } from './app-tracklist.component';
-import { AppTracklistTableComponent } from './subcomponents/app-tracklist-table.component';
 import { AppTracklistService } from '../services/app-tracklist.service';
 import { AppTrackService } from '../services/app-track.service';
 import { environment } from 'src/environments/environment';
@@ -24,8 +23,7 @@ describe('AppTracklistComponent', () => {
         FormsModule
       ],
       declarations: [
-        AppTracklistComponent,
-        AppTracklistTableComponent
+        AppTracklistComponent
       ],
       providers: [
         AppFocusService,

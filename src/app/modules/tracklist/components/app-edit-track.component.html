@@ -8,12 +8,298 @@
   [alertType]="'alert-danger'">
   {{ trackErrorMessage }}
 </app-alert>
-<app-edit-track-input
-  [tracklistId]="tracklistId"
-  [trackId]="trackId"
-  (onError)="displayErrorMessage($event)"
-  (onAdded)="setTrackNameAdded($event)"
-  (onUpdated)="setTrackNameUpdated($event)"
-  (onCancel)="displayPreviousPage()"
-  (onNotFound)="displayNotFoundPage()">
-</app-edit-track-input>
+<app-alert
+  *ngIf="form.submitted && trackForm.invalid"
+  [alertId]="'errorHeader'"
+  [alertRole]="'note'"
+  [alertType]="'alert-danger'">
+  {{ getHeaderErrorMessage() }}
+</app-alert>
+<form
+  #form="ngForm"
+  [formGroup]="trackForm" 
+  (ngSubmit)="submit()">
+  <fieldset>
+    <legend class="sr-only">
+      Track details
+    </legend>
+    <div class="col-lg-6 mb-3">
+      <label class="form-label" for="trackArtist">
+        Track artist
+      </label>
+      <input
+        class="form-control"
+        formControlName="trackArtist"
+        id="trackArtist"
+        type="text">
+    </div>
+    <div class="col-lg-6 mb-3">
+      <label class="form-label" for="trackTitle">
+        Track title
+      </label>
+      <input
+        class="form-control"
+        formControlName="trackTitle"
+        id="trackTitle"
+        type="text">
+    </div>
+    <div class="d-flex">
+      <div class="mb-3">
+        <label class="form-label" for="trackBPM">
+          Track BPM
+          <span class="fst-italic fw-normal small">
+            (beats per minute)
+          </span>
+        </label>
+        <input
+          aria-describedby="trackBPMError"
+          formControlName="trackBPM"
+          id="trackBPM"
+          type="number"
+          [attr.aria-invalid]=
+            "form.submitted && trackForm.controls.trackBPM.invalid"
+          [ngClass]="{
+            'form-control' : true,
+            'is-invalid' : form.submitted && trackForm.controls.trackBPM.invalid}">
+        <div
+          class="invalid-feedback"
+          id="trackBPMError"
+          *ngIf="form.submitted && trackForm.controls.trackBPM.invalid">
+          Error: Track BPM is invalid
+        </div>
+      </div>
+    </div>
+    <div class="d-flex">
+      <div class="mb-3">
+        <label class="form-label" for="trackKey">
+          Track key
+        </label>
+        <select
+          class="form-select"
+          formControlName="trackKey"
+          id="trackKey">
+          <option
+            value="">
+            Select
+          </option>
+          <optgroup label="Minor Keys">
+            <option
+              *ngFor="let minorKey of minorKeys; let i = index"
+              [value]="(i+1) + 'A'">
+              {{ (i+1) + 'A' }} - {{ minorKey }} Minor
+            </option>
+          </optgroup>
+          <optgroup label="Major Keys">
+            <option
+              *ngFor="let majorKey of majorKeys; let i = index"
+              [value]="(i+1) + 'B'">
+              {{ (i+1) + 'B' }} - {{ majorKey }} Major
+            </option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+    <div 
+      class="d-flex" 
+      [formGroup]="trackStartTimeForm">
+      <div class="mb-3">
+        <fieldset>
+          <legend>
+            Track start time
+            <span class="fst-italic fw-normal small">
+              (hours minutes seconds)
+            </span>
+          </legend>
+          <div [ngClass]="{
+            'input-group' : true,
+            'is-invalid' : form.submitted && trackStartTimeForm.invalid}">
+            <input
+              aria-describedby="trackStartHoursError"
+              formControlName="trackHours"
+              id="trackStartTimeHours"
+              min="0"
+              max="99"
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackStartTimeForm.controls.trackHours.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackStartTimeForm.controls.trackHours.invalid}">
+            <label class="sr-only" for="trackStartTimeHours">
+              Hours
+            </label>
+            <div class="input-group-append">
+              <span class="input-group-text">:</span>
+            </div>
+            <label class="sr-only" for="trackStartTimeMinutes">
+              Minutes
+            </label>
+            <input
+              aria-describedby="trackStartMinutesError"
+              formControlName="trackMinutes"
+              id="trackStartTimeMinutes"
+              min="0"
+              max="59"
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackStartTimeForm.controls.trackMinutes.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackStartTimeForm.controls.trackMinutes.invalid}">
+            <div class="input-group-append">
+              <span class="input-group-text">:</span>
+            </div>
+            <label class="sr-only" for="trackStartTimeSeconds">
+              Seconds
+            </label>
+            <input
+              aria-describedby="trackStartSecondsError"
+              formControlName="trackSeconds"
+              id="trackStartTimeSeconds"
+              min="0"
+              max="59"
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackStartTimeForm.controls.trackSeconds.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackStartTimeForm.controls.trackSeconds.invalid}">
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.submitted && trackStartTimeForm.invalid">
+            <span
+              class="d-block"
+              id="trackStartHoursError"
+              *ngIf="trackStartTimeForm.controls.trackHours.invalid">
+              Error: Hours is invalid
+            </span>
+            <span
+              class="d-block"
+              id="trackStartMinutesError"
+              *ngIf="trackStartTimeForm.controls.trackMinutes.invalid">
+              Error: Minutes is invalid
+            </span>
+            <span
+              class="d-block"
+              id="trackStartSecondsError"
+              *ngIf="trackStartTimeForm.controls.trackSeconds.invalid">
+              Error: Seconds is invalid
+            </span>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div
+      class="d-flex" 
+      [formGroup]="trackEndTimeForm">
+      <div class="mb-3">
+        <fieldset>
+          <legend>
+            Track end time
+            <span class="fst-italic fw-normal small">
+              (hours minutes seconds)
+            </span>
+          </legend>
+          <div [ngClass]="{
+            'input-group' : true,
+            'is-invalid' : form.submitted && trackEndTimeForm.invalid}">
+            <input
+              aria-describedby="trackEndHoursError"
+              formControlName="trackHours"
+              id="trackEndTimeHours"
+              min="0"
+              max="99"
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackEndTimeForm.controls.trackHours.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackEndTimeForm.controls.trackHours.invalid}">
+            <label class="sr-only" for="trackEndTimeHours">
+              Hours
+            </label>
+            <div class="input-group-append">
+              <span class="input-group-text">:</span>
+            </div>
+            <label class="sr-only" for="trackEndTimeMinutes">
+              Minutes
+            </label>
+            <input
+              aria-describedby="trackEndMinutesError"
+              formControlName="trackMinutes"
+              id="trackEndTimeMinutes"
+              min="0"
+              max="59"
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackEndTimeForm.controls.trackMinutes.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackEndTimeForm.controls.trackMinutes.invalid}">
+            <div class="input-group-append">
+              <span class="input-group-text">:</span>
+            </div>
+            <label class="sr-only" for="trackEndTimeSeconds">
+              Seconds
+            </label>
+            <input
+              aria-describedby="trackEndSecondsError"
+              formControlName="trackSeconds"
+              id="trackEndTimeSeconds"
+              min="0"
+              max="59"
+              type="number"
+              [attr.aria-invalid]=
+                "form.submitted && trackEndTimeForm.controls.trackSeconds.invalid"
+              [ngClass]="{
+                'form-control' : true,
+                'is-invalid' : form.submitted && trackEndTimeForm.controls.trackSeconds.invalid}">
+          </div>
+          <div
+            class="invalid-feedback"
+            *ngIf="form.submitted && trackEndTimeForm.invalid">
+            <span
+              class="d-block"
+              id="trackEndHoursError"
+              *ngIf="trackEndTimeForm.controls.trackHours.invalid">
+              Error: Hours is invalid
+            </span>
+            <span
+              class="d-block"
+              id="trackEndMinutesError"
+              *ngIf="trackEndTimeForm.controls.trackMinutes.invalid">
+              Error: Minutes is invalid
+            </span>
+            <span
+              class="d-block"
+              id="trackEndSecondsError"
+              *ngIf="trackEndTimeForm.controls.trackSeconds.invalid">
+              Error: Seconds is invalid
+            </span>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="mt-2">
+      <button
+        class="btn btn-primary mb-1 me-1"
+        type="submit"
+        [disabled]="isWorking()">
+        Submit
+      </button>
+      <button
+        class="btn btn-secondary mb-1"
+        type="button"
+        [disabled]="isWorking()"
+        (click)="cancel()">
+        Cancel
+      </button>
+      <span *ngIf="isWorking()" class="ms-2">
+        <app-spinner
+          [spinnerSmall]="true">
+        </app-spinner>
+      </span>
+    </div>
+  </fieldset>
+</form>

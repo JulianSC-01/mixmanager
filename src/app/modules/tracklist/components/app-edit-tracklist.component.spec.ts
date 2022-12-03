@@ -8,8 +8,6 @@ import { AppLoginService } from 'src/app/services/app-login.service';
 import { AppTrackService } from '../services/app-track.service';
 import { AppTracklistService } from '../services/app-tracklist.service';
 import { AppEditTracklistComponent } from './app-edit-tracklist.component';
-import { AppEditTracklistTitleComponent } from './subcomponents/app-edit-tracklist-title.component';
-import { AppEditTracklistTrackTableComponent } from './subcomponents/app-edit-tracklist-track-table.component';
 import { environment } from 'src/environments/environment';
 
 describe('AppEditTracklistComponent', () => {
@@ -25,9 +23,7 @@ describe('AppEditTracklistComponent', () => {
         FormsModule
       ],
       declarations: [
-        AppEditTracklistComponent,
-        AppEditTracklistTitleComponent,
-        AppEditTracklistTrackTableComponent
+        AppEditTracklistComponent
       ],
       providers: [
         AppFocusService,
