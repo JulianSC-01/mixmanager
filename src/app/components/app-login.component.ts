@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AppFormHelper } from 'src/app/modules/shared/helpers/app-form-helper';
-import { AppFocusService } from '../services/app-focus.service';
+import { AppFocusService, AppFormService } from 'js-shared';
 import { AppLoginService } from 'src/app/services/app-login.service';
 import { AppMessages } from '../messages/app-messages';
 
@@ -19,21 +18,30 @@ export class AppLoginComponent {
 
   public loginForm : FormGroup<LoginForm>;
   public loginInProgress : boolean;
+
   public loginErrorMessageHeader : string;
 
+  public loginErrorMessageMap : {[key: string]: string} = {
+    'required' :
+      'Error: Field is required.',
+    'badEmailFormat' :
+      'Error: The e-mail address is badly formatted.'
+  };
+
   constructor(
-    public loginService : AppLoginService,
     private focusService : AppFocusService,
+    private formService : AppFormService,
     private formBuilder : FormBuilder,
-    private router : Router) { 
-        
+    private router : Router,
+    public loginService : AppLoginService) {
+
     this.loginForm = this.formBuilder.group<LoginForm>({
         loginEmail : this.formBuilder.control('', {
-          nonNullable: true, 
+          nonNullable: true,
           validators: Validators.required
         }),
         loginPassword : this.formBuilder.control('', {
-          nonNullable: true, 
+          nonNullable: true,
           validators: Validators.required
         }),
     });
@@ -47,26 +55,25 @@ export class AppLoginComponent {
       this.loginService.login(
         this.loginForm.controls.loginEmail.value,
         this.loginForm.controls.loginPassword.value,).
-        then( 
+        then(
           () => {
             this.router.navigate(['/home']);
             this.loginInProgress = false;
             this.loginService.loggedOut.next(false);
           },
-          err => { 
+          err => {
             this.loginErrors(err);
-            this.loginInProgress = false; 
+            this.loginInProgress = false;
             this.focusService.focusErrorHeader();
           }
         );
     } else {
+      this.formService.revealAllErrors(this.loginForm);
       this.focusService.focusErrorHeader();
     }
   }
 
   loginErrors(err : any) : void {
-    this.loginErrorMessageHeader = null;
-
     switch (err.code) {
     case AppLoginService.ERR_BAD_EMAIL_FORMAT:
       this.loginForm.controls.loginEmail.
@@ -74,18 +81,13 @@ export class AppLoginComponent {
       break;
     case AppLoginService.ERR_TOO_MANY_REQUESTS:
       this.loginForm.setErrors({invalidLogin : true});
-      this.loginErrorMessageHeader = 
+      this.loginErrorMessageHeader =
         AppMessages.MSG_LOGIN_TOO_MANY_REQUESTS;
       break;
     default:
       this.loginForm.setErrors({invalidLogin : true});
-      this.loginErrorMessageHeader = 
+      this.loginErrorMessageHeader =
         AppMessages.MSG_LOGIN_INVALID_CREDENTIALS;
     }
-  }
-
-  getHeaderErrorMessage() : string {
-    return this.loginErrorMessageHeader ? this.loginErrorMessageHeader : 
-      AppFormHelper.getInstance().getErrorCountHeaderMessage(this.loginForm);
   }
 }

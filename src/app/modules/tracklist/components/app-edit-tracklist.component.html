@@ -2,50 +2,43 @@
   Edit tracklist
 </app-page-header>
 <app-alert
-  *ngIf="tracklistErrorMessage"
-  [alertId]="'errorHeader'"
-  [alertType]="'alert-danger'">
-  {{ tracklistErrorMessage }}
-</app-alert>
-<app-alert
   *ngIf="tracklistSuccessMessage"
   [alertId]="'successHeader'"
   [alertType]="'alert-success'">
   {{ tracklistSuccessMessage }}
 </app-alert>
+<app-form-error-header
+  [errorHeaderMessage]="tracklistErrorMessage">
+</app-form-error-header>
 <h2>
   Title
 </h2>
 <div class="mb-3">
   <div *ngIf="isTitleBeingEdited; then titleEdit else titleReadOnly"></div>
   <ng-template #titleEdit>
-    <form 
-      autocomplete="off" 
+    <form
+      autocomplete="off"
       (ngSubmit)="saveTitle()">
       <div class="form-row mb-2">
         <div class="col-sm-6">
-          <label 
-            class="sr-only" 
-            for="tracklistTitle">
-            Enter a new tracklist title
-          </label>
-          <input
-            type="text"
-            id="tracklistTitle" 
+          <app-form-input-text
             name="tracklistTitle"
-            class="form-control"
+            [inputId]="'tracklistTitle'"
+            [inputLabelInvisible]="true"
+            [inputLabelText]="'Enter a new tracklist title'"
             [(ngModel)]="tracklistTitleToEdit">
+          </app-form-input-text>
         </div>
       </div>
-      <button 
-        class="btn btn-success me-1" 
+      <button
+        class="btn btn-success me-1"
         type="submit"
         aria-label="Save tracklist title"
         [disabled]="isTitleBeingSaved">
         Save
       </button>
-      <button 
-        class="btn btn-secondary" 
+      <button
+        class="btn btn-secondary"
         type="button"
         aria-label="Cancel edit tracklist title"
         [disabled]="isTitleBeingSaved"
@@ -80,7 +73,7 @@
         </p>
       </ng-template>
     </ng-template>
-    <button 
+    <button
       class="btn btn-secondary"
       id="editTitleButton"
       type="button"
@@ -126,14 +119,14 @@
         </tr>
         <tr *ngFor="let track of tracks | async; let i = index">
           <td class="text-center">
-            <input 
-              type="checkbox" 
+            <input
+              type="checkbox"
               class="form-check-input"
-              [id]="'chk' + i" 
+              [id]="'chk' + i"
               [value]="track.id"
               (change)="onTrackSelected($event, track.title, track.id)">
-            <label 
-              class="sr-only" 
+            <label
+              class="sr-only"
               [for]="'chk' + i">
               Select track {{ (i+1) }}. {{ track.artist }} - {{ track.title }}
             </label>
@@ -175,14 +168,14 @@
   </table>
 </div>
 <div>
-  <button 
+  <button
     class="btn btn-primary mb-1 me-1"
     type="button"
     [disabled]="tracksAreLoading"
     (click)="addTrack()">
     Add track
   </button>
-  <button 
+  <button
     class="btn btn-secondary mb-1 me-1"
     type="button"
     aria-label="Edit selected track"
@@ -190,7 +183,7 @@
     (click)="editTrack()">
     Edit selected
   </button>
-  <button 
+  <button
     class="btn btn-secondary mb-1 me-1"
     type="button"
     aria-label="Removed selected tracks"
@@ -198,7 +191,7 @@
     (click)="removeTracks()">
     Remove selected
   </button>
-  <button 
+  <button
     class="btn btn-secondary mb-1"
     type="button"
     aria-label="Swap selected tracks"

@@ -2,21 +2,17 @@
   Tracklists
 </app-page-header>
 <app-alert
-  *ngIf="tracklistErrorMessage"
-  [alertId]="'errorHeader'"
-  [alertRole]="'note'"
-  [alertType]="'alert-danger'">
-  {{ tracklistErrorMessage }}
-</app-alert>
-<app-alert
   *ngIf="tracklistSuccessMessage"
   [alertId]="'successHeader'"
   [alertRole]="'note'"
   [alertType]="'alert-success'">
   {{ tracklistSuccessMessage }}
 </app-alert>
-<form 
-  autocomplete="off" 
+<app-form-error-header
+  [errorHeaderMessage]="tracklistErrorMessage">
+</app-form-error-header>
+<form
+  autocomplete="off"
   (ngSubmit)="addTracklist()">
   <div class="table-responsive">
     <table class="table table-bordered table-striped mb-1">
@@ -32,7 +28,7 @@
       <tbody>
         <tr *ngIf="tracklistsAreLoading else tracklistListing">
           <td>
-            <app-spinner 
+            <app-spinner
               [spinnerSmall]="true">
               Loading, please wait...
             </app-spinner>
@@ -64,22 +60,18 @@
         </ng-template>
         <tr>
           <td>
-            <label 
-              class="sr-only" 
-              for="nameToAdd">
-              Enter a tracklist name to add
-            </label>
-            <input
-              type="text"
-              id="nameToAdd" 
+            <app-form-input-text
               name="nameToAdd"
-              class="form-control"
-              placeholder="Enter a tracklist name to add"
+              [inputId]="'nameToAdd'"
+              [inputLabelInvisible]="true"
+              [inputLabelText]="'Enter a tracklist name to add'"
+              [inputPlaceholder]="'Enter a tracklist name to add'"
               [(ngModel)]="tracklistToAdd">
+            </app-form-input-text>
           </td>
           <td>
-            <button 
-              class="btn btn-primary" 
+            <button
+              class="btn btn-primary"
               type="submit"
               aria-label="Add tracklist"
               [disabled]="this.tracklistsAreLoading || this.tracklistIsAdding">

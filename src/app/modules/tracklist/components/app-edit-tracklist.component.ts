@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { AppFocusService } from 'src/app/services/app-focus.service';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { Track } from '../objects/track';
 import { Tracklist, TracklistBuilder } from '../objects/tracklist';
+import { AppFocusService } from 'js-shared';
 import { AppTrackService } from '../services/app-track.service';
 import { AppTracklistService } from '../services/app-tracklist.service';
 
@@ -16,13 +16,13 @@ const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
   styleUrls: ['./app-edit-tracklist.component.css']
 })
 export class AppEditTracklistComponent implements OnInit, OnDestroy {
-  
+
   // Tracklist Title
   public tracklistIsLoading : boolean;
   public isTitleBeingEdited : boolean;
   public isTitleBeingSaved : boolean;
   public tracklistTitle : string;
-  public tracklistTitleToEdit : string;
+  public tracklistTitleToEdit : string = '';
   private tracklist : Observable<Tracklist>;
   private tracklistEnd : Subject<void>;
 
@@ -31,10 +31,10 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   public trackCount : number;
   public tracksAreUpdating : boolean;
   public tracksSelected : string[];
-  private trackTitleSelected : string;
   public tracks : Observable<Track[]>;
+  private trackTitleSelected : string;
   private tracksEnd : Subject<void>;
-  
+
   public tracklistId : string;
 
   public tracklistErrorMessage : string;
@@ -46,7 +46,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
     private trackService : AppTrackService,
     private tracklistService : AppTracklistService,
     private router : Router) {
-    this.tracklistId = 
+    this.tracklistId =
       this.activatedRoute.snapshot.params['tracklistId'];
   }
 
@@ -84,10 +84,10 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
 
   private loadTracklistTitle() : void {
     this.tracklistIsLoading = true;
-    
+
     this.tracklistEnd = new Subject<void>();
 
-    this.tracklist = 
+    this.tracklist =
     this.tracklistService.retrieveTracklist(
       this.tracklistId).pipe(takeUntil(this.tracklistEnd));
 
@@ -122,15 +122,14 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   saveTitle() : void {
     this.isTitleBeingSaved = true;
 
-    let newTracklistTitle = 
-    this.tracklistTitleToEdit == null ? 
-    null : this.tracklistTitleToEdit.trim();
+    let newTracklistTitle =
+      this.tracklistTitleToEdit.trim();
 
-    if (newTracklistTitle === null || newTracklistTitle === '') {
+    if (newTracklistTitle === '') {
       newTracklistTitle = UNTITLED_TRACKLIST;
     }
 
-    let tracklistData = 
+    let tracklistData =
       new TracklistBuilder().
         withTitle(newTracklistTitle).
         buildTracklist().
@@ -158,8 +157,8 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
     this.tracksSelected = [];
 
     this.tracksEnd = new Subject<void>();
-    
-    this.tracks = 
+
+    this.tracks =
     this.trackService.retrieveTracks(
       this.tracklistId).pipe(
         takeUntil(this.tracksEnd));
@@ -196,7 +195,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   removeTracks() : void {
     if (this.tracksSelected.length > 0) {
       this.tracksAreUpdating = true;
-      
+
       this.trackService.removeTracks(
         this.tracklistId, this.tracksSelected).then(
         () => {
@@ -219,8 +218,8 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
       this.tracksAreUpdating = true;
 
       this.trackService.swapTracks(
-        this.tracklistId, 
-        this.tracksSelected[0], 
+        this.tracklistId,
+        this.tracksSelected[0],
         this.tracksSelected[1]).then(
         () => this.displayTracksSwappedMessage(this.tracksSelected),
         () => this.displayErrorMessage(
@@ -247,7 +246,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
         }
       }
     }
-    
+
     if (this.tracksSelected.length === 1)
       this.trackTitleSelected = trackTitle;
     else
@@ -270,18 +269,18 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   private displayTracksRemovedMessage(tracksRemoved : string[]) {
     if (this.trackService.recentlyRemovedTrackTitle) {
       this.displaySuccessMessage(
-        AppTracklistMessages.MSG_REMOVE_SUCCESSFUL.replace('{0}', 
+        AppTracklistMessages.MSG_REMOVE_SUCCESSFUL.replace('{0}',
         this.trackService.recentlyRemovedTrackTitle));
     } else {
       this.displaySuccessMessage(
-        AppTracklistMessages.MSG_REMOVE_TRACKS_SUCCESSFUL.replace('{0}', 
+        AppTracklistMessages.MSG_REMOVE_TRACKS_SUCCESSFUL.replace('{0}',
         tracksRemoved.length.toString()));
     }
   }
 
   private displayTracksSwappedMessage(tracksSwapped : string[]) {
     this.displaySuccessMessage(
-      AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL.replace('{0}', 
+      AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL.replace('{0}',
       tracksSwapped.length.toString()));
   }
 

@@ -2,12 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { AppFocusService } from 'src/app/services/app-focus.service';
 import { AppTrackHelper } from '../helpers/app-track-helper';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { Track, TrackBuilder } from '../objects/track';
+import { AppFocusService, AppFormService } from 'js-shared';
 import { AppTrackService } from '../services/app-track.service';
-import { AppFormHelper } from '../../shared/helpers/app-form-helper';
 import firebase from 'firebase/compat/app';
 
 const ADD_TRACK_TITLE : string = 'Add track';
@@ -58,9 +57,10 @@ export class AppEditTrackComponent implements OnInit {
   constructor(
     private activatedRoute : ActivatedRoute,
     private focusService : AppFocusService,
+    private formService : AppFormService,
     private formBuilder : FormBuilder,
     private trackService : AppTrackService,
-    private router : Router) { 
+    private router : Router) {
     this.tracklistId = this.activatedRoute.snapshot.params['tracklistId'];
     this.trackId = this.activatedRoute.snapshot.params['trackId'];
 
@@ -129,10 +129,10 @@ export class AppEditTrackComponent implements OnInit {
 
     if (this.trackId) {
       this.trackIsLoading = true;
-      
+
       this.trackEnd = new Subject<void>();
 
-      this.track = 
+      this.track =
       this.trackService.retrieveTrack(
         this.tracklistId, this.trackId).pipe(
           takeUntil(this.trackEnd));
@@ -151,7 +151,7 @@ export class AppEditTrackComponent implements OnInit {
             this.trackForm.controls.
               trackKey.setValue(data.key);
             if (data.startTime !== null) {
-              let hhmmss : number[] = 
+              let hhmmss : number[] =
                 AppTrackHelper.getInstance().
                   getLengthHHMMSS(data.startTime);
               this.trackStartTimeForm.controls.
@@ -162,7 +162,7 @@ export class AppEditTrackComponent implements OnInit {
                 trackSeconds.setValue(hhmmss[2]);
             }
             if (data.endTime !== null) {
-              let hhmmss : number[] = 
+              let hhmmss : number[] =
                 AppTrackHelper.getInstance().
                   getLengthHHMMSS(data.endTime);
               this.trackEndTimeForm.controls.
@@ -197,9 +197,9 @@ export class AppEditTrackComponent implements OnInit {
     if (this.trackForm.valid) {
       this.trackIsUpdating = true;
 
-      let trackArtist : string = 
+      let trackArtist : string =
         this.trackForm.controls.trackArtist.value.trim();
-      let trackTitle : string = 
+      let trackTitle : string =
         this.trackForm.controls.trackTitle.value.trim();
 
       if (trackArtist === '') {
@@ -212,7 +212,7 @@ export class AppEditTrackComponent implements OnInit {
       let trackBPM =
         this.trackForm.controls.trackBPM.value;
 
-      let trackKey = 
+      let trackKey =
         this.trackForm.controls.trackKey.value;
 
       let trackStartTimeHHMMSS : number[] = [
@@ -233,7 +233,7 @@ export class AppEditTrackComponent implements OnInit {
         AppTrackHelper.getInstance().
           getLengthSeconds(trackEndTimeHHMMSS);
 
-      let trackInput = 
+      let trackInput =
         new TrackBuilder().
           withArtist(trackArtist).
           withTitle(trackTitle).
@@ -246,7 +246,7 @@ export class AppEditTrackComponent implements OnInit {
 
       if (!this.trackId) {
         trackInput.created = firebase.firestore.Timestamp.fromDate(new Date());
-    
+
         this.trackService.addTrack(
           this.tracklistId, trackInput).then(
           () => this.setTrackNameAdded(trackInput.title),
@@ -263,6 +263,8 @@ export class AppEditTrackComponent implements OnInit {
           finally(() => this.trackIsUpdating = false);
       }
     } else {
+      this.trackErrorMessage = null;
+      this.formService.revealAllErrors(this.trackForm);
       this.focusService.focusErrorHeader();
     }
   }
@@ -273,10 +275,6 @@ export class AppEditTrackComponent implements OnInit {
 
   isWorking() : boolean {
     return this.trackIsLoading || this.trackIsUpdating;
-  }
-
-  getHeaderErrorMessage() : string {
-    return AppFormHelper.getInstance().getErrorCountHeaderMessage(this.trackForm);
   }
 
   // ----------

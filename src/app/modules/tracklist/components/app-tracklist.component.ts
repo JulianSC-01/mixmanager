@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { AppFocusService } from 'src/app/services/app-focus.service';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { Tracklist, TracklistBuilder } from '../objects/tracklist';
+import { AppFocusService } from 'js-shared';
 import { AppTracklistService } from '../services/app-tracklist.service';
 import firebase from 'firebase/compat/app';
 
@@ -18,17 +18,17 @@ export class AppTracklistComponent {
   public tracklistsAreLoading : boolean;
   public tracklistCount : number;
   public tracklistIsAdding : boolean;
-  public tracklistToAdd : string;
+  public tracklistToAdd : string = '';
 
   public tracklists : Observable<Tracklist[]>;
   private tracklistsEnd : Subject<void>;
-  
+
   public tracklistErrorMessage : string;
   public tracklistSuccessMessage : string;
 
   constructor(
     private focusService : AppFocusService,
-    private tracklistService : AppTracklistService) {}
+    private tracklistService : AppTracklistService,) {}
 
   ngOnInit() : void {
     this.tracklistsAreLoading = true;
@@ -36,7 +36,7 @@ export class AppTracklistComponent {
 
     this.tracklistsEnd = new Subject<void>();
 
-    this.tracklists = 
+    this.tracklists =
     this.tracklistService.retrieveTracklists().
       pipe(takeUntil(this.tracklistsEnd));
 
@@ -61,36 +61,35 @@ export class AppTracklistComponent {
   addTracklist() : void {
     this.tracklistIsAdding = true;
 
-    let tracklistTitle = 
-      this.tracklistToAdd === null ? 
-        null : this.tracklistToAdd.trim();
+    let newTracklistTitle =
+      this.tracklistToAdd.trim();
 
-    if (tracklistTitle === null || tracklistTitle === '') {
-      tracklistTitle = UNTITLED_TRACKLIST;
+    if (newTracklistTitle === '') {
+      newTracklistTitle = UNTITLED_TRACKLIST;
     }
 
-    let tracklistData = 
+    let tracklistData =
       new TracklistBuilder().
-        withTitle(tracklistTitle).
+        withTitle(newTracklistTitle).
         buildTracklist().
         buildDocument();
 
-    tracklistData.created = 
+    tracklistData.created =
       firebase.firestore.Timestamp.fromDate(new Date());
 
     this.tracklistService.addTracklist(
       tracklistData).then(
-      () => this.displayAddMessage(tracklistTitle),
+      () => this.displayAddMessage(newTracklistTitle),
       () => this.displayErrorMessage(
         AppTracklistMessages.MSG_ADD_TRACKLIST_FAILED)).
       finally(
       () => {
-        this.tracklistToAdd = null;
+        this.tracklistToAdd = '';
         this.tracklistIsAdding = false;
       }
     );
   }
-  
+
   removeTracklist(tracklistId : string, tracklistName : string) : void {
     this.tracklistService.removeTracklist(
       tracklistId).then(

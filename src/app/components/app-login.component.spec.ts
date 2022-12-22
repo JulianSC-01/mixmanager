@@ -5,7 +5,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { environment } from 'src/environments/environment';
 import { AppSharedModule } from '../modules/shared/app-shared.module';
 import { AppLoginComponent } from './app-login.component';
-import { AppFocusService } from '../services/app-focus.service';
+import { AppFocusService } from 'js-shared';
 import { AppLoginService } from 'src/app/services/app-login.service';
 
 describe('AppLoginComponent', () => {
@@ -17,8 +17,8 @@ describe('AppLoginComponent', () => {
       imports: [
         AngularFireModule.initializeApp(environment.firebaseConfig),
         AppSharedModule,
-        RouterTestingModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        RouterTestingModule
       ],
       declarations: [
         AppLoginComponent

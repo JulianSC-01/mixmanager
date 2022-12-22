@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AppFocusService } from '../services/app-focus.service';
+import { AppFocusService } from 'js-shared';
 import { AppLoginService } from '../services/app-login.service';
 
 @Component({
@@ -14,8 +14,8 @@ export class AppNavbarComponent implements OnInit {
 
   constructor(
     private focusService : AppFocusService,
-    public loginService : AppLoginService,
-    private router : Router) { }
+    private router : Router,
+    public loginService : AppLoginService) { }
 
   ngOnInit() : void {
     this.isLoggingOut = false;

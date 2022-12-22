@@ -3,7 +3,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppSharedModule } from '../../shared/app-shared.module';
-import { AppFocusService } from 'src/app/services/app-focus.service';
+import { AppFocusService } from 'js-shared';
 import { AppLoginService } from 'src/app/services/app-login.service';
 import { AppTrackService } from '../services/app-track.service';
 import { AppTracklistService } from '../services/app-tracklist.service';

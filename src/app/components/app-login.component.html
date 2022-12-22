@@ -7,79 +7,38 @@
   [alertType]="'alert-success'">
   You have successfully logged out.
 </app-alert>
-<app-alert
-  *ngIf="form.submitted && loginForm.invalid"
-  [alertId]="'errorHeader'"
-  [alertRole]="'note'"
-  [alertType]="'alert-danger'">
-  {{ getHeaderErrorMessage() }}
-</app-alert>
-<form 
+<app-form-error-header
+  [errorHeaderMessage]="loginErrorMessageHeader"
+  [errorHeaderFormGroup]="loginForm">
+</app-form-error-header>
+<form
   autocomplete="off"
-  #form="ngForm"
-  [formGroup]="loginForm" 
+  [formGroup]="loginForm"
   (ngSubmit)="login()">
   <fieldset>
     <legend class="sr-only">
       Login credentials
     </legend>
     <div class="col-sm-6 mb-3">
-      <label class="form-label" for="loginEmail">
-        E-mail address
-        <span class="required">
-          (required)
-        </span>
-      </label>
-      <input
-        aria-describedby="loginEmailError"
+      <app-form-input-text
         formControlName="loginEmail"
-        id="loginEmail"
-        type="text"
-        [attr.aria-invalid]=
-          "form.submitted && loginForm.controls.loginEmail.invalid"
-        [ngClass]="{
-          'form-control' : true,
-          'is-invalid' : form.submitted && loginForm.controls.loginEmail.invalid}">
-      <div
-        class="invalid-feedback"
-        id="loginEmailError"
-        *ngIf="form.submitted && loginForm.controls.loginEmail.invalid">
-        <ng-container
-          *ngIf="loginForm.controls.loginEmail.errors.required">
-          Error: Field is required.
-        </ng-container>
-        <ng-container
-          *ngIf="loginForm.controls.loginEmail.errors.badEmailFormat">
-          Error: The e-mail address is badly formatted.
-        </ng-container>
-      </div>
+        [inputErrorMessageId]="'loginEmailError'"
+        [inputErrorMessages]="loginErrorMessageMap"
+        [inputLabelText]="'E-mail address'"
+        [inputId]="'loginEmail'"
+        [inputRequired]="true">
+      </app-form-input-text>
     </div>
     <div class="col-sm-6 mb-3">
-      <label class="form-label" for="loginPassword">
-        Password
-        <span class="required">
-          (required)
-        </span>
-      </label>
-      <input
-        aria-describedby="loginPasswordError"
+      <app-form-input-text
         formControlName="loginPassword"
-        id="loginPassword"
-        type="password"
-        [attr.aria-invalid]=
-          "form.submitted && loginForm.controls.loginPassword.invalid"
-        [ngClass]="{
-          'form-control' : true,
-          'is-invalid' : form.submitted && loginForm.controls.loginPassword.invalid}">
-      <div
-        class="invalid-feedback"
-        id="loginPasswordError"
-        *ngIf="form.submitted && loginForm.controls.loginPassword.invalid">
-        <ng-container
-          *ngIf="loginForm.controls.loginPassword.errors.required">
-          Error: Field is required.
-        </ng-container>
-      </div>
+        [inputErrorMessageId]="'loginPasswordError'"
+        [inputErrorMessages]="loginErrorMessageMap"
+        [inputLabelText]="'Password'"
+        [inputId]="'loginPassword'"
+        [inputRequired]="true"
+        [inputType]="'password'">
+      </app-form-input-text>
     </div>
   </fieldset>
   <div class="mt-2">

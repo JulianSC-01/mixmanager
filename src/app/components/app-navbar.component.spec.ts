@@ -4,7 +4,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppSharedModule } from '../modules/shared/app-shared.module';
 import { environment } from 'src/environments/environment';
 import { AppNavbarComponent } from './app-navbar.component';
-import { AppFocusService } from '../services/app-focus.service';
+import { AppFocusService } from 'js-shared';
 import { AppLoginService } from '../services/app-login.service';
 
 describe('AppNavbarComponent', () => {
