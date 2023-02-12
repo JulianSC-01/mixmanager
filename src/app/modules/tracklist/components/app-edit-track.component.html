@@ -29,28 +29,19 @@
     </div>
     <div class="d-flex">
       <div class="mb-3">
-        <label class="form-label" for="trackBPM">
+        <app-form-label
+          [labelControlId]="'trackBPM'">
           Track BPM
           <span class="fst-italic fw-normal small">
             (beats per minute)
           </span>
-        </label>
-        <input
-          aria-describedby="trackBPMError"
+        </app-form-label>
+        <app-form-input-number
           formControlName="trackBPM"
-          id="trackBPM"
-          type="number"
-          [attr.aria-invalid]=
-            "form.submitted && trackForm.controls.trackBPM.invalid"
-          [ngClass]="{
-            'form-control' : true,
-            'is-invalid' : form.submitted && trackForm.controls.trackBPM.invalid}">
-        <div
-          class="invalid-feedback"
-          id="trackBPMError"
-          *ngIf="form.submitted && trackForm.controls.trackBPM.invalid">
-          Error: Track BPM is invalid
-        </div>
+          [inputErrorMessageId]="'trackBPMError'"
+          [inputErrorMessages]="errorMessageBPM"
+          [inputId]="'trackBPM'">
+        </app-form-input-number>
       </div>
     </div>
     <div class="d-flex">
@@ -97,79 +88,67 @@
           <div [ngClass]="{
             'input-group' : true,
             'is-invalid' : form.submitted && trackStartTimeForm.invalid}">
-            <input
-              aria-describedby="trackStartHoursError"
+            <app-form-input-number
               formControlName="trackHours"
-              id="trackStartTimeHours"
-              min="0"
-              max="99"
-              type="number"
-              [attr.aria-invalid]=
-                "form.submitted && trackStartTimeForm.controls.trackHours.invalid"
-              [ngClass]="{
-                'form-control' : true,
-                'is-invalid' : form.submitted && trackStartTimeForm.controls.trackHours.invalid}">
-            <label class="sr-only" for="trackStartTimeHours">
+              [inputErrorMessageId]="'trackStartHoursError'"
+              [inputId]="'trackStartTimeHours'"
+              [inputMin]="0"
+              [inputMax]="99">
+            </app-form-input-number>
+            <app-form-label
+              [labelControlId]="'trackStartTimeHours'"
+              [labelInvisible]="true">
               Hours
-            </label>
-            <div class="input-group-append">
+            </app-form-label>
+            <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
-            <label class="sr-only" for="trackStartTimeMinutes">
+            <app-form-label
+              [labelControlId]="'trackStartTimeMinutes'"
+              [labelInvisible]="true">
               Minutes
-            </label>
-            <input
-              aria-describedby="trackStartMinutesError"
+            </app-form-label>
+            <app-form-input-number
               formControlName="trackMinutes"
-              id="trackStartTimeMinutes"
-              min="0"
-              max="59"
-              type="number"
-              [attr.aria-invalid]=
-                "form.submitted && trackStartTimeForm.controls.trackMinutes.invalid"
-              [ngClass]="{
-                'form-control' : true,
-                'is-invalid' : form.submitted && trackStartTimeForm.controls.trackMinutes.invalid}">
-            <div class="input-group-append">
+              [inputErrorMessageId]="'trackStartMinutesError'"
+              [inputId]="'trackStartTimeMinutes'"
+              [inputMin]="0"
+              [inputMax]="59">
+            </app-form-input-number>
+            <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
-            <label class="sr-only" for="trackStartTimeSeconds">
+            <app-form-label
+              [labelControlId]="'trackStartTimeSeconds'"
+              [labelInvisible]="true">
               Seconds
-            </label>
-            <input
-              aria-describedby="trackStartSecondsError"
+            </app-form-label>
+            <app-form-input-number
               formControlName="trackSeconds"
-              id="trackStartTimeSeconds"
-              min="0"
-              max="59"
-              type="number"
-              [attr.aria-invalid]=
-                "form.submitted && trackStartTimeForm.controls.trackSeconds.invalid"
-              [ngClass]="{
-                'form-control' : true,
-                'is-invalid' : form.submitted && trackStartTimeForm.controls.trackSeconds.invalid}">
+              [inputErrorMessageId]="'trackStartSecondsError'"
+              [inputId]="'trackStartTimeSeconds'"
+              [inputMin]="0"
+              [inputMax]="59">
+            </app-form-input-number>
           </div>
           <div
-            class="invalid-feedback"
-            *ngIf="form.submitted && trackStartTimeForm.invalid">
-            <span
-              class="d-block"
-              id="trackStartHoursError"
-              *ngIf="trackStartTimeForm.controls.trackHours.invalid">
-              Error: Hours is invalid
-            </span>
-            <span
-              class="d-block"
-              id="trackStartMinutesError"
-              *ngIf="trackStartTimeForm.controls.trackMinutes.invalid">
-              Error: Minutes is invalid
-            </span>
-            <span
-              class="d-block"
-              id="trackStartSecondsError"
-              *ngIf="trackStartTimeForm.controls.trackSeconds.invalid">
-              Error: Seconds is invalid
-            </span>
+            [ngClass]="{
+              'mt-1' : trackStartTimeForm.invalid}">
+            <app-form-error-feedback
+              [errorFeedbackControl]="trackStartTimeForm.controls.trackHours"
+              [errorFeedbackId]="'trackStartHoursError'"
+              [errorFeedbackMessages]="errorMessageHours">
+            </app-form-error-feedback>
+            <app-form-error-feedback
+              [errorFeedbackControl]="trackStartTimeForm.controls.trackMinutes"
+              [errorFeedbackId]="'trackStartMinutesError'"
+              [errorFeedbackMessages]="errorMessageMinutes">
+            </app-form-error-feedback>
+            <app-form-error-feedback
+              [errorFeedbackControl]="trackStartTimeForm.controls.trackSeconds"
+              [errorFeedbackId]="'trackStartSecondsError'"
+              [errorFeedbackMessages]="errorMessageSeconds">
+            </app-form-error-feedback>
           </div>
         </fieldset>
       </div>
@@ -188,79 +167,67 @@
           <div [ngClass]="{
             'input-group' : true,
             'is-invalid' : form.submitted && trackEndTimeForm.invalid}">
-            <input
-              aria-describedby="trackEndHoursError"
+            <app-form-input-number
               formControlName="trackHours"
-              id="trackEndTimeHours"
-              min="0"
-              max="99"
-              type="number"
-              [attr.aria-invalid]=
-                "form.submitted && trackEndTimeForm.controls.trackHours.invalid"
-              [ngClass]="{
-                'form-control' : true,
-                'is-invalid' : form.submitted && trackEndTimeForm.controls.trackHours.invalid}">
-            <label class="sr-only" for="trackEndTimeHours">
+              [inputErrorMessageId]="'trackEndHoursError'"
+              [inputId]="'trackEndTimeHours'"
+              [inputMin]="0"
+              [inputMax]="99">
+            </app-form-input-number>
+            <app-form-label
+              [labelControlId]="'trackEndTimeHours'"
+              [labelInvisible]="true">
               Hours
-            </label>
-            <div class="input-group-append">
+            </app-form-label>
+            <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
-            <label class="sr-only" for="trackEndTimeMinutes">
+            <app-form-label
+              [labelControlId]="'trackEndTimeMinutes'"
+              [labelInvisible]="true">
               Minutes
-            </label>
-            <input
-              aria-describedby="trackEndMinutesError"
+            </app-form-label>
+            <app-form-input-number
               formControlName="trackMinutes"
-              id="trackEndTimeMinutes"
-              min="0"
-              max="59"
-              type="number"
-              [attr.aria-invalid]=
-                "form.submitted && trackEndTimeForm.controls.trackMinutes.invalid"
-              [ngClass]="{
-                'form-control' : true,
-                'is-invalid' : form.submitted && trackEndTimeForm.controls.trackMinutes.invalid}">
-            <div class="input-group-append">
+              [inputErrorMessageId]="'trackEndMinutesError'"
+              [inputId]="'trackEndTimeMinutes'"
+              [inputMin]="0"
+              [inputMax]="59">
+            </app-form-input-number>
+            <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
-            <label class="sr-only" for="trackEndTimeSeconds">
+            <app-form-label
+              [labelControlId]="'trackEndTimeSeconds'"
+              [labelInvisible]="true">
               Seconds
-            </label>
-            <input
-              aria-describedby="trackEndSecondsError"
+            </app-form-label>
+            <app-form-input-number
               formControlName="trackSeconds"
-              id="trackEndTimeSeconds"
-              min="0"
-              max="59"
-              type="number"
-              [attr.aria-invalid]=
-                "form.submitted && trackEndTimeForm.controls.trackSeconds.invalid"
-              [ngClass]="{
-                'form-control' : true,
-                'is-invalid' : form.submitted && trackEndTimeForm.controls.trackSeconds.invalid}">
+              [inputErrorMessageId]="'trackEndSecondsError'"
+              [inputId]="'trackEndTimeSeconds'"
+              [inputMin]="0"
+              [inputMax]="59">
+            </app-form-input-number>
           </div>
           <div
-            class="invalid-feedback"
-            *ngIf="form.submitted && trackEndTimeForm.invalid">
-            <span
-              class="d-block"
-              id="trackEndHoursError"
-              *ngIf="trackEndTimeForm.controls.trackHours.invalid">
-              Error: Hours is invalid
-            </span>
-            <span
-              class="d-block"
-              id="trackEndMinutesError"
-              *ngIf="trackEndTimeForm.controls.trackMinutes.invalid">
-              Error: Minutes is invalid
-            </span>
-            <span
-              class="d-block"
-              id="trackEndSecondsError"
-              *ngIf="trackEndTimeForm.controls.trackSeconds.invalid">
-              Error: Seconds is invalid
-            </span>
+            [ngClass]="{
+              'mt-1' : trackEndTimeForm.invalid}">
+            <app-form-error-feedback
+              [errorFeedbackControl]="trackEndTimeForm.controls.trackHours"
+              [errorFeedbackId]="'trackEndHoursError'"
+              [errorFeedbackMessages]="errorMessageHours">
+            </app-form-error-feedback>
+            <app-form-error-feedback
+              [errorFeedbackControl]="trackEndTimeForm.controls.trackMinutes"
+              [errorFeedbackId]="'trackEndMinutesError'"
+              [errorFeedbackMessages]="errorMessageMinutes">
+            </app-form-error-feedback>
+            <app-form-error-feedback
+              [errorFeedbackControl]="trackEndTimeForm.controls.trackSeconds"
+              [errorFeedbackId]="'trackEndSecondsError'"
+              [errorFeedbackMessages]="errorMessageSeconds">
+            </app-form-error-feedback>
           </div>
         </fieldset>
       </div>

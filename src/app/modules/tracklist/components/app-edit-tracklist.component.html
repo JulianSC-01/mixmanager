@@ -125,11 +125,11 @@
               [id]="'chk' + i"
               [value]="track.id"
               (change)="onTrackSelected($event, track.title, track.id)">
-            <label
-              class="sr-only"
-              [for]="'chk' + i">
+            <app-form-label
+              [labelInvisible]="true"
+              [labelControlId]="'chk' + i">
               Select track {{ (i+1) }}. {{ track.artist }} - {{ track.title }}
-            </label>
+            </app-form-label>
           </td>
           <td>
             <span aria-hidden="true" class="opacity-75">

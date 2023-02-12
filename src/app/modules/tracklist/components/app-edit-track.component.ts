@@ -15,7 +15,6 @@ const EDIT_TRACK_TITLE : string = 'Edit track';
 const UNKNOWN_TRACK : string = 'ID';
 
 const BPM_PATTERN : RegExp = /^[0-9]{0,3}$/;
-const TIME_PATTERN : RegExp = /^[0-9]{0,2}$/;
 
 interface TrackForm {
   trackArtist: FormControl<string>;
@@ -54,6 +53,23 @@ export class AppEditTrackComponent implements OnInit {
 
   public trackFormTitle : string;
 
+  public errorMessageBPM : {[key: string]: string} = {
+    'pattern' : 'Error: Track BPM is invalid.',
+  };
+
+  public errorMessageHours : {[key: string]: string} = {
+    'min' : 'Error: Hours must be greater than or equal to 0.',
+    'max' : 'Error: Hours must be less than or equal to 99.'
+  };
+  public errorMessageMinutes : {[key: string]: string} = {
+    'min' : 'Error: Minutes must be greater than or equal to 0.',
+    'max' : 'Error: Minutes must be less than or equal to 59.'
+  };
+  public errorMessageSeconds : {[key: string]: string} = {
+    'min' : 'Error: Seconds must be greater than or equal to 0.',
+    'max' : 'Error: Seconds must be less than or equal to 59.'
+  };
+
   constructor(
     private activatedRoute : ActivatedRoute,
     private focusService : AppFocusService,
@@ -78,44 +94,14 @@ export class AppEditTrackComponent implements OnInit {
         nonNullable: true,
       }),
       trackStartTime: this.formBuilder.group<TrackTimeForm>({
-        trackHours : this.formBuilder.control(null, {
-          validators: [
-            Validators.pattern(TIME_PATTERN),
-            AppTrackHelper.getInstance().hoursValidator
-          ]
-        }),
-        trackMinutes : this.formBuilder.control(null, {
-          validators: [
-            Validators.pattern(TIME_PATTERN),
-            AppTrackHelper.getInstance().minutesValidator
-          ]
-        }),
-        trackSeconds : this.formBuilder.control(null, {
-          validators: [
-            Validators.pattern(TIME_PATTERN),
-            AppTrackHelper.getInstance().secondsValidator
-          ]
-        })
+        trackHours : this.formBuilder.control(null),
+        trackMinutes : this.formBuilder.control(null),
+        trackSeconds : this.formBuilder.control(null)
       }),
       trackEndTime: this.formBuilder.group<TrackTimeForm>({
-        trackHours : this.formBuilder.control(null, {
-          validators: [
-            Validators.pattern(TIME_PATTERN),
-            AppTrackHelper.getInstance().hoursValidator
-          ]
-        }),
-        trackMinutes : this.formBuilder.control(null, {
-          validators: [
-            Validators.pattern(TIME_PATTERN),
-            AppTrackHelper.getInstance().minutesValidator
-          ]
-        }),
-        trackSeconds : this.formBuilder.control(null, {
-          validators: [
-            Validators.pattern(TIME_PATTERN),
-            AppTrackHelper.getInstance().secondsValidator
-          ]
-        })
+        trackHours : this.formBuilder.control(null),
+        trackMinutes : this.formBuilder.control(null),
+        trackSeconds : this.formBuilder.control(null)
       })
     });
   }
