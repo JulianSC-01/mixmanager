@@ -46,17 +46,10 @@
     </div>
     <div class="d-flex">
       <div class="mb-3">
-        <label class="form-label" for="trackKey">
-          Track key
-        </label>
-        <select
-          class="form-select"
+        <app-form-input-select
           formControlName="trackKey"
-          id="trackKey">
-          <option
-            value="">
-            Select
-          </option>
+          [inputId]="'trackKey'"
+          [inputLabelText]="'Track key'">
           <optgroup label="Minor Keys">
             <option
               *ngFor="let minorKey of minorKeys; let i = index"
@@ -71,7 +64,7 @@
               {{ (i+1) + 'B' }} - {{ majorKey }} Major
             </option>
           </optgroup>
-        </select>
+        </app-form-input-select>
       </div>
     </div>
     <div
@@ -85,48 +78,37 @@
               (hours minutes seconds)
             </span>
           </legend>
-          <div [ngClass]="{
-            'input-group' : true,
-            'is-invalid' : form.submitted && trackStartTimeForm.invalid}">
+          <div class="input-group">
             <app-form-input-number
               formControlName="trackHours"
               [inputErrorMessageId]="'trackStartHoursError'"
               [inputId]="'trackStartTimeHours'"
+              [inputLabelInvisible]="true"
+              [inputLabelText]="'Hours'"
               [inputMin]="0"
               [inputMax]="99">
             </app-form-input-number>
-            <app-form-label
-              [labelControlId]="'trackStartTimeHours'"
-              [labelInvisible]="true">
-              Hours
-            </app-form-label>
             <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
-            <app-form-label
-              [labelControlId]="'trackStartTimeMinutes'"
-              [labelInvisible]="true">
-              Minutes
-            </app-form-label>
             <app-form-input-number
               formControlName="trackMinutes"
               [inputErrorMessageId]="'trackStartMinutesError'"
               [inputId]="'trackStartTimeMinutes'"
+              [inputLabelInvisible]="true"
+              [inputLabelText]="'Minutes'"
               [inputMin]="0"
               [inputMax]="59">
             </app-form-input-number>
             <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
-            <app-form-label
-              [labelControlId]="'trackStartTimeSeconds'"
-              [labelInvisible]="true">
-              Seconds
-            </app-form-label>
             <app-form-input-number
               formControlName="trackSeconds"
               [inputErrorMessageId]="'trackStartSecondsError'"
               [inputId]="'trackStartTimeSeconds'"
+              [inputLabelInvisible]="true"
+              [inputLabelText]="'Seconds'"
               [inputMin]="0"
               [inputMax]="59">
             </app-form-input-number>
@@ -164,48 +146,37 @@
               (hours minutes seconds)
             </span>
           </legend>
-          <div [ngClass]="{
-            'input-group' : true,
-            'is-invalid' : form.submitted && trackEndTimeForm.invalid}">
+          <div class="input-group">
             <app-form-input-number
               formControlName="trackHours"
               [inputErrorMessageId]="'trackEndHoursError'"
               [inputId]="'trackEndTimeHours'"
+              [inputLabelInvisible]="true"
+              [inputLabelText]="'Hours'"
               [inputMin]="0"
               [inputMax]="99">
             </app-form-input-number>
-            <app-form-label
-              [labelControlId]="'trackEndTimeHours'"
-              [labelInvisible]="true">
-              Hours
-            </app-form-label>
             <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
-            <app-form-label
-              [labelControlId]="'trackEndTimeMinutes'"
-              [labelInvisible]="true">
-              Minutes
-            </app-form-label>
             <app-form-input-number
               formControlName="trackMinutes"
               [inputErrorMessageId]="'trackEndMinutesError'"
               [inputId]="'trackEndTimeMinutes'"
+              [inputLabelInvisible]="true"
+              [inputLabelText]="'Minutes'"
               [inputMin]="0"
               [inputMax]="59">
             </app-form-input-number>
             <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
-            <app-form-label
-              [labelControlId]="'trackEndTimeSeconds'"
-              [labelInvisible]="true">
-              Seconds
-            </app-form-label>
             <app-form-input-number
               formControlName="trackSeconds"
               [inputErrorMessageId]="'trackEndSecondsError'"
               [inputId]="'trackEndTimeSeconds'"
+              [inputLabelInvisible]="true"
+              [inputLabelText]="'Seconds'"
               [inputMin]="0"
               [inputMax]="59">
             </app-form-input-number>
