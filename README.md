@@ -19,8 +19,15 @@ Tracklist Editor
 
 ## Change Log
 
-2022-10-31 (v1.3)
+2023-06-25 (v1.6)
 Latest Version
+  - Upgraded to Angular 16
+
+2023-06-11 (v1.5)
+  - Upgraded to Angular 15
+  - Upgraded to Angular Fire 7.5.0 and Firebase 9.22.2
+
+2022-10-31 (v1.3)
   - Upgraded to Angular 14.2
   - Upgraded to Angular Fire 7.4.1 and Firebase 9.12.1
   - Upgraded to Bootstrap 5.2.2
