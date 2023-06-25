@@ -52,7 +52,7 @@
                 title="Remove tracklist"
                 type="button"
                 (click)="removeTracklist(tracklist.id, tracklist.title)">
-                <app-delete-icon></app-delete-icon>
+                <app-delete-icon/>
                 <span class="sr-only">Remove tracklist {{ tracklist.title }}</span>
               </button>
             </td>
@@ -75,7 +75,7 @@
               type="submit"
               aria-label="Add tracklist"
               [disabled]="this.tracklistsAreLoading || this.tracklistIsAdding">
-              <app-add-icon></app-add-icon>
+              <app-add-icon/>
               Add
             </button>
             <span *ngIf="tracklistIsAdding" class="ms-2">
