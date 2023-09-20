@@ -53,12 +53,12 @@
                   "inlineCritical": false
                 }
               },
+              "buildOptimizer": true,
+              "extractLicenses": true,
+              "namedChunks": false,
               "outputHashing": "all",
               "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -71,6 +71,14 @@
                   "maximumError": "10kb"
                 }
               ]
+            },
+            "development": {
+              "buildOptimizer": false,
+              "extractLicenses": false,
+              "namedChunks": true,
+              "optimization": false,
+              "sourceMap": true,
+              "vendorChunk": true
             }
           },
           "defaultConfiguration": "production"
@@ -83,13 +91,29 @@
           "configurations": {
             "production": {
               "browserTarget": "MixManager:build:production"
+            },
+            "development": {
+              "browserTarget": "MixManager:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "MixManager:build"
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "MixManager:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "MixManager:serve:production"
+            }
           }
         },
         "test": {
@@ -107,18 +131,6 @@
               "src/styles.css"
             ],
             "scripts": []
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "MixManager:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "MixManager:serve:production"
-            }
           }
         }
       }
