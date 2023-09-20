@@ -7,17 +7,17 @@ import firebase from 'firebase/compat/app';
   providedIn: 'root'
 })
 export class AppLoginService {
-  public static ERR_BAD_EMAIL_FORMAT : string = "auth/invalid-email";
-  public static ERR_TOO_MANY_REQUESTS : string = "auth/too-many-requests";
+  public static ERR_BAD_EMAIL_FORMAT : string = 'auth/invalid-email';
+  public static ERR_TOO_MANY_REQUESTS : string = 'auth/too-many-requests';
 
   public loggedOut : Subject<boolean>;
 
   constructor(
-    private fireAuth : AngularFireAuth) { 
+    private fireAuth : AngularFireAuth) {
     this.loggedOut = new Subject<boolean>();
   }
 
-  login(username : string, password : string) : 
+  login(username : string, password : string) :
     Promise<firebase.auth.UserCredential> {
     return this.fireAuth.signInWithEmailAndPassword(username, password);
   }

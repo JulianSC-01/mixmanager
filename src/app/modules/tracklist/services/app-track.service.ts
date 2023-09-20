@@ -19,12 +19,12 @@ export class AppTrackService {
   public recentlyRemovedTrackTitle : string;
 
   constructor(
-    private firestoreService : AngularFirestore) { 
+    private firestoreService : AngularFirestore) {
   }
 
   retrieveTracks(
     tracklistId : string) : Observable<Track[]> {
-    this.trackCollection = 
+    this.trackCollection =
     this.firestoreService.collection<Track>(
       TRACKLIST_COLLECTION + '/' + tracklistId + '/' +
       TRACK_COLLECTION, ref => ref.orderBy(CREATION_FIELD));
@@ -50,7 +50,7 @@ export class AppTrackService {
   }
 
   retrieveTrack(
-    tracklistId : string, 
+    tracklistId : string,
     trackId : string) : Observable<Track> {
     this.track = this.firestoreService.doc(
       TRACKLIST_COLLECTION + '/' + tracklistId + '/' + TRACK_COLLECTION + '/' + trackId);
@@ -76,15 +76,15 @@ export class AppTrackService {
   }
 
   addTrack(
-    tracklistId : string, 
+    tracklistId : string,
     trackData : DocumentData) : Promise<DocumentReference> {
     return this.firestoreService.collection(
-      TRACKLIST_COLLECTION + '/' + tracklistId + '/' + 
+      TRACKLIST_COLLECTION + '/' + tracklistId + '/' +
       TRACK_COLLECTION).add(trackData);
   }
 
   removeTrack(
-    tracklistId : string, 
+    tracklistId : string,
     trackId : string) : Promise<void> {
     return this.firestoreService.doc(
       TRACKLIST_COLLECTION + '/' + tracklistId + '/' +
@@ -92,14 +92,15 @@ export class AppTrackService {
   }
 
   removeTracks(
-    tracklistId : string, 
+    tracklistId : string,
     trackIds : string[]) : Promise<void> {
     let removeTracksPromise = new Promise<void>(
       (resolve, reject) => {
       let removePromises : Promise<void>[] = [];
 
       trackIds.forEach(trackId => {
-        removePromises.push(this.removeTrack(tracklistId, trackId))
+        removePromises.push(
+          this.removeTrack(tracklistId, trackId))
       });
 
       Promise.all(removePromises).then(
@@ -115,12 +116,12 @@ export class AppTrackService {
     let removeAllPromise = new Promise<void>(
       (resolve, reject) => {
       let removePromises : Promise<void>[] = [];
-  
+
       this.retrieveTracks(tracklistId).pipe(
         take(1)).subscribe(tracks => {
           tracks.forEach(track => {
             removePromises.push(
-            this.removeTrack(tracklistId, track.id))
+              this.removeTrack(tracklistId, track.id))
           })
         });
 
@@ -133,11 +134,11 @@ export class AppTrackService {
   }
 
   updateTrack(
-    tracklistId : string, 
-    trackId : string, 
+    tracklistId : string,
+    trackId : string,
     trackData : DocumentData) : Promise<void> {
     return this.firestoreService.doc(
-      TRACKLIST_COLLECTION + '/' + tracklistId + '/' + 
+      TRACKLIST_COLLECTION + '/' + tracklistId + '/' +
       TRACK_COLLECTION + '/' + trackId).update(trackData);
   }
 
@@ -148,7 +149,7 @@ export class AppTrackService {
     let swapTracksPromise = new Promise<void>(
       (resolve, reject) => {
       forkJoin([
-        this.retrieveTrack(tracklistId, trackIdFirst).pipe(take(1)), 
+        this.retrieveTrack(tracklistId, trackIdFirst).pipe(take(1)),
         this.retrieveTrack(tracklistId, trackIdSecond).pipe(take(1))]).
         pipe(take(1)).subscribe({
           next: ([trackOne, trackTwo]) => {
@@ -158,7 +159,7 @@ export class AppTrackService {
               this.updateTrack(
                 tracklistId, trackIdSecond, trackOne.buildDocumentForSwap())]
             ).then(() => resolve(), () => reject());
-          }, 
+          },
           error: () => reject()
         })
       }

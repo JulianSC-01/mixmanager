@@ -36,14 +36,14 @@ export class AppLoginComponent {
     public loginService : AppLoginService) {
 
     this.loginForm = this.formBuilder.group<LoginForm>({
-        loginEmail : this.formBuilder.control('', {
-          nonNullable: true,
-          validators: Validators.required
-        }),
-        loginPassword : this.formBuilder.control('', {
-          nonNullable: true,
-          validators: Validators.required
-        }),
+      loginEmail : this.formBuilder.control('', {
+        nonNullable: true,
+        validators: Validators.required
+      }),
+      loginPassword : this.formBuilder.control('', {
+        nonNullable: true,
+        validators: Validators.required
+      }),
     });
 
     this.loginInProgress = false;
@@ -54,7 +54,7 @@ export class AppLoginComponent {
       this.loginInProgress = true;
       this.loginService.login(
         this.loginForm.controls.loginEmail.value,
-        this.loginForm.controls.loginPassword.value,).
+        this.loginForm.controls.loginPassword.value).
         then(
           () => {
             this.router.navigate(['/home']);

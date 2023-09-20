@@ -111,12 +111,12 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   onEditTitle() : void {
     this.tracklistTitleToEdit = this.tracklistTitle;
     this.isTitleBeingEdited = true;
-    this.focusService.focusElement("#tracklistTitle");
+    this.focusService.focusElement('#tracklistTitle');
   }
 
   onCancelEditTitle() : void {
     this.isTitleBeingEdited = false;
-    this.focusService.focusElement("#editTitleButton");
+    this.focusService.focusElement('#editTitleButton');
   }
 
   saveTitle() : void {
