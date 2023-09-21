@@ -2,11 +2,10 @@ apiVersion: backstage.io/v1alpha1
 kind: Component
 metadata:
   name: mixmanager
-  title: Mix Manager
   description: Mix Manager Web Client
   annotations:
     github.com/project-slug: JulianSC-01/mixmanager
 spec:
   lifecycle: production
-  owner: user:JulianSC-01
+  owner: user:juliansc-01
   type: website
