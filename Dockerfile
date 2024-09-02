@@ -6,5 +6,5 @@ RUN npm install
 RUN npm run build
 # Host application
 FROM nginx:latest
-COPY --from=build /app/build/ /usr/share/nginx/html
+COPY --from=build /app/dist/browser /usr/share/nginx/html
 EXPOSE 80
