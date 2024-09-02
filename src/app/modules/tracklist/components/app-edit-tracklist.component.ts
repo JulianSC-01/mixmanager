@@ -1,10 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppFocusService } from 'js-shared';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { Track } from '../objects/track';
 import { Tracklist, TracklistBuilder } from '../objects/tracklist';
-import { AppFocusService } from 'js-shared';
 import { AppTrackService } from '../services/app-track.service';
 import { AppTracklistService } from '../services/app-tracklist.service';
 
@@ -13,7 +13,7 @@ const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 @Component({
   selector: 'app-edit-tracklist',
   templateUrl: './app-edit-tracklist.component.html',
-  styleUrls: ['./app-edit-tracklist.component.css']
+  styleUrl: './app-edit-tracklist.component.css'
 })
 export class AppEditTracklistComponent implements OnInit, OnDestroy {
 

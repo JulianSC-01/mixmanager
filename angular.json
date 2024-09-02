@@ -86,14 +86,14 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "MixManager:build"
+            "buildTarget": "MixManager:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "MixManager:build:production"
+              "buildTarget": "MixManager:build:production"
             },
             "development": {
-              "browserTarget": "MixManager:build:development"
+              "buildTarget": "MixManager:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -101,7 +101,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "MixManager:build"
+            "buildTarget": "MixManager:build"
           }
         },
         "e2e": {

@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
+import firebase from 'firebase/compat/app';
+import { AppFocusService } from 'js-shared';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AppTracklistMessages } from '../messages/app-tracklist-messages';
 import { Tracklist, TracklistBuilder } from '../objects/tracklist';
-import { AppFocusService } from 'js-shared';
 import { AppTracklistService } from '../services/app-tracklist.service';
-import firebase from 'firebase/compat/app';
 
 const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 
 @Component({
   selector: 'app-tracklist',
   templateUrl: './app-tracklist.component.html',
-  styleUrls: ['./app-tracklist.component.css']
+  styleUrl: './app-tracklist.component.css'
 })
 export class AppTracklistComponent {
 

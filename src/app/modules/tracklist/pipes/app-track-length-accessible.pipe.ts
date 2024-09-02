@@ -39,7 +39,7 @@ export class AppTrackLengthAccessiblePipe implements PipeTransform {
       if (value === '') {
         value = '0 seconds.';
       } else {
-        value = value.trimEnd() + '.';
+        value = value.trimRight() + '.';
       }
 
       return value;

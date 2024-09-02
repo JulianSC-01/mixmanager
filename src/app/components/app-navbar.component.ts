@@ -6,7 +6,7 @@ import { AppLoginService } from '../services/app-login.service';
 @Component({
   selector: 'app-navbar',
   templateUrl: './app-navbar.component.html',
-  styleUrls: ['./app-navbar.component.css']
+  styleUrl: './app-navbar.component.css'
 })
 export class AppNavbarComponent implements OnInit {
 
