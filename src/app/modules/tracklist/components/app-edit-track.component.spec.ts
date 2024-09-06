@@ -1,13 +1,12 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire/compat';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppFocusService } from 'js-shared';
+import { provideRouter } from '@angular/router';
+import { AppFocusService, FormInputNumberComponent, FormInputSelectComponent, FormInputTextComponent } from 'js-shared';
 import { AppLoginService } from 'src/app/services/app-login.service';
-import { AppTrackService } from '../services/app-track.service';
-import { AppSharedModule } from '../../shared/app-shared.module';
-import { AppEditTrackComponent } from './app-edit-track.component';
 import { environment } from 'src/environments/environment';
+import { AppTrackService } from '../services/app-track.service';
+import { AppEditTrackComponent } from './app-edit-track.component';
 
 describe('AppEditTrackComponent', () => {
   let component: AppEditTrackComponent;
@@ -17,8 +16,9 @@ describe('AppEditTrackComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        AppSharedModule,
-        RouterTestingModule,
+        FormInputNumberComponent,
+        FormInputSelectComponent,
+        FormInputTextComponent,
         ReactiveFormsModule
       ],
       declarations: [
@@ -27,7 +27,8 @@ describe('AppEditTrackComponent', () => {
       providers: [
         AppFocusService,
         AppLoginService,
-        AppTrackService
+        AppTrackService,
+        provideRouter([])
       ],
     })
     .compileComponents();

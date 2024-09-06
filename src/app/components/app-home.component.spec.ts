@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AppSharedModule } from '../modules/shared/app-shared.module';
-import { AppHomeComponent } from './app-home.component';
 import { AppLoginGuard } from '../services/app-login-guard';
+import { AppHomeComponent } from './app-home.component';
 
 describe('AppHomeComponent', () => {
   let component: AppHomeComponent;
@@ -9,9 +8,6 @@ describe('AppHomeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [
-        AppSharedModule
-      ],
       declarations: [
         AppHomeComponent
       ],

@@ -1,7 +1,6 @@
 import { TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire/compat';
-import { RouterTestingModule } from '@angular/router/testing';
-import { AppSharedModule } from './modules/shared/app-shared.module';
+import { provideRouter } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AppComponent } from './app.component';
 import { AppNavbarComponent } from './components/app-navbar.component';
@@ -11,16 +10,15 @@ describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        AngularFireModule.initializeApp(environment.firebaseConfig),
-        AppSharedModule,
-        RouterTestingModule
+        AngularFireModule.initializeApp(environment.firebaseConfig)
       ],
       declarations: [
         AppComponent,
         AppNavbarComponent
       ],
       providers: [
-        AppLoginService
+        AppLoginService,
+        provideRouter([])
       ]
     }).compileComponents();
   }));

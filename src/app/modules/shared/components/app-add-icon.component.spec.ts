@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { AppAddIconComponent } from './app-add-icon.component';
 
 describe('AppAddIconComponent', () => {
@@ -8,7 +7,9 @@ describe('AppAddIconComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppAddIconComponent ]
+      imports: [
+        AppAddIconComponent
+      ]
     })
     .compileComponents();
   }));

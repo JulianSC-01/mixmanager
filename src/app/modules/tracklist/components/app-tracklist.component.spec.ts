@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire/compat';
 import { FormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { AppFocusService } from 'js-shared';
 import { AppLoginService } from 'src/app/services/app-login.service';
-import { AppSharedModule } from '../../shared/app-shared.module';
-import { AppTracklistComponent } from './app-tracklist.component';
-import { AppTracklistService } from '../services/app-tracklist.service';
-import { AppTrackService } from '../services/app-track.service';
 import { environment } from 'src/environments/environment';
+import { AppTrackService } from '../services/app-track.service';
+import { AppTracklistService } from '../services/app-tracklist.service';
+import { AppTracklistComponent } from './app-tracklist.component';
 
 describe('AppTracklistComponent', () => {
   let component: AppTracklistComponent;
@@ -18,8 +17,6 @@ describe('AppTracklistComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebaseConfig),
-        AppSharedModule,
-        RouterTestingModule,
         FormsModule
       ],
       declarations: [
@@ -29,7 +26,8 @@ describe('AppTracklistComponent', () => {
         AppFocusService,
         AppLoginService,
         AppTracklistService,
-        AppTrackService
+        AppTrackService,
+        provideRouter([])
       ],
     })
     .compileComponents();

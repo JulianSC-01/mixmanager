@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire/compat';
-import { RouterTestingModule } from '@angular/router/testing';
+import { provideRouter } from '@angular/router';
 import { environment } from 'src/environments/environment';
 import { AppLoginGuard } from './app-login-guard';
 import { AppLoginService } from './app-login.service';
@@ -11,12 +11,12 @@ describe('AppLoginGuard', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        AngularFireModule.initializeApp(environment.firebaseConfig),
-        RouterTestingModule
+        AngularFireModule.initializeApp(environment.firebaseConfig)
       ],
       providers: [
         AppLoginService,
-        AppLoginGuard
+        AppLoginGuard,
+        provideRouter([])
       ]
     });
     service = TestBed.inject(AppLoginGuard);

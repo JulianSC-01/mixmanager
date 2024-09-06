@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
 import { AppDeleteIconComponent } from './app-delete-icon.component';
 
 describe('AppDeleteIconComponent', () => {
@@ -8,7 +7,9 @@ describe('AppDeleteIconComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppDeleteIconComponent ]
+      imports: [
+        AppDeleteIconComponent
+      ]
     })
     .compileComponents();
   }));
