@@ -1,7 +1,7 @@
 import { DocumentData } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 
-export class Track {
+export class AppTrack {
   public id : string;
   public artist : string;
   public title : string;
@@ -11,7 +11,7 @@ export class Track {
   public endTime : number;
   public created : firebase.firestore.Timestamp;
 
-  constructor(builder : TrackBuilder) { 
+  constructor(builder : TrackBuilder) {
     this.id = builder.id;
     this.artist = builder.artist;
     this.title = builder.title;
@@ -31,7 +31,7 @@ export class Track {
     documentData.key = this.key;
     documentData.startTime = this.startTime;
     documentData.endTime = this.endTime;
-    
+
     return documentData;
   }
 
@@ -109,7 +109,7 @@ export class TrackBuilder {
     return this;
   }
 
-  buildTrack() : Track {
-    return new Track(this);
+  buildTrack() : AppTrack {
+    return new AppTrack(this);
   }
 }

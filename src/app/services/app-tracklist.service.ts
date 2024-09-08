@@ -1,27 +1,28 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from '@angular/fire/compat/firestore';
-import { DocumentData, DocumentReference } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentData, DocumentReference } from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AppTracklist, TracklistBuilder } from '../tracklist/app-tracklist';
 import { AppTrackService } from './app-track.service';
-import { Tracklist, TracklistBuilder } from '../objects/tracklist';
 
 const CREATION_FIELD = 'created';
 const TRACKLIST_COLLECTION = 'tracklists';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppTracklistService {
-  private tracklist : AngularFirestoreDocument<Tracklist>;
-  private tracklistCollection : AngularFirestoreCollection<Tracklist>;
+  private tracklist : AngularFirestoreDocument<AppTracklist>;
+  private tracklistCollection : AngularFirestoreCollection<AppTracklist>;
 
   constructor(
     private firestoreService : AngularFirestore,
-    private trackService : AppTrackService) { 
+    private trackService : AppTrackService) {
   }
 
-  retrieveTracklists() : Observable<Tracklist[]> {
-    this.tracklistCollection = 
-    this.firestoreService.collection<Tracklist>(
+  retrieveTracklists() : Observable<AppTracklist[]> {
+    this.tracklistCollection =
+    this.firestoreService.collection<AppTracklist>(
       TRACKLIST_COLLECTION, ref => ref.orderBy(CREATION_FIELD));
 
     return this.tracklistCollection.snapshotChanges().
@@ -40,7 +41,7 @@ export class AppTracklistService {
   }
 
   retrieveTracklist(
-    tracklistId : string) : Observable<Tracklist> {
+    tracklistId : string) : Observable<AppTracklist> {
     this.tracklist = this.firestoreService.doc(
       TRACKLIST_COLLECTION + '/' + tracklistId);
 
@@ -82,7 +83,7 @@ export class AppTracklistService {
   }
 
   updateTracklist(
-    tracklistId : string, 
+    tracklistId : string,
     tracklistData : DocumentData) : Promise<void> {
     return this.firestoreService.doc(
       TRACKLIST_COLLECTION + '/' + tracklistId).update(tracklistData);

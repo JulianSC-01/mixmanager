@@ -1,19 +1,21 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
-import { AppTrackHelper } from '../helpers/app-track-helper';
-import { AppTracklistMessages } from '../messages/app-tracklist-messages';
-import { Track, TrackBuilder } from '../objects/track';
-import { AppFocusService, AppFormService } from 'js-shared';
-import { AppTrackService } from '../services/app-track.service';
 import firebase from 'firebase/compat/app';
+import {
+  AppFocusService, AppFormService, FormErrorFeedbackComponent, FormErrorHeaderComponent,
+  FormInputNumberComponent, FormInputSelectComponent, FormInputTextComponent, FormLabelComponent, PageHeaderComponent, SpinnerComponent
+} from 'js-shared';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { AppTrackService } from '../../services/app-track.service';
+import { AppTrack, TrackBuilder } from '../app-track';
+import { AppTrackHelper } from '../util/app-track-helper';
+import { AppTracklistMessages } from '../util/app-tracklist-messages';
 
 const ADD_TRACK_TITLE : string = 'Add track';
 const EDIT_TRACK_TITLE : string = 'Edit track';
-
 const UNKNOWN_TRACK : string = 'ID';
-
 const BPM_PATTERN : RegExp = /^[0-9]{0,3}$/;
 
 interface TrackForm {
@@ -32,15 +34,27 @@ interface TrackTimeForm {
 }
 
 @Component({
+  imports: [
+    CommonModule,
+    FormErrorFeedbackComponent,
+    FormErrorHeaderComponent,
+    FormLabelComponent,
+    FormInputNumberComponent,
+    FormInputSelectComponent,
+    FormInputTextComponent,
+    PageHeaderComponent,
+    ReactiveFormsModule,
+    SpinnerComponent
+  ],
   selector: 'app-edit-track',
+  standalone: true,
   templateUrl: './app-edit-track.component.html'
 })
 export class AppEditTrackComponent implements OnInit {
-
   public trackIsLoading : boolean;
   public trackIsUpdating : boolean;
   public trackForm : FormGroup<TrackForm>;
-  public track : Observable<Track>;
+  public track : Observable<AppTrack>;
   private trackEnd : Subject<void>;
 
   public minorKeys : string[] = ['Ab','Eb','Bb','F','C','G','D','A','E','B','F#','Db'];

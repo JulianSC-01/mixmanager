@@ -11,7 +11,7 @@ import { AppLoginComponent } from './components/app-login.component';
 import { AppNavbarComponent } from './components/app-navbar.component';
 import { AppNotFoundComponent } from './components/app-not-found.component';
 import { AppStartupComponent } from './components/app-startup.component';
-import { AppMusicIconComponent } from './modules/shared/components/app-music-icon.component';
+import { AppMusicIconComponent } from './shared/components/app-music-icon.component';
 
 @NgModule({
   declarations: [

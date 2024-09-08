@@ -1,8 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AppTrackHelper } from '../helpers/app-track-helper';
+import { AppTrackHelper } from '../util/app-track-helper';
 
 @Pipe({
-  name: 'trackLengthAccessible'
+  name: 'trackLengthAccessible',
+  standalone: true
 })
 export class AppTrackLengthAccessiblePipe implements PipeTransform {
   transform(totalSeconds: number): string {

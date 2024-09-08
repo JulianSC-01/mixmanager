@@ -1,12 +1,12 @@
 import { DocumentData } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 
-export class Tracklist {
+export class AppTracklist {
   public id : string;
   public title : string;
   public created : firebase.firestore.Timestamp;
 
-  constructor(builder : TracklistBuilder) { 
+  constructor(builder : TracklistBuilder) {
     this.id = builder.id;
     this.title = builder.title;
     this.created = builder.created;
@@ -16,7 +16,7 @@ export class Tracklist {
     let documentData : DocumentData = {};
 
     documentData.title = this.title;
-    
+
     return documentData;
   }
 }
@@ -43,7 +43,7 @@ export class TracklistBuilder {
     return this;
   }
 
-  buildTracklist() : Tracklist {
-    return new Tracklist(this);
+  buildTracklist() : AppTracklist {
+    return new AppTracklist(this);
   }
 }

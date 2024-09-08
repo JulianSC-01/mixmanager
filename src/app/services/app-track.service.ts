@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore} from '@angular/fire/compat/firestore';
-import { DocumentData, DocumentReference } from '@angular/fire/compat/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentData, DocumentReference } from '@angular/fire/compat/firestore';
 import { forkJoin, Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { Track, TrackBuilder } from '../objects/track';
+import { AppTrack, TrackBuilder } from '../tracklist/app-track';
 
 const CREATION_FIELD = 'created';
 const TRACK_COLLECTION = 'tracks';
 const TRACKLIST_COLLECTION = 'tracklists';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AppTrackService {
-  private track : AngularFirestoreDocument<Track>;
-  private trackCollection : AngularFirestoreCollection<Track>;
+  private track : AngularFirestoreDocument<AppTrack>;
+  private trackCollection : AngularFirestoreCollection<AppTrack>;
 
   public recentlyAddedTrackTitle : string;
   public recentlyUpdatedTrackTitle : string;
@@ -23,9 +24,9 @@ export class AppTrackService {
   }
 
   retrieveTracks(
-    tracklistId : string) : Observable<Track[]> {
+    tracklistId : string) : Observable<AppTrack[]> {
     this.trackCollection =
-    this.firestoreService.collection<Track>(
+    this.firestoreService.collection<AppTrack>(
       TRACKLIST_COLLECTION + '/' + tracklistId + '/' +
       TRACK_COLLECTION, ref => ref.orderBy(CREATION_FIELD));
 
@@ -51,7 +52,7 @@ export class AppTrackService {
 
   retrieveTrack(
     tracklistId : string,
-    trackId : string) : Observable<Track> {
+    trackId : string) : Observable<AppTrack> {
     this.track = this.firestoreService.doc(
       TRACKLIST_COLLECTION + '/' + tracklistId + '/' + TRACK_COLLECTION + '/' + trackId);
 

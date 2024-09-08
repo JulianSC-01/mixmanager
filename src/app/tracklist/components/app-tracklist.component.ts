@@ -1,26 +1,46 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import firebase from 'firebase/compat/app';
-import { AppFocusService } from 'js-shared';
+import {
+  AlertComponent, AppFocusService, FormErrorHeaderComponent, FormInputTextComponent,
+  PageHeaderComponent, SpinnerComponent
+} from 'js-shared';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { AppTracklistMessages } from '../messages/app-tracklist-messages';
-import { Tracklist, TracklistBuilder } from '../objects/tracklist';
-import { AppTracklistService } from '../services/app-tracklist.service';
+import { AppTracklistService } from '../../services/app-tracklist.service';
+import { AppAddIconComponent } from '../../shared/components/app-add-icon.component';
+import { AppDeleteIconComponent } from '../../shared/components/app-delete-icon.component';
+import { AppTracklist, TracklistBuilder } from '../app-tracklist';
+import { AppTracklistMessages } from '../util/app-tracklist-messages';
 
 const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 
 @Component({
+  imports: [
+    AlertComponent,
+    AppAddIconComponent,
+    AppDeleteIconComponent,
+    CommonModule,
+    FormErrorHeaderComponent,
+    FormInputTextComponent,
+    FormsModule,
+    PageHeaderComponent,
+    RouterLink,
+    SpinnerComponent
+  ],
   selector: 'app-tracklist',
-  templateUrl: './app-tracklist.component.html',
-  styleUrl: './app-tracklist.component.css'
+  standalone: true,
+  styleUrl: './app-tracklist.component.css',
+  templateUrl: './app-tracklist.component.html'
 })
 export class AppTracklistComponent {
-
   public tracklistsAreLoading : boolean;
   public tracklistCount : number;
   public tracklistIsAdding : boolean;
   public tracklistToAdd : string = '';
 
-  public tracklists : Observable<Tracklist[]>;
+  public tracklists : Observable<AppTracklist[]>;
   private tracklistsEnd : Subject<void>;
 
   public tracklistErrorMessage : string;

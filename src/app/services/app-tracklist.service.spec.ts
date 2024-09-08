@@ -1,21 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { AngularFireModule } from '@angular/fire/compat';
-import { AppTrackService } from './app-track.service';
-import { environment } from 'src/environments/environment'
+import { environment } from 'src/environments/environment';
+import { AppTracklistService } from './app-tracklist.service';
 
-describe('AppTrackService', () => {
-  let service: AppTrackService;
+describe('AppTracklistService', () => {
+  let service: AppTracklistService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         AngularFireModule.initializeApp(environment.firebaseConfig),
-      ],
-      providers: [
-        AppTrackService
       ]
     });
-    service = TestBed.inject(AppTrackService);
+    service = TestBed.inject(AppTracklistService);
   });
 
   it('should be created', () => {

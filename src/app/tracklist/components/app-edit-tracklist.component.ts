@@ -1,29 +1,51 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AppFocusService } from 'js-shared';
+import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import {
+  AlertComponent, AppFocusService, FormErrorHeaderComponent, FormInputTextComponent,
+  FormLabelComponent, PageHeaderComponent, SpinnerComponent
+} from 'js-shared';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { AppTracklistMessages } from '../messages/app-tracklist-messages';
-import { Track } from '../objects/track';
-import { Tracklist, TracklistBuilder } from '../objects/tracklist';
-import { AppTrackService } from '../services/app-track.service';
-import { AppTracklistService } from '../services/app-tracklist.service';
+import { AppTrackService } from '../../services/app-track.service';
+import { AppTracklistService } from '../../services/app-tracklist.service';
+import { AppTrack } from '../app-track';
+import { AppTracklist, TracklistBuilder } from '../app-tracklist';
+import { AppTrackLengthAccessiblePipe } from '../pipes/app-track-length-accessible.pipe';
+import { AppTrackLengthPipe } from '../pipes/app-track-length.pipe';
+import { AppTrackNumberPipe } from '../pipes/app-track-number.pipe';
+import { AppTracklistMessages } from '../util/app-tracklist-messages';
 
 const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 
 @Component({
+  imports: [
+    AlertComponent,
+    AppTrackLengthPipe,
+    AppTrackLengthAccessiblePipe,
+    AppTrackNumberPipe,
+    CommonModule,
+    FormErrorHeaderComponent,
+    FormInputTextComponent,
+    FormLabelComponent,
+    FormsModule,
+    PageHeaderComponent,
+    RouterLink,
+    SpinnerComponent
+  ],
   selector: 'app-edit-tracklist',
-  templateUrl: './app-edit-tracklist.component.html',
-  styleUrl: './app-edit-tracklist.component.css'
+  standalone: true,
+  styleUrl: './app-edit-tracklist.component.css',
+  templateUrl: './app-edit-tracklist.component.html'
 })
 export class AppEditTracklistComponent implements OnInit, OnDestroy {
-
   // Tracklist Title
   public tracklistIsLoading : boolean;
   public isTitleBeingEdited : boolean;
   public isTitleBeingSaved : boolean;
   public tracklistTitle : string;
   public tracklistTitleToEdit : string = '';
-  private tracklist : Observable<Tracklist>;
+  private tracklist : Observable<AppTracklist>;
   private tracklistEnd : Subject<void>;
 
   // Tracks
@@ -31,7 +53,7 @@ export class AppEditTracklistComponent implements OnInit, OnDestroy {
   public trackCount : number;
   public tracksAreUpdating : boolean;
   public tracksSelected : string[];
-  public tracks : Observable<Track[]>;
+  public tracks : Observable<AppTrack[]>;
   private trackTitleSelected : string;
   private tracksEnd : Subject<void>;
 

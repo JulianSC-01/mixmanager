@@ -1,8 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { AppTrackHelper } from '../helpers/app-track-helper';
+import { AppTrackHelper } from '../util/app-track-helper';
 
 @Pipe({
-  name: 'trackLength'
+  name: 'trackLength',
+  standalone: true
 })
 export class AppTrackLengthPipe implements PipeTransform {
   transform(totalSeconds: number): string {
@@ -12,11 +13,11 @@ export class AppTrackLengthPipe implements PipeTransform {
       let hoursMinutesSeconds : number[] =
         AppTrackHelper.getInstance().getLengthHHMMSS(totalSeconds);
 
-      let hours : string = 
+      let hours : string =
         this.formatNumber(hoursMinutesSeconds[0]);
-      let minutes : string = 
+      let minutes : string =
         this.formatNumber(hoursMinutesSeconds[1]);
-      let seconds : string = 
+      let seconds : string =
         this.formatNumber(hoursMinutesSeconds[2]);
 
       return hours + ':' + minutes + ':' + seconds;

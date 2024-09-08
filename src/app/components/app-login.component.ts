@@ -3,7 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { AppFocusService, AppFormService } from 'js-shared';
 import { AppLoginService } from 'src/app/services/app-login.service';
-import { AppMessages } from '../messages/app-messages';
+import { AppMessages } from '../util/app-messages';
 
 interface LoginForm {
   loginEmail: FormControl<string>;
