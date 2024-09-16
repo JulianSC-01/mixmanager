@@ -20,13 +20,21 @@ module.exports = function (config) {
       reports: ['html', 'lcovonly', 'text-summary'],
       fixWebpackSourcePaths: true
     },
-    reporters: ['progress', 'kjhtml'],
-    port: 9876,
+    autoWatch: false,
+    browsers: ['ChromeHeadless'],
     colors: true,
+    customLaunchers:{
+      ChromeHeadlessNoSandbox: {
+        base: 'ChromeHeadless',
+        flags: [
+          '--no-sandbox'
+        ]
+      }
+    },
     logLevel: config.LOG_INFO,
-    autoWatch: true,
-    browsers: ['Chrome'],
-    singleRun: false,
-    restartOnFileChange: true
+    port: 9876,
+    reporters: ['progress', 'kjhtml'],
+    restartOnFileChange: true,
+    singleRun: true,
   });
 };
