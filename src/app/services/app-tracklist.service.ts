@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument, DocumentData, DocumentReference } from '@angular/fire/compat/firestore';
+import {
+  AngularFirestore, AngularFirestoreCollection,
+  AngularFirestoreDocument, DocumentData, DocumentReference
+} from '@angular/fire/compat/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppTracklist, TracklistBuilder } from '../tracklist/app-tracklist';

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { AppNotFoundComponent } from './app-not-found.component';
 
 describe('AppNotFoundComponent', () => {
@@ -7,7 +8,12 @@ describe('AppNotFoundComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ AppNotFoundComponent ]
+      imports: [
+        AppNotFoundComponent
+      ],
+      providers: [
+        provideRouter([])
+      ]
     })
     .compileComponents();
   }));

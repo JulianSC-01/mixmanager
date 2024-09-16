@@ -1,8 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AngularFireModule } from '@angular/fire/compat';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
-import { environment } from 'src/environments/environment';
 import { AppEditTrackComponent } from './app-edit-track.component';
 
 describe('AppEditTrackComponent', () => {
@@ -12,7 +10,6 @@ describe('AppEditTrackComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        AngularFireModule.initializeApp(environment.firebaseConfig),
         AppEditTrackComponent,
         ReactiveFormsModule
       ],

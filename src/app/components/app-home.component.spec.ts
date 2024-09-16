@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AppLoginGuard } from '../services/app-login-guard';
+import { provideRouter } from '@angular/router';
 import { AppHomeComponent } from './app-home.component';
 
 describe('AppHomeComponent', () => {
@@ -8,11 +8,11 @@ describe('AppHomeComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [
+      imports: [
         AppHomeComponent
       ],
       providers: [
-        AppLoginGuard
+        provideRouter([])
       ]
     })
     .compileComponents();
