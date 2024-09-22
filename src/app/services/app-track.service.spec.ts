@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
-import { AppLoginService } from './app-login.service';
+import { AppTrackService } from './app-track.service';
 
-describe('AppLoginService', () => {
-  let service: AppLoginService;
+describe('AppTrackService', () => {
+  let service: AppTrackService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AppLoginService);
+    service = TestBed.inject(AppTrackService);
   });
 
   it('should be created', () => {

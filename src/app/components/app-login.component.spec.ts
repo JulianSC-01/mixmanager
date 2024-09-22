@@ -1,12 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AngularFireModule } from '@angular/fire/compat';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { environment } from 'src/environments/environment';
-import { AppSharedModule } from '../modules/shared/app-shared.module';
+import { provideRouter } from '@angular/router';
+import { FormInputTextComponent } from 'js-shared';
 import { AppLoginComponent } from './app-login.component';
-import { AppFocusService } from 'js-shared';
-import { AppLoginService } from 'src/app/services/app-login.service';
 
 describe('AppLoginComponent', () => {
   let component: AppLoginComponent;
@@ -15,17 +11,12 @@ describe('AppLoginComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        AngularFireModule.initializeApp(environment.firebaseConfig),
-        AppSharedModule,
-        ReactiveFormsModule,
-        RouterTestingModule
-      ],
-      declarations: [
-        AppLoginComponent
+        AppLoginComponent,
+        FormInputTextComponent,
+        ReactiveFormsModule
       ],
       providers: [
-        AppFocusService,
-        AppLoginService
+        provideRouter([])
       ]
     })
     .compileComponents();

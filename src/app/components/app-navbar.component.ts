@@ -1,15 +1,24 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AppFocusService } from 'js-shared';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { AppFocusService, SpinnerComponent } from 'js-shared';
 import { AppLoginService } from '../services/app-login.service';
+import { AppMusicIconComponent } from '../shared/components/app-music-icon.component';
 
 @Component({
+  imports: [
+    AppMusicIconComponent,
+    CommonModule,
+    RouterLink,
+    RouterLinkActive,
+    SpinnerComponent
+  ],
   selector: 'app-navbar',
-  templateUrl: './app-navbar.component.html',
-  styleUrls: ['./app-navbar.component.css']
+  standalone: true,
+  styleUrl: './app-navbar.component.css',
+  templateUrl: './app-navbar.component.html'
 })
 export class AppNavbarComponent implements OnInit {
-
   public isLoggingOut : boolean;
 
   constructor(

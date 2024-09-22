@@ -1,9 +1,12 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AppFocusService, AppFormService } from 'js-shared';
+import {
+  AlertComponent, AppFocusService, AppFormService, FormErrorHeaderComponent, FormInputTextComponent,
+  PageHeaderComponent, SpinnerComponent
+} from 'js-shared';
 import { AppLoginService } from 'src/app/services/app-login.service';
-import { AppMessages } from '../messages/app-messages';
 
 interface LoginForm {
   loginEmail: FormControl<string>;
@@ -11,11 +14,20 @@ interface LoginForm {
 }
 
 @Component({
+  imports: [
+    AlertComponent,
+    CommonModule,
+    FormErrorHeaderComponent,
+    FormInputTextComponent,
+    PageHeaderComponent,
+    ReactiveFormsModule,
+    SpinnerComponent
+  ],
   selector: 'app-login',
+  standalone: true,
   templateUrl: './app-login.component.html'
 })
 export class AppLoginComponent {
-
   public loginForm : FormGroup<LoginForm>;
   public loginInProgress : boolean;
 
@@ -36,14 +48,14 @@ export class AppLoginComponent {
     public loginService : AppLoginService) {
 
     this.loginForm = this.formBuilder.group<LoginForm>({
-        loginEmail : this.formBuilder.control('', {
-          nonNullable: true,
-          validators: Validators.required
-        }),
-        loginPassword : this.formBuilder.control('', {
-          nonNullable: true,
-          validators: Validators.required
-        }),
+      loginEmail : this.formBuilder.control('', {
+        nonNullable: true,
+        validators: Validators.required
+      }),
+      loginPassword : this.formBuilder.control('', {
+        nonNullable: true,
+        validators: Validators.required
+      }),
     });
 
     this.loginInProgress = false;
@@ -54,7 +66,7 @@ export class AppLoginComponent {
       this.loginInProgress = true;
       this.loginService.login(
         this.loginForm.controls.loginEmail.value,
-        this.loginForm.controls.loginPassword.value,).
+        this.loginForm.controls.loginPassword.value).
         then(
           () => {
             this.router.navigate(['/home']);
@@ -82,12 +94,12 @@ export class AppLoginComponent {
     case AppLoginService.ERR_TOO_MANY_REQUESTS:
       this.loginForm.setErrors({invalidLogin : true});
       this.loginErrorMessageHeader =
-        AppMessages.MSG_LOGIN_TOO_MANY_REQUESTS;
+        AppLoginService.MSG_LOGIN_TOO_MANY_REQUESTS;
       break;
     default:
       this.loginForm.setErrors({invalidLogin : true});
       this.loginErrorMessageHeader =
-        AppMessages.MSG_LOGIN_INVALID_CREDENTIALS;
+        AppLoginService.MSG_LOGIN_INVALID_CREDENTIALS;
     }
   }
 }

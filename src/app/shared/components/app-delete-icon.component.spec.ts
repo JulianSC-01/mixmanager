@@ -1,25 +1,21 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-import { AppNavbarComponent } from './app-navbar.component';
+import { AppDeleteIconComponent } from './app-delete-icon.component';
 
-describe('AppNavbarComponent', () => {
-  let component: AppNavbarComponent;
-  let fixture: ComponentFixture<AppNavbarComponent>;
+describe('AppDeleteIconComponent', () => {
+  let component: AppDeleteIconComponent;
+  let fixture: ComponentFixture<AppDeleteIconComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        AppNavbarComponent
-      ],
-      providers: [
-        provideRouter([])
+        AppDeleteIconComponent
       ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppNavbarComponent);
+    fixture = TestBed.createComponent(AppDeleteIconComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { AppSharedModule } from '../modules/shared/app-shared.module';
+import { provideRouter } from '@angular/router';
 import { AppNotFoundComponent } from './app-not-found.component';
 
 describe('AppNotFoundComponent', () => {
@@ -9,9 +9,11 @@ describe('AppNotFoundComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        AppSharedModule
+        AppNotFoundComponent
       ],
-      declarations: [ AppNotFoundComponent ]
+      providers: [
+        provideRouter([])
+      ]
     })
     .compileComponents();
   }));

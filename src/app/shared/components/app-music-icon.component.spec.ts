@@ -1,25 +1,21 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-import { AppNavbarComponent } from './app-navbar.component';
+import { AppMusicIconComponent } from './app-music-icon.component';
 
-describe('AppNavbarComponent', () => {
-  let component: AppNavbarComponent;
-  let fixture: ComponentFixture<AppNavbarComponent>;
+describe('AppMusicIconComponent', () => {
+  let component: AppMusicIconComponent;
+  let fixture: ComponentFixture<AppMusicIconComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       imports: [
-        AppNavbarComponent
-      ],
-      providers: [
-        provideRouter([])
+        AppMusicIconComponent
       ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AppNavbarComponent);
+    fixture = TestBed.createComponent(AppMusicIconComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
