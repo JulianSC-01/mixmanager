@@ -2,7 +2,7 @@
 FROM node:18-alpine AS build
 WORKDIR /app
 COPY . .
-RUN npm install
+RUN npm ci
 RUN npm run build
 # Host application
 FROM nginx:latest
