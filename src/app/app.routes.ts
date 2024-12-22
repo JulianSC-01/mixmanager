@@ -18,27 +18,9 @@ export const appRoutes: Routes = [
   },
   { path : 'tracklists',
     canActivate : [AppLoginGuard],
-    loadComponent: () =>
-      import('./tracklist/components/app-tracklist.component').
-        then(c => c.AppTracklistComponent)
-  },
-  { path : 'tracklists/:tracklistId',
-    canActivate : [AppLoginGuard],
-    loadComponent: () =>
-      import('./tracklist/components/app-edit-tracklist.component').
-        then(c => c.AppEditTracklistComponent)
-  },
-  { path : 'tracklists/:tracklistId/add',
-    canActivate : [AppLoginGuard],
-    loadComponent: () =>
-      import('./tracklist/components/app-edit-track.component').
-        then(c => c.AppEditTrackComponent)
-  },
-  { path : 'tracklists/:tracklistId/:trackId',
-    canActivate : [AppLoginGuard],
-    loadComponent: () =>
-      import('./tracklist/components/app-edit-track.component').
-        then(c => c.AppEditTrackComponent)
+    loadChildren: () =>
+      import ('./tracklist/app.tracklist.routes').
+        then(m => m.appTracklistRoutes)
   },
   { path : 'notfound',
     component : AppNotFoundComponent
