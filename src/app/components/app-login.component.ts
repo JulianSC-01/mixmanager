@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, NonNullableFormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   AlertComponent, AppFocusService, AppFormService, FormErrorHeaderComponent, FormInputTextComponent,
@@ -43,17 +43,15 @@ export class AppLoginComponent {
   constructor(
     private focusService : AppFocusService,
     private formService : AppFormService,
-    private formBuilder : FormBuilder,
+    private formBuilder : NonNullableFormBuilder,
     private router : Router,
     public loginService : AppLoginService) {
 
     this.loginForm = this.formBuilder.group<LoginForm>({
       loginEmail : this.formBuilder.control('', {
-        nonNullable: true,
         validators: Validators.required
       }),
       loginPassword : this.formBuilder.control('', {
-        nonNullable: true,
         validators: Validators.required
       }),
     });
