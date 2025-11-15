@@ -19,8 +19,12 @@ Tracklist Editor
 
 ## Change Log
 
-2024-09-02 (v1.7.0)
+2025-11-15 (18.0.0)
 Latest Version
+  - Upgraded to Angular 18
+  - Installed ngx-js-shared library 18.0.0
+
+2024-09-02 (v1.7.0)
   - Upgraded to Angular 17
   - Upgraded to Firebase 10.13.1
   - Upgraded js-shared library to 1.1.0
