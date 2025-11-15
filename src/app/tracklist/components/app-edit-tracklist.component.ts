@@ -5,7 +5,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
   AlertComponent, AppFocusService, FormErrorHeaderComponent, FormInputTextComponent,
   FormLabelComponent, PageHeaderComponent, SpinnerComponent
-} from 'js-shared';
+} from 'ngx-js-shared';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AppTrackService } from '../../services/app-track.service';
 import { AppTracklistService } from '../../services/app-tracklist.service';

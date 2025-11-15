@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import {
   AlertComponent, AppFocusService, AppFormService, FormErrorHeaderComponent, FormInputTextComponent,
   PageHeaderComponent, SpinnerComponent
-} from 'js-shared';
+} from 'ngx-js-shared';
 import { AppLoginService } from 'src/app/services/app-login.service';
 
 interface LoginForm {

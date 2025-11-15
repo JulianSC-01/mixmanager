@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AppFocusService, SpinnerComponent } from 'js-shared';
+import { AppFocusService, SpinnerComponent } from 'ngx-js-shared';
 import { AppLoginService } from '../services/app-login.service';
 import { AppMusicIconComponent } from '../shared/components/app-music-icon.component';
 

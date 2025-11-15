@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { PageFooterComponent } from 'js-shared';
+import { PageFooterComponent } from 'ngx-js-shared';
 import { AppNavbarComponent } from './components/app-navbar.component';
 
 @Component({

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
-import { FormInputTextComponent } from 'js-shared';
+import { FormInputTextComponent } from 'ngx-js-shared';
 import { AppLoginComponent } from './app-login.component';
 
 describe('AppLoginComponent', () => {

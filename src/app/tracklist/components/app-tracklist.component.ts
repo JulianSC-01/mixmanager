@@ -6,7 +6,7 @@ import firebase from 'firebase/compat/app';
 import {
   AlertComponent, AppFocusService, FormErrorHeaderComponent, FormInputTextComponent,
   PageHeaderComponent, SpinnerComponent
-} from 'js-shared';
+} from 'ngx-js-shared';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { AppTracklistService } from '../../services/app-tracklist.service';
 import { AppAddIconComponent } from '../../shared/components/app-add-icon.component';
