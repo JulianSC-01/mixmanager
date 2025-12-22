@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { PageHeaderComponent, SpinnerComponent } from 'ngx-js-shared';
 import { take } from 'rxjs/operators';
@@ -11,22 +11,25 @@ import { AppLoginService } from '../services/app-login.service';
   ],
   selector: 'app-startup',
   standalone: true,
-  templateUrl: './app-startup.component.html'
+  templateUrl: './app-startup.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppStartupComponent implements OnInit {
-  constructor(
-    private loginService : AppLoginService,
-    private router : Router) { }
+export class AppStartupComponent {
+  private readonly loginService =
+    inject(AppLoginService);
+  private readonly router =
+    inject(Router);
 
-  ngOnInit(): void {
-    this.loginService.authState().pipe(
-      take(1)).subscribe(
-        userAuth => {
-          if (userAuth)
+  constructor() {
+    this.loginService.
+      authentication().pipe(
+        take(1)).subscribe(
+        authentication => {
+          if (authentication) {
             this.router.navigate(['/home']);
-          else
+          } else {
             this.router.navigate(['/login']);
-        }
-      );
+          }
+        });
   }
 }

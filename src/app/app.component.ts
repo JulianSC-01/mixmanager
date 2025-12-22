@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { PageFooterComponent } from 'ngx-js-shared';
 import { AppNavbarComponent } from './components/app-navbar.component';
@@ -11,8 +11,8 @@ import { AppNavbarComponent } from './components/app-navbar.component';
   ],
   selector: 'app-root',
   standalone: true,
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppComponent {
-  constructor () {}
 }

@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { AppTrackLengthPipe } from './app-track-length.pipe';
+import { AppTrackLengthA11yPipe } from './app-track-length-a11y.pipe';
 
-describe('AppTrackLengthPipe', () => {
+describe('AppTrackLengthA11yPipe', () => {
   it('create an instance', () => {
     TestBed.runInInjectionContext(() => {
-      const pipe = new AppTrackLengthPipe();
+      const pipe = new AppTrackLengthA11yPipe();
       expect(pipe).toBeTruthy();
     });
   });

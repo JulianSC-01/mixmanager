@@ -1,16 +1,17 @@
 export class AppTrackHelper {
-  private static instance : AppTrackHelper;
+  private static instance: AppTrackHelper;
 
   private constructor() {}
 
-  static getInstance() : AppTrackHelper {
+  static getInstance() {
     if (!AppTrackHelper.instance) {
       AppTrackHelper.instance = new AppTrackHelper();
     }
+
     return AppTrackHelper.instance;
   }
 
-  getLengthHHMMSS(totalSeconds : number) : number[] {
+  getLengthHHMMSS(totalSeconds: number) {
     if (totalSeconds === null ||
         totalSeconds < 0) {
       return [null, null, null];
@@ -34,17 +35,18 @@ export class AppTrackHelper {
     return [trackHours, trackMinutes, trackSeconds];
   }
 
-  getLengthSeconds(hoursMinutesSeconds : number[]) : number {
+  getLengthSeconds(hoursMinutesSeconds: number[]) {
     if (hoursMinutesSeconds[0] === null &&
         hoursMinutesSeconds[1] === null &&
         hoursMinutesSeconds[2] === null) {
       return null;
     }
 
-    let clonedHHMMSS =
-      Object.assign([], hoursMinutesSeconds);
+    const clonedHHMMSS =
+      hoursMinutesSeconds.slice();
 
     let trackHours = clonedHHMMSS[0];
+
     if (trackHours === null || trackHours < 0) {
       trackHours = 0;
     } else if (trackHours > 99) {
@@ -54,6 +56,7 @@ export class AppTrackHelper {
     }
 
     let trackMinutes = clonedHHMMSS[1];
+
     if (trackMinutes === null || trackMinutes < 0) {
       trackMinutes = 0;
     } else if (trackMinutes > 59) {
@@ -63,6 +66,7 @@ export class AppTrackHelper {
     }
 
     let trackSeconds = clonedHHMMSS[2];
+
     if (trackSeconds === null || trackSeconds < 0) {
       trackSeconds = 0;
     } else if (trackSeconds > 59) {
@@ -72,5 +76,16 @@ export class AppTrackHelper {
     }
 
     return ((3600 * trackHours) + (60 * trackMinutes) + trackSeconds);
+  }
+
+  getTrackLength(
+    startTime: number, endTime: number) {
+    if (endTime === null) {
+      return null;
+    } else if (startTime === null) {
+      return endTime;
+    } else {
+      return endTime - startTime;
+    }
   }
 }

@@ -1,29 +1,29 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { inject } from '@angular/core';
+import {
+  ActivatedRouteSnapshot, CanActivateFn,
+  Router, RouterStateSnapshot
+} from '@angular/router';
+import { map, take } from 'rxjs';
 import { AppLoginService } from './app-login.service';
-import { Observable } from 'rxjs';
-import { take, map } from 'rxjs/operators';
-import firebase from 'firebase/compat/app';
 
-@Injectable({
-  providedIn: 'root'
-})
-export class AppLoginGuard  {
-  constructor(
-    private loginService : AppLoginService,
-    private router : Router) { }
+export const loginGuard: CanActivateFn = (
+  _route: ActivatedRouteSnapshot,
+  _state: RouterStateSnapshot) => {
+  const loginService =
+    inject(AppLoginService);
+  const router =
+    inject(Router);
 
-  canActivate() : Observable<boolean> {
-    return this.loginService.authState().pipe(
+  return loginService.
+    authentication().pipe(
       take(1),
-      map((userAuth:firebase.User) => {
-        if (userAuth)
+      map((authentication) => {
+        if (authentication) {
           return true;
-        else {
-          this.router.navigate(['/login']);
+        } else {
+          router.navigate(['/login']);
           return false;
         }
       })
-    )
-  }
+    );
 }

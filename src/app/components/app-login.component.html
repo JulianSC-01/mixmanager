@@ -1,18 +1,22 @@
 <app-page-header>
   Login
 </app-page-header>
-<app-alert
-  *ngIf="loginService.loggedOut | async"
-  [alertId]="'successHeader'"
-  [alertType]="'alert-success'">
-  You have successfully logged out.
-</app-alert>
+@if (loginService.userLogout()) {
+  <app-alert
+    alertId="successHeader"
+    alertType="alert-success">
+    You have successfully logged out.
+  </app-alert>
+}
 <app-form-error-header
-  [errorHeaderMessage]="loginErrorMessageHeader"
-  [errorHeaderFormGroup]="loginForm">
+  #formErrorHeader
+  [errorMessage]="loginErrorMessage()"
+  [errorFormGroup]="loginForm">
 </app-form-error-header>
 <form
+  appFormA11y
   autocomplete="off"
+  [formErrorHeader]="formErrorHeader"
   [formGroup]="loginForm"
   (ngSubmit)="login()">
   <fieldset>
@@ -22,22 +26,22 @@
     <div class="col-sm-6 mb-3">
       <app-form-input-text
         formControlName="loginEmail"
-        [inputErrorMessageId]="'loginEmailError'"
-        [inputErrorMessages]="loginErrorMessageMap"
-        [inputLabelText]="'E-mail address'"
-        [inputId]="'loginEmail'"
-        [inputRequired]="true">
+        inputErrorMessageId="loginEmailError"
+        inputLabelText="E-mail address"
+        inputId="loginEmail"
+        inputRequired="true"
+        [inputErrorMessages]="errorMessageMap()">
       </app-form-input-text>
     </div>
     <div class="col-sm-6 mb-3">
       <app-form-input-text
         formControlName="loginPassword"
-        [inputErrorMessageId]="'loginPasswordError'"
-        [inputErrorMessages]="loginErrorMessageMap"
-        [inputLabelText]="'Password'"
-        [inputId]="'loginPassword'"
-        [inputRequired]="true"
-        [inputType]="'password'">
+        inputErrorMessageId="loginPasswordError"
+        inputLabelText="Password"
+        inputId="loginPassword"
+        inputRequired="true"
+        inputType="password"
+        [inputErrorMessages]="errorMessageMap()">
       </app-form-input-text>
     </div>
   </fieldset>
@@ -45,13 +49,15 @@
     <button
       class="btn btn-primary"
       type="submit"
-      [disabled]="loginInProgress">
+      [disabled]="loginInProgress()">
       Login
     </button>
-    <span *ngIf="loginInProgress" class="ms-2">
-      <app-spinner
-        [spinnerSmall]="true">
-      </app-spinner>
-    </span>
+    @if (loginInProgress()) {
+      <span class="ms-2">
+        <app-spinner
+          spinnerSmall="true">
+        </app-spinner>
+      </span>
+    }
   </div>
 </form>

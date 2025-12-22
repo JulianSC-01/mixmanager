@@ -1,23 +1,30 @@
 <app-page-header>
   Tracklists
 </app-page-header>
-<app-alert
-  *ngIf="tracklistSuccessMessage"
-  [alertId]="'successHeader'"
-  [alertRole]="'note'"
-  [alertType]="'alert-success'">
-  {{ tracklistSuccessMessage }}
-</app-alert>
-<app-form-error-header
-  [errorHeaderMessage]="tracklistErrorMessage">
-</app-form-error-header>
+@if (successMessage()) {
+  <app-alert
+    alertId="successHeader"
+    alertRole="note"
+    alertType="alert-success">
+    {{ successMessage() }}
+  </app-alert>
+}
+@if (errorMessage()) {
+  <app-alert
+    alertId="errorHeader"
+    alertRole="note"
+    alertType="alert-danger">
+    {{ errorMessage() }}
+  </app-alert>
+}
 <form
   autocomplete="off"
   (ngSubmit)="addTracklist()">
   <div class="table-responsive">
-    <table class="table table-bordered table-striped mb-1">
-      <caption *ngIf="tracklists | async as tracklistArray">
-        Table of {{ tracklistArray.length }} tracklists
+    <table
+      class="table table-bordered table-striped mb-1">
+      <caption>
+        Table of {{ tracklistCount() }} tracklists
       </caption>
       <thead>
         <tr>
@@ -26,65 +33,75 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngIf="tracklistsAreLoading else tracklistListing">
-          <td>
-            <app-spinner
-              [spinnerSmall]="true">
-              Loading, please wait...
-            </app-spinner>
-          </td>
-          <td></td>
-        </tr>
-        <ng-template #tracklistListing>
-          <tr *ngIf="tracklistCount === 0">
-            <td>No tracklists available.</td>
+        @if (isLoading()) {
+          <tr>
+            <td>
+              <app-spinner spinnerSmall="true">
+                Loading, please wait...
+              </app-spinner>
+            </td>
             <td></td>
           </tr>
-          <tr *ngFor="let tracklist of tracklists | async; let i = index">
-            <td class="align-middle">
-              <a [routerLink]="[tracklist.id]">
-                {{ tracklist.title ? tracklist.title : 'No title available' }}
-              </a>
+        } @else {
+          @for (tracklist of tracklists();
+            track tracklist.id; let i = $index) {
+            <tr>
+              <td class="align-middle">
+                <a [routerLink]="[tracklist.id]">
+                  {{ tracklist.title ?
+                     tracklist.title : 'No title available' }}
+                </a>
+              </td>
+              <td class="align-middle">
+                <button
+                  class="btn btn-danger"
+                  title="Remove tracklist"
+                  type="button"
+                  (click)="removeTracklist(
+                    tracklist.id, tracklist.title)">
+                  <app-delete-icon/>
+                  <span class="sr-only">
+                    Remove tracklist {{ tracklist.title }}
+                  </span>
+                </button>
+              </td>
+            </tr>
+          } @empty {
+            <tr>
+              <td>No tracklists available.</td>
+              <td></td>
+            </tr>
+          }
+          <tr>
+            <td>
+              <app-form-input-text
+                name="nameToAdd"
+                inputId="nameToAdd"
+                inputLabelInvisible="true"
+                inputLabelText="Enter a tracklist name to add"
+                inputPlaceholder="Enter a tracklist name to add"
+                [(ngModel)]="tracklistToAdd">
+              </app-form-input-text>
             </td>
-            <td class="align-middle">
+            <td>
               <button
-                class="btn btn-danger"
-                title="Remove tracklist"
-                type="button"
-                (click)="removeTracklist(tracklist.id, tracklist.title)">
-                <app-delete-icon/>
-                <span class="sr-only">Remove tracklist {{ tracklist.title }}</span>
+                class="btn btn-primary"
+                type="submit"
+                aria-label="Add tracklist"
+                [disabled]="isAdding() || isLoading()">
+                <app-add-icon/>
+                Add
               </button>
+              @if (isAdding()) {
+                <span class="ms-2">
+                  <app-spinner
+                    spinnerSmall="true">
+                  </app-spinner>
+                </span>
+              }
             </td>
           </tr>
-        </ng-template>
-        <tr>
-          <td>
-            <app-form-input-text
-              name="nameToAdd"
-              [inputId]="'nameToAdd'"
-              [inputLabelInvisible]="true"
-              [inputLabelText]="'Enter a tracklist name to add'"
-              [inputPlaceholder]="'Enter a tracklist name to add'"
-              [(ngModel)]="tracklistToAdd">
-            </app-form-input-text>
-          </td>
-          <td>
-            <button
-              class="btn btn-primary"
-              type="submit"
-              aria-label="Add tracklist"
-              [disabled]="this.tracklistsAreLoading || this.tracklistIsAdding">
-              <app-add-icon/>
-              Add
-            </button>
-            <span *ngIf="tracklistIsAdding" class="ms-2">
-              <app-spinner
-                [spinnerSmall]="true">
-              </app-spinner>
-            </span>
-          </td>
-        </tr>
+        }
       </tbody>
     </table>
   </div>

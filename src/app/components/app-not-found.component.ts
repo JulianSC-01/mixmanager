@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PageHeaderComponent } from 'ngx-js-shared';
 
@@ -9,8 +9,8 @@ import { PageHeaderComponent } from 'ngx-js-shared';
   ],
   selector: 'app-not-found',
   standalone: true,
-  templateUrl: './app-not-found.component.html'
+  templateUrl: './app-not-found.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppNotFoundComponent {
-  constructor() { }
 }

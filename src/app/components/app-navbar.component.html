@@ -7,54 +7,63 @@
       aria-label="Mix Manager Banner (click to skip to main content)"
       (click)="skipToContent()">
       <app-music-icon
-        [width]="32"
-        [height]="32"
-        [title]="'Mix Manager'">
+        width="32"
+        height="32"
+        title="Mix Manager">
       </app-music-icon>
     </button>
-    <button 
-       *ngIf="loginService.authState() | async"
-       class="navbar-toggler" 
-       type="button"
-       data-bs-toggle="collapse"
-       data-bs-target="#navbarSupportedContent" 
-       aria-controls="navbarSupportedContent" 
-       aria-expanded="false" 
-       aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div *ngIf="loginService.authState() | async" class="collapse navbar-collapse mt-1" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link" 
-             routerLink="/home" 
-             routerLinkActive="active" 
-             #rlaHome="routerLinkActive">
-            Home<span *ngIf="rlaHome.isActive" class="sr-only"> (current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" 
-             routerLink="/tracklists" 
-             routerLinkActive="active" 
-             #rlaTrack="routerLinkActive">
-            Tracklists<span *ngIf="rlaTrack.isActive" class="sr-only"> (current)</span>
-          </a>
-        </li>
-      </ul>
-      <span class="d-flex mt-1">
-        <span *ngIf="isLoggingOut" class="navbar-spinner me-2">
-          <app-spinner
-            [spinnerSmall]="true">
-          </app-spinner>
+    @if (loginService.authentication() | async) {
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse mt-1" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link"
+              routerLink="/home"
+              routerLinkActive="active"
+              #rlaHome="routerLinkActive">
+              Home
+              @if (rlaHome.isActive) {
+                <span class="sr-only">(current)</span>
+              }
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"
+              routerLink="/tracklists"
+              routerLinkActive="active"
+              #rlaTrack="routerLinkActive">
+              Tracklists
+              @if (rlaTrack.isActive) {
+                <span class="sr-only">(current)</span>
+              }
+            </a>
+          </li>
+        </ul>
+        <span class="d-flex mt-1">
+          @if (loggingOut()) {
+            <span class="navbar-spinner me-2">
+              <app-spinner
+                spinnerSmall="true">
+              </app-spinner>
+            </span>
+          }
+          <button
+            type="button"
+            class="btn btn-outline-light"
+            (click)="logout()">
+            Logout
+          </button>
         </span>
-        <button 
-          type="button" 
-          class="btn btn-outline-light"
-          (click)="logout()">
-          Logout
-        </button> 
-      </span> 
-    </div>
+      </div>
+    }
   </nav>
 </header>

@@ -1,20 +1,18 @@
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-import { AppLoginGuard } from './app-login-guard';
+import { CanActivateFn } from '@angular/router';
+import { loginGuard } from './app-login-guard';
 
-describe('AppLoginGuard', () => {
-  let service: AppLoginGuard;
+describe('loginGuard', () => {
+  const executeGuard: CanActivateFn =
+    (...guardParameters) =>
+      TestBed.runInInjectionContext(() =>
+        loginGuard(...guardParameters));
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        provideRouter([])
-      ]
-    });
-    service = TestBed.inject(AppLoginGuard);
+    TestBed.configureTestingModule({});
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(executeGuard).toBeTruthy();
   });
 });

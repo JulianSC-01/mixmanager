@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { AppTracklistService } from 'src/app/services/app-tracklist.service';
@@ -14,8 +13,7 @@ describe('AppTracklistComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        AppTracklistComponent,
-        FormsModule
+        AppTracklistComponent
       ],
       providers: [
         provideRouter([])

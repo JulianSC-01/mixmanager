@@ -1,31 +1,31 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy, Component, computed,
+  inject, Injector, input, OnDestroy, OnInit, signal, Signal
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
-  AlertComponent, AppFocusService, FormErrorHeaderComponent, FormInputTextComponent,
+  AlertComponent, FocusService,
+  FormInputTextComponent,
   FormLabelComponent, PageHeaderComponent, SpinnerComponent
 } from 'ngx-js-shared';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { catchError, of, tap } from 'rxjs';
 import { AppTrackService } from '../../services/app-track.service';
 import { AppTracklistService } from '../../services/app-tracklist.service';
-import { AppTrack } from '../app-track';
-import { AppTracklist, TracklistBuilder } from '../app-tracklist';
-import { AppTrackLengthAccessiblePipe } from '../pipes/app-track-length-accessible.pipe';
+import { AppTrack } from '../models/app-track';
+import { AppTracklist } from '../models/app-tracklist';
+import { AppTrackLengthA11yPipe } from '../pipes/app-track-length-a11y.pipe';
 import { AppTrackLengthPipe } from '../pipes/app-track-length.pipe';
 import { AppTrackNumberPipe } from '../pipes/app-track-number.pipe';
 import { AppTracklistMessages } from '../util/app-tracklist-messages';
-
-const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
 
 @Component({
   imports: [
     AlertComponent,
     AppTrackLengthPipe,
-    AppTrackLengthAccessiblePipe,
+    AppTrackLengthA11yPipe,
     AppTrackNumberPipe,
-    CommonModule,
-    FormErrorHeaderComponent,
     FormInputTextComponent,
     FormLabelComponent,
     FormsModule,
@@ -36,289 +36,270 @@ const UNTITLED_TRACKLIST : string = 'Untitled Tracklist';
   selector: 'app-edit-tracklist',
   standalone: true,
   styleUrl: './app-edit-tracklist.component.css',
-  templateUrl: './app-edit-tracklist.component.html'
+  templateUrl: './app-edit-tracklist.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppEditTracklistComponent implements OnInit, OnDestroy {
-  // Tracklist Title
-  public tracklistIsLoading : boolean;
-  public isTitleBeingEdited : boolean;
-  public isTitleBeingSaved : boolean;
-  public tracklistTitle : string;
-  public tracklistTitleToEdit : string = '';
-  private tracklist : Observable<AppTracklist>;
-  private tracklistEnd : Subject<void>;
+export class AppEditTracklistComponent
+  implements OnInit, OnDestroy {
+  private readonly activatedRoute =
+    inject(ActivatedRoute);
+  private readonly focusService =
+    inject(FocusService);
+  private readonly injector =
+    inject(Injector);
+  private readonly trackService =
+    inject(AppTrackService);
+  private readonly tracklistService =
+    inject(AppTracklistService);
+  private readonly router =
+    inject(Router);
 
-  // Tracks
-  public tracksAreLoading : boolean;
-  public trackCount : number;
-  public tracksAreUpdating : boolean;
-  public tracksSelected : string[];
-  public tracks : Observable<AppTrack[]>;
-  private trackTitleSelected : string;
-  private tracksEnd : Subject<void>;
+  readonly tracklistId =
+    input.required<string>();
 
-  public tracklistId : string;
+  tracklist: Signal<AppTracklist>;
 
-  public tracklistErrorMessage : string;
-  public tracklistSuccessMessage : string;
+  readonly tracklistIsLoading =
+    computed(() =>
+      this.tracklist() === undefined);
+  readonly tracklistTitle =
+    computed(() => !!this.tracklist() ?
+      this.tracklist().title : '');
 
-  constructor(
-    private activatedRoute : ActivatedRoute,
-    private focusService : AppFocusService,
-    private trackService : AppTrackService,
-    private tracklistService : AppTracklistService,
-    private router : Router) {
-    this.tracklistId =
-      this.activatedRoute.snapshot.params['tracklistId'];
-  }
+  readonly tracklistTitleToEdit =
+    signal('');
+  readonly isTitleBeingEdited =
+    signal(false);
+  readonly isTitleBeingSaved =
+    signal(false);
 
-  ngOnInit() : void {
+  tracks: Signal<AppTrack[]>;
+
+  readonly tracksAreLoading =
+    computed(() => !this.tracks());
+  readonly trackCount =
+    computed(() => !!this.tracks() ?
+      this.tracks().length : 0);
+
+  readonly tracksSelected =
+    signal<string[]>([]);
+  readonly tracksSelectedCount =
+    computed(() =>
+      this.tracksSelected().length);
+
+  readonly trackTitleSelected =
+    signal<string>(null);
+  readonly tracksAreUpdating =
+    signal(false);
+
+  readonly errorMessage =
+    signal('');
+  readonly successMessage =
+    signal('');
+
+  ngOnInit() {
     if (this.trackService.recentlyAddedTrackTitle) {
       this.displaySuccessMessage(
-      AppTracklistMessages.MSG_ADD_SUCCESSFUL.
-      replace('{0}', this.trackService.recentlyAddedTrackTitle));
+        AppTracklistMessages.MSG_ADD_SUCCESSFUL.
+        replace('{0}', this.trackService.recentlyAddedTrackTitle));
     }
     else if (this.trackService.recentlyUpdatedTrackTitle) {
       this.displaySuccessMessage(
-      AppTracklistMessages.MSG_UPDATE_SUCCESSFUL.
-      replace('{0}', this.trackService.recentlyUpdatedTrackTitle));
+        AppTracklistMessages.MSG_UPDATE_SUCCESSFUL.
+        replace('{0}', this.trackService.recentlyUpdatedTrackTitle));
     }
 
-    this.loadTracklistTitle();
+    this.loadTracklist();
     this.loadTracks();
   }
 
-  ngOnDestroy() : void {
+  ngOnDestroy() {
     this.trackService.recentlyAddedTrackTitle = null;
     this.trackService.recentlyUpdatedTrackTitle = null;
-    this.trackService.recentlyRemovedTrackTitle = null;
-
-    this.tracklistEnd.next();
-    this.tracklistEnd.complete();
-
-    this.tracksEnd.next();
-    this.tracksEnd.complete();
   }
 
-  // ---------------
-  // Tracklist Title
-  // ---------------
+  private loadTracklist() {
+    const tracklist$ =
+      this.tracklistService.
+      retrieveTracklist(this.tracklistId()).pipe(
+        tap(data => {
+          if (!data) {
+            this.router.navigate(['/notfound']);
+          }
+        }),
+        catchError(() => {
+          this.displayErrorMessage(
+            AppTracklistMessages.MSG_RETRIEVE_TITLE_FAILED);
 
-  private loadTracklistTitle() : void {
-    this.tracklistIsLoading = true;
-
-    this.tracklistEnd = new Subject<void>();
+          return of(null);
+        }));
 
     this.tracklist =
-    this.tracklistService.retrieveTracklist(
-      this.tracklistId).pipe(takeUntil(this.tracklistEnd));
-
-    this.tracklist.subscribe({
-      next: data => {
-        if (data) {
-          this.tracklistTitle = data.title;
-        } else {
-          this.displayNotFoundPage();
-        }
-        this.tracklistIsLoading = false;
-      },
-      error: () => {
-        this.tracklistIsLoading = false;
-        this.displayErrorMessage(
-          AppTracklistMessages.MSG_RETRIEVE_TITLE_FAILED)
-      }
-    });
+      toSignal(tracklist$,
+        { injector: this.injector });
   }
 
-  onEditTitle() : void {
-    this.tracklistTitleToEdit = this.tracklistTitle;
-    this.isTitleBeingEdited = true;
+  private loadTracks() {
+    const tracks$ =
+      this.trackService.
+      retrieveTracks(this.tracklistId()).pipe(
+        catchError(() => {
+          this.displayErrorMessage(
+            AppTracklistMessages.MSG_RETRIEVE_TRACKS_FAILED);
+
+          return of(Array<AppTrack>());
+        }));
+
+    this.tracks =
+      toSignal(tracks$,
+        { injector: this.injector });
+  }
+
+  onEditTitle() {
+    this.tracklistTitleToEdit.set(this.tracklistTitle());
+    this.isTitleBeingEdited.set(true);
     this.focusService.focusElement('#tracklistTitle');
   }
 
-  onCancelEditTitle() : void {
-    this.isTitleBeingEdited = false;
+  onCancelEditTitle() {
+    this.isTitleBeingEdited.set(false);
     this.focusService.focusElement('#editTitleButton');
   }
 
-  saveTitle() : void {
-    this.isTitleBeingSaved = true;
+  editTitle() {
+    this.isTitleBeingSaved.set(true);
 
-    let newTracklistTitle =
-      this.tracklistTitleToEdit.trim();
+    let tracklistTitle =
+      this.tracklistTitleToEdit().trim();
 
-    if (newTracklistTitle === '') {
-      newTracklistTitle = UNTITLED_TRACKLIST;
+    if (tracklistTitle === '') {
+      tracklistTitle = 'Untitled Tracklist';
     }
 
-    let tracklistData =
-      new TracklistBuilder().
-        withTitle(newTracklistTitle).
-        buildTracklist().
-        buildDocument();
+    const tracklist:
+      Partial<AppTracklist> = {
+        title: tracklistTitle
+      }
 
-    this.tracklistService.updateTracklist(
-      this.tracklistId, tracklistData).then(
-      () => this.displayTitleUpdatedMessage(),
-      () => this.displayErrorMessage(
-        AppTracklistMessages.MSG_UPDATE_TITLE_FAILED)).
+    this.tracklistService.
+      updateTracklist(
+        this.tracklistId(), tracklist).
+      then(() => {
+        this.displaySuccessMessage(
+          AppTracklistMessages.MSG_UPDATE_TITLE_SUCCESSFUL);
+      }, () => {
+        this.displayErrorMessage(
+          AppTracklistMessages.MSG_UPDATE_TITLE_FAILED);
+      }).
       finally(() => {
-        this.isTitleBeingEdited = false;
-        this.isTitleBeingSaved = false;
+        this.isTitleBeingEdited.set(false);
+        this.isTitleBeingSaved.set(false);
       }
     );
   }
 
-  // ------
-  // Tracks
-  // ------
-
-  private loadTracks() : void {
-    this.tracksAreLoading = true;
-    this.trackCount = 0;
-    this.tracksSelected = [];
-
-    this.tracksEnd = new Subject<void>();
-
-    this.tracks =
-    this.trackService.retrieveTracks(
-      this.tracklistId).pipe(
-        takeUntil(this.tracksEnd));
-
-    this.tracks.subscribe({
-      next: data => {
-        if (data) {
-          this.trackCount = data.length;
-        } else {
-          this.displayNotFoundPage();
-        }
-        this.tracksAreLoading = false;
-      },
-      error: () => {
-        this.tracksAreLoading = false;
-        this.displayErrorMessage(
-          AppTracklistMessages.MSG_RETRIEVE_TRACKS_FAILED);
-      }
-    });
-  }
-
-  addTrack() : void {
+  addTrack() {
     this.router.navigate(
       ['add'], { relativeTo: this.activatedRoute });
   }
 
-  editTrack() : void {
-    if (this.tracksSelected.length === 1) {
+  editTrack() {
+    if (this.tracksSelectedCount() === 1) {
       this.router.navigate(
-        [this.tracksSelected[0]], { relativeTo: this.activatedRoute });
+        [this.tracksSelected()[0]],
+        { relativeTo: this.activatedRoute });
     }
   }
 
-  removeTracks() : void {
-    if (this.tracksSelected.length > 0) {
-      this.tracksAreUpdating = true;
+  removeTracks() {
+    if (this.tracksSelectedCount() > 0) {
+      this.tracksAreUpdating.set(true);
 
-      this.trackService.removeTracks(
-        this.tracklistId, this.tracksSelected).then(
-        () => {
-          if (this.trackTitleSelected)
-            this.trackService.recentlyRemovedTrackTitle = this.trackTitleSelected
-          this.displayTracksRemovedMessage(this.tracksSelected)
-        },
-        () => this.displayErrorMessage(
-          AppTracklistMessages.MSG_REMOVE_TRACK_FAILED)).
+      this.trackService.
+        removeTracks(
+          this.tracklistId(),
+          this.tracksSelected()).
+        then(() => {
+          if (this.trackTitleSelected()) {
+            this.displaySuccessMessage(
+              AppTracklistMessages.MSG_REMOVE_SUCCESSFUL.
+                replace('{0}', this.trackTitleSelected()));
+          } else {
+            this.displaySuccessMessage(
+              AppTracklistMessages.MSG_REMOVE_TRACKS_SUCCESSFUL.
+                replace('{0}', `${this.tracksSelectedCount()}`));
+          }
+        }, () => {
+          this.displayErrorMessage(
+            AppTracklistMessages.MSG_REMOVE_TRACK_FAILED);
+        }).
         finally(() => {
-          this.tracksAreUpdating = false
-          this.tracksSelected = []
+          this.tracksAreUpdating.set(false);
+          this.tracksSelected.set([]);
         }
       );
     }
   }
 
-  swapTracks() : void {
-    if (this.tracksSelected.length === 2) {
-      this.tracksAreUpdating = true;
+  swapTracks() {
+    if (this.tracksSelectedCount() === 2) {
+      this.tracksAreUpdating.set(true);
 
-      this.trackService.swapTracks(
-        this.tracklistId,
-        this.tracksSelected[0],
-        this.tracksSelected[1]).then(
-        () => this.displayTracksSwappedMessage(this.tracksSelected),
-        () => this.displayErrorMessage(
-          AppTracklistMessages.MSG_SWAP_TRACKS_FAILED)).
+      this.trackService.
+        swapTracks(
+          this.tracklistId(),
+          this.tracksSelected()[0],
+          this.tracksSelected()[1]).
+        then(() => {
+          this.displaySuccessMessage(
+            AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL.
+              replace('{0}', `${this.tracksSelectedCount()}`));
+        }, () => {
+          this.displayErrorMessage(
+            AppTracklistMessages.MSG_SWAP_TRACKS_FAILED);
+        }).
         finally(() => {
-          this.tracksAreUpdating = false
-          this.tracksSelected = []
+          this.tracksAreUpdating.set(false);
         }
       );
     }
   }
 
-  onTrackSelected(event : Event, trackTitle : string, trackId : string) {
+  onTrackSelected(
+    event : Event,
+    trackTitle : string,
+    trackId : string) {
     const selected =
       (<HTMLInputElement>event.target).checked
 
-    if (selected)
-      this.tracksSelected.push(trackId);
-    else {
-      for (let i = 0; i < this.tracksSelected.length; i++) {
-        if (this.tracksSelected[i] === trackId) {
-          this.tracksSelected.splice(i, 1);
-          break;
-        }
-      }
-    }
-
-    if (this.tracksSelected.length === 1)
-      this.trackTitleSelected = trackTitle;
-    else
-      this.trackTitleSelected = null;
-  }
-
-  // ----------
-  // Messaging
-  // ----------
-
-  private displayNotFoundPage() : void {
-    this.router.navigate(['/notfound']);
-  }
-
-  private displayTitleUpdatedMessage() {
-    this.displaySuccessMessage(
-      AppTracklistMessages.MSG_UPDATE_TITLE_SUCCESSFUL);
-  }
-
-  private displayTracksRemovedMessage(tracksRemoved : string[]) {
-    if (this.trackService.recentlyRemovedTrackTitle) {
-      this.displaySuccessMessage(
-        AppTracklistMessages.MSG_REMOVE_SUCCESSFUL.replace('{0}',
-        this.trackService.recentlyRemovedTrackTitle));
+    if (selected) {
+      this.tracksSelected.update(
+        (selected) => [...selected, trackId]);
     } else {
-      this.displaySuccessMessage(
-        AppTracklistMessages.MSG_REMOVE_TRACKS_SUCCESSFUL.replace('{0}',
-        tracksRemoved.length.toString()));
+      this.tracksSelected.update(
+        (selected) => selected.filter(
+          id => id !== trackId));
     }
-  }
 
-  private displayTracksSwappedMessage(tracksSwapped : string[]) {
-    this.displaySuccessMessage(
-      AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL.replace('{0}',
-      tracksSwapped.length.toString()));
+    if (this.tracksSelectedCount() === 1)
+      this.trackTitleSelected.set(trackTitle);
+    else
+      this.trackTitleSelected.set(null);
   }
 
   private displaySuccessMessage(successMessage : string) {
-    if (this.tracklistSuccessMessage === successMessage) {
+    if (this.successMessage() === successMessage) {
       this.focusService.focusSuccessHeader();
     } else {
-      this.tracklistSuccessMessage = successMessage;
+      this.successMessage.set(successMessage);
     }
   }
 
   private displayErrorMessage(errorMessage : string) {
-    if (this.tracklistErrorMessage === errorMessage) {
+    if (this.errorMessage() === errorMessage) {
       this.focusService.focusErrorHeader();
     } else {
-      this.tracklistErrorMessage = errorMessage;
+      this.errorMessage.set(errorMessage);
     }
   }
 }
