@@ -1,30 +1,35 @@
-import { Pipe, PipeTransform } from '@angular/core';
-import { AppTrackHelper } from '../util/app-track-helper';
+import { inject, Pipe, PipeTransform } from '@angular/core';
+import { AppTrackService } from 'src/app/services/app-track.service';
 
 @Pipe({
   name: 'trackLength',
   standalone: true
 })
-export class AppTrackLengthPipe implements PipeTransform {
-  transform(totalSeconds: number): string {
+export class AppTrackLengthPipe
+  implements PipeTransform {
+  private readonly trackService =
+    inject(AppTrackService);
+
+  transform(totalSeconds: number) {
     if (totalSeconds === null || totalSeconds < 0) {
       return '- -:- -:- -';
     } else {
-      let hoursMinutesSeconds : number[] =
-        AppTrackHelper.getInstance().getLengthHHMMSS(totalSeconds);
+      const hoursMinutesSeconds =
+        this.trackService.trackHelper.
+          getLengthHHMMSS(totalSeconds);
 
-      let hours : string =
+      let hours =
         this.formatNumber(hoursMinutesSeconds[0]);
-      let minutes : string =
+      let minutes =
         this.formatNumber(hoursMinutesSeconds[1]);
-      let seconds : string =
+      let seconds =
         this.formatNumber(hoursMinutesSeconds[2]);
 
-      return hours + ':' + minutes + ':' + seconds;
+      return `${hours}:${minutes}:${seconds}`;
     }
   }
 
-  private formatNumber(value : number) : string {
-    return value < 10 ? '0' + value : value.toString();
+  private formatNumber(value : number) {
+    return value < 10 ? `0${value}` : value.toString();
   }
 }

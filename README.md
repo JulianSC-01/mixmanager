@@ -6,7 +6,7 @@ The Mix Manager Web Client is an editor that creates music tracklists and their 
 
 The user must login to the application to read or update their tracklists.
 
-The application is written in TypeScript and HTML using the Angular framework. (v12.2.1)
+The application is written in TypeScript and HTML using the Angular framework.
 
 ## Supported Features
 
@@ -19,8 +19,15 @@ Tracklist Editor
 
 ## Change Log
 
-2024-09-02 (v1.7.0)
+2025-12-22 (18.0.0)
 Latest Version
+  - Upgraded to Angular 18
+  - Installed ngx-js-shared library 18.0.0
+  - Convert entire application to use signals
+  - Convert entire application to control flow syntax
+  - Convert entire application to use inject()
+
+2024-09-02 (v1.7.0)
   - Upgraded to Angular 17
   - Upgraded to Firebase 10.13.1
   - Upgraded js-shared library to 1.1.0

@@ -1,14 +1,14 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { AppFocusService, SpinnerComponent } from 'js-shared';
+import { FocusService, SpinnerComponent } from 'ngx-js-shared';
 import { AppLoginService } from '../services/app-login.service';
 import { AppMusicIconComponent } from '../shared/components/app-music-icon.component';
 
 @Component({
   imports: [
     AppMusicIconComponent,
-    CommonModule,
+    AsyncPipe,
     RouterLink,
     RouterLinkActive,
     SpinnerComponent
@@ -16,30 +16,34 @@ import { AppMusicIconComponent } from '../shared/components/app-music-icon.compo
   selector: 'app-navbar',
   standalone: true,
   styleUrl: './app-navbar.component.css',
-  templateUrl: './app-navbar.component.html'
+  templateUrl: './app-navbar.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppNavbarComponent implements OnInit {
-  public isLoggingOut : boolean;
+export class AppNavbarComponent {
+  private readonly focusService =
+    inject(FocusService);
+  private readonly router =
+    inject(Router);
+  readonly loginService =
+    inject(AppLoginService);
 
-  constructor(
-    private focusService : AppFocusService,
-    private router : Router,
-    public loginService : AppLoginService) { }
+  readonly loggingOut =
+    signal(false);
 
-  ngOnInit() : void {
-    this.isLoggingOut = false;
-  }
-
-  skipToContent() : void {
+  skipToContent() {
     this.focusService.focusMainHeader();
   }
 
-  logout() : void {
-    this.isLoggingOut = true;
-    this.router.navigate(['/login']);
+  logout() {
+    this.loggingOut.set(true);
 
-    this.loginService.logout().then(() =>
-      this.loginService.loggedOut.next(true)).finally(() =>
-        this.isLoggingOut = false);
+    this.loginService.logout().
+      then(() =>
+        this.loginService.
+          userLogout.set(true)).
+      finally(() => {
+        this.loggingOut.set(false);
+        this.router.navigate(['/login']);
+      });
   }
 }

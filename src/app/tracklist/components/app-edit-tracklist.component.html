@@ -1,31 +1,37 @@
 <app-page-header>
   Edit tracklist
 </app-page-header>
-<app-alert
-  *ngIf="tracklistSuccessMessage"
-  [alertId]="'successHeader'"
-  [alertType]="'alert-success'">
-  {{ tracklistSuccessMessage }}
-</app-alert>
-<app-form-error-header
-  [errorHeaderMessage]="tracklistErrorMessage">
-</app-form-error-header>
+@if (successMessage()) {
+  <app-alert
+    alertId="successHeader"
+    alertRole="note"
+    alertType="alert-success">
+    {{ successMessage() }}
+  </app-alert>
+}
+@if (errorMessage()) {
+  <app-alert
+    alertId="errorHeader"
+    alertRole="note"
+    alertType="alert-danger">
+    {{ errorMessage() }}
+  </app-alert>
+}
 <h2>
   Title
 </h2>
 <div class="mb-3">
-  <div *ngIf="isTitleBeingEdited; then titleEdit else titleReadOnly"></div>
-  <ng-template #titleEdit>
+  @if (isTitleBeingEdited()) {
     <form
       autocomplete="off"
-      (ngSubmit)="saveTitle()">
+      (ngSubmit)="editTitle()">
       <div class="form-row mb-2">
         <div class="col-sm-6">
           <app-form-input-text
             name="tracklistTitle"
-            [inputId]="'tracklistTitle'"
-            [inputLabelInvisible]="true"
-            [inputLabelText]="'Enter a new tracklist title'"
+            inputId="tracklistTitle"
+            inputLabelInvisible="true"
+            inputLabelText="Enter a new tracklist title"
             [(ngModel)]="tracklistTitleToEdit">
           </app-form-input-text>
         </div>
@@ -34,63 +40,60 @@
         class="btn btn-success me-1"
         type="submit"
         aria-label="Save tracklist title"
-        [disabled]="isTitleBeingSaved">
+        [disabled]="isTitleBeingSaved()">
         Save
       </button>
       <button
         class="btn btn-secondary"
         type="button"
         aria-label="Cancel edit tracklist title"
-        [disabled]="isTitleBeingSaved"
+        [disabled]="isTitleBeingSaved()"
         (click)="onCancelEditTitle()">
         Cancel
       </button>
-      <span *ngIf="isTitleBeingSaved" class="ms-2">
-        <app-spinner
-          [spinnerSmall]="true">
-        </app-spinner>
-      </span>
-    </form>
-  </ng-template>
-  <ng-template #titleReadOnly>
-    <ng-container *ngIf="tracklistTitle else tracklistTitleLoading">
-      <p class="mb-2">
-        {{ tracklistTitle }}
-      </p>
-    </ng-container>
-    <ng-template #tracklistTitleLoading>
-      <ng-container *ngIf="tracklistIsLoading else tracklistNoTitle">
-        <p class="mb-2">
+      @if (isTitleBeingSaved()) {
+        <span class="ms-2">
           <app-spinner
-            [spinnerSmall]="true">
-            Loading, please wait...
+            spinnerSmall="true">
           </app-spinner>
-        </p>
-      </ng-container>
-      <ng-template #tracklistNoTitle>
-        <p class="mb-2">
-          No title available
-        </p>
-      </ng-template>
-    </ng-template>
+        </span>
+      }
+    </form>
+  } @else {
+    @if (tracklistIsLoading()) {
+      <p class="mb-2">
+        <app-spinner
+          spinnerSmall="true">
+          Loading, please wait...
+        </app-spinner>
+      </p>
+    } @else if (tracklistTitle()) {
+      <p class="mb-2">
+        {{ tracklistTitle() }}
+      </p>
+    } @else {
+      <p class="mb-2">
+        No title available
+      </p>
+    }
     <button
       class="btn btn-secondary"
       id="editTitleButton"
       type="button"
       aria-label="Edit tracklist title"
-      [disabled]="tracklistIsLoading"
+      [disabled]="tracklistIsLoading()"
       (click)="onEditTitle()">
       Edit title
     </button>
-  </ng-template>
+  }
 </div>
 <h2>
   Tracks
 </h2>
 <div class="table-responsive">
   <table class="table table-sm table-bordered table-striped mb-1">
-    <caption *ngIf="tracks | async as trackArray">
-      Table of {{ trackArray.length }} tracks
+    <caption>
+      Table of {{ trackCount() }} tracks
     </caption>
     <thead>
       <tr>
@@ -101,69 +104,74 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngIf="tracksAreLoading else trackListing">
-        <td></td>
-        <td colspan="3">
-          <app-spinner
-            [spinnerSmall]="true">
-            Loading, please wait...
-          </app-spinner>
-        </td>
-      </tr>
-      <ng-template #trackListing>
-        <tr *ngIf="trackCount === 0">
+      @if (tracksAreLoading()) {
+        <tr>
           <td></td>
           <td colspan="3">
-            No tracks available.
+            <app-spinner
+              spinnerSmall="true">
+              Loading, please wait...
+            </app-spinner>
           </td>
         </tr>
-        <tr *ngFor="let track of tracks | async; let i = index">
-          <td class="text-center">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              [id]="'chk' + i"
-              [value]="track.id"
-              (change)="onTrackSelected($event, track.title, track.id)">
-            <app-form-label
-              [labelInvisible]="true"
-              [labelControlId]="'chk' + i">
-              Select track {{ (i+1) }}. {{ track.artist }} - {{ track.title }}
-            </app-form-label>
-          </td>
-          <td>
-            <span aria-hidden="true" class="opacity-75">
-              [{{ track.startTime | trackLength }}]
-            </span>
-            <span class="track-detail-responsive">
-              <span aria-hidden="true">
-                {{ (i+1) | trackNumber }}.
-              </span>
-              <span class="sr-only">
-                Track {{ (i+1) }}
-              </span>
-              <span>
-                {{ track.artist }} - {{ track.title }}
-              </span>
-              <span class="sr-only">
-                Track start time is {{ track.startTime | trackLengthAccessible }}
-                Track length is {{ track.getLength() | trackLengthAccessible }}
-              </span>
-            </span>
-            <span class="track-length-responsive">
+      } @else {
+        @for (track of tracks();
+          track track.id; let i = $index) {
+          <tr>
+            <td class="text-center">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [id]="'chk' + i"
+                [value]="track.id"
+                (change)="onTrackSelected($event, track.title, track.id)">
+              <app-form-label
+                labelInvisible="true"
+                [labelControlId]="'chk' + i">
+                Select track {{ (i+1) }}. {{ track.artist }} - {{ track.title }}
+              </app-form-label>
+            </td>
+            <td>
               <span aria-hidden="true" class="opacity-75">
-                ({{ track.getLength() | trackLength }})
+                [{{ track.startTime | trackLength }}]
               </span>
-            </span>
-          </td>
-          <td>
-            {{ track.bpm }}
-          </td>
-          <td>
-            {{ track.key }}
-          </td>
-        </tr>
-      </ng-template>
+              <span class="track-detail-responsive">
+                <span aria-hidden="true">
+                  {{ (i+1) | trackNumber }}.
+                </span>
+                <span class="sr-only">
+                  Track {{ (i+1) }}
+                </span>
+                <span>
+                  {{ track.artist }} - {{ track.title }}
+                </span>
+                <span class="sr-only">
+                  Track start time is {{ track.startTime | trackLengthA11y }}
+                  Track length is {{ track.totalTime | trackLengthA11y }}
+                </span>
+              </span>
+              <span class="track-length-responsive">
+                <span aria-hidden="true" class="opacity-75">
+                  ({{ track.totalTime | trackLength }})
+                </span>
+              </span>
+            </td>
+            <td>
+              {{ track.bpm }}
+            </td>
+            <td>
+              {{ track.key }}
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td></td>
+            <td colspan="3">
+              No tracks available.
+            </td>
+          </tr>
+        }
+      }
     </tbody>
   </table>
 </div>
@@ -171,7 +179,7 @@
   <button
     class="btn btn-primary mb-1 me-1"
     type="button"
-    [disabled]="tracksAreLoading"
+    [disabled]="tracksAreLoading()"
     (click)="addTrack()">
     Add track
   </button>
@@ -179,7 +187,7 @@
     class="btn btn-secondary mb-1 me-1"
     type="button"
     aria-label="Edit selected track"
-    [disabled]="tracksSelected.length != 1"
+    [disabled]="tracksSelectedCount() != 1"
     (click)="editTrack()">
     Edit selected
   </button>
@@ -187,7 +195,7 @@
     class="btn btn-secondary mb-1 me-1"
     type="button"
     aria-label="Removed selected tracks"
-    [disabled]="tracksSelected.length < 1"
+    [disabled]="tracksSelectedCount() < 1"
     (click)="removeTracks()">
     Remove selected
   </button>
@@ -195,16 +203,20 @@
     class="btn btn-secondary mb-1"
     type="button"
     aria-label="Swap selected tracks"
-    [disabled]="tracksSelected.length != 2"
+    [disabled]="tracksSelectedCount() != 2"
     (click)="swapTracks()">
     Swap selected
   </button>
-  <span *ngIf="tracksAreUpdating" class="ms-2">
-    <app-spinner
-      [spinnerSmall]="true">
-    </app-spinner>
-  </span>
+  @if (tracksAreUpdating()) {
+    <span class="ms-2">
+      <app-spinner
+        spinnerSmall="true">
+      </app-spinner>
+    </span>
+  }
 </div>
 <div class="mb-2 mt-3">
-  Return to: <a routerLink="/tracklists" aria-label="Return to tracklists page">Tracklists</a>
+  Return to: <a routerLink="/tracklists" aria-label="Return to tracklists page">
+    Tracklists
+  </a>
 </div>

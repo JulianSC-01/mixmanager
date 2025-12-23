@@ -1,12 +1,14 @@
 <app-page-header>
-  {{ trackFormTitle }}
+  {{ formTitle() }}
 </app-page-header>
 <app-form-error-header
-  [errorHeaderMessage]="trackErrorMessage"
-  [errorHeaderFormGroup]="trackForm">
+  #formErrorHeader
+  [errorMessage]="errorMessage()"
+  [errorFormGroup]="trackForm">
 </app-form-error-header>
 <form
-  #form="ngForm"
+  appFormA11y
+  [formErrorHeader]="formErrorHeader"
   [formGroup]="trackForm"
   (ngSubmit)="submit()">
   <fieldset>
@@ -16,21 +18,21 @@
     <div class="col-lg-6 mb-3">
       <app-form-input-text
         formControlName="trackArtist"
-        [inputLabelText]="'Track artist'"
-        [inputId]="'trackArtist'">
+        inputLabelText="Track artist"
+        inputId="trackArtist">
       </app-form-input-text>
     </div>
     <div class="col-lg-6 mb-3">
       <app-form-input-text
         formControlName="trackTitle"
-        [inputLabelText]="'Track title'"
-        [inputId]="'trackTitle'">
+        inputLabelText="Track title"
+        inputId="trackTitle">
       </app-form-input-text>
     </div>
     <div class="d-flex">
       <div class="mb-3">
         <app-form-label
-          [labelControlId]="'trackBPM'">
+          labelControlId="trackBPM">
           Track BPM
           <span class="fst-italic fw-normal small">
             (beats per minute)
@@ -38,9 +40,9 @@
         </app-form-label>
         <app-form-input-number
           formControlName="trackBPM"
-          [inputErrorMessageId]="'trackBPMError'"
-          [inputErrorMessages]="errorMessageBPM"
-          [inputId]="'trackBPM'">
+          inputErrorMessageId="trackBPMError"
+          inputId="trackBPM"
+          [inputErrorMessages]="errorMessageMapBPM()">
         </app-form-input-number>
       </div>
     </div>
@@ -48,28 +50,32 @@
       <div class="mb-3">
         <app-form-input-select
           formControlName="trackKey"
-          [inputId]="'trackKey'"
-          [inputLabelText]="'Track key'">
+          inputId="trackKey"
+          inputLabelText="Track key">
           <optgroup label="Minor Keys">
-            <option
-              *ngFor="let minorKey of minorKeys; let i = index"
-              [value]="(i+1) + 'A'">
-              {{ (i+1) + 'A' }} - {{ minorKey }} Minor
-            </option>
+            @for (minorKey of minorKeys();
+              track $index; let i = $index) {
+              <option
+                [value]="(i+1) + 'A'">
+                {{ (i+1) + 'A' }} - {{ minorKey }} Minor
+              </option>
+            }
           </optgroup>
           <optgroup label="Major Keys">
-            <option
-              *ngFor="let majorKey of majorKeys; let i = index"
-              [value]="(i+1) + 'B'">
-              {{ (i+1) + 'B' }} - {{ majorKey }} Major
-            </option>
+            @for (majorKey of majorKeys();
+              track $index; let i = $index) {
+              <option
+                [value]="(i+1) + 'B'">
+                {{ (i+1) + 'B' }} - {{ majorKey }} Major
+              </option>
+            }
           </optgroup>
         </app-form-input-select>
       </div>
     </div>
     <div
       class="d-flex"
-      [formGroup]="trackStartTimeForm">
+      formGroupName="trackStartTime">
       <div class="mb-3">
         <fieldset>
           <legend>
@@ -81,55 +87,53 @@
           <div class="input-group">
             <app-form-input-number
               formControlName="trackHours"
-              [inputErrorMessageId]="'trackStartHoursError'"
-              [inputId]="'trackStartTimeHours'"
-              [inputLabelInvisible]="true"
-              [inputLabelText]="'Hours'"
-              [inputMin]="0"
-              [inputMax]="99">
+              inputErrorMessageId="trackStartHoursError"
+              inputId="trackStartTimeHours"
+              inputLabelInvisible="true"
+              inputLabelText="Hours"
+              inputMin="0"
+              inputMax="99">
             </app-form-input-number>
             <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
             <app-form-input-number
               formControlName="trackMinutes"
-              [inputErrorMessageId]="'trackStartMinutesError'"
-              [inputId]="'trackStartTimeMinutes'"
-              [inputLabelInvisible]="true"
-              [inputLabelText]="'Minutes'"
-              [inputMin]="0"
-              [inputMax]="59">
+              inputErrorMessageId="trackStartMinutesError"
+              inputId="trackStartTimeMinutes"
+              inputLabelInvisible="true"
+              inputLabelText="Minutes"
+              inputMin="0"
+              inputMax="59">
             </app-form-input-number>
             <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
             <app-form-input-number
               formControlName="trackSeconds"
-              [inputErrorMessageId]="'trackStartSecondsError'"
-              [inputId]="'trackStartTimeSeconds'"
-              [inputLabelInvisible]="true"
-              [inputLabelText]="'Seconds'"
-              [inputMin]="0"
-              [inputMax]="59">
+              inputErrorMessageId="trackStartSecondsError"
+              inputId="trackStartTimeSeconds"
+              inputLabelInvisible="true"
+              inputLabelText="Seconds"
+              inputMin="0"
+              inputMax="59">
             </app-form-input-number>
           </div>
-          <div
-            [ngClass]="{
-              'mt-1' : trackStartTimeForm.invalid}">
+          <div [class.mt-1]="trackStartTimeForm.invalid">
             <app-form-error-feedback
+              errorFeedbackId="trackStartHoursError"
               [errorFeedbackControl]="trackStartTimeForm.controls.trackHours"
-              [errorFeedbackId]="'trackStartHoursError'"
-              [errorFeedbackMessages]="errorMessageHours">
+              [errorFeedbackMessages]="errorMessageMapHours()">
             </app-form-error-feedback>
             <app-form-error-feedback
+              errorFeedbackId="trackStartMinutesError"
               [errorFeedbackControl]="trackStartTimeForm.controls.trackMinutes"
-              [errorFeedbackId]="'trackStartMinutesError'"
-              [errorFeedbackMessages]="errorMessageMinutes">
+              [errorFeedbackMessages]="errorMessageMapMinutes()">
             </app-form-error-feedback>
             <app-form-error-feedback
+              errorFeedbackId="trackStartSecondsError"
               [errorFeedbackControl]="trackStartTimeForm.controls.trackSeconds"
-              [errorFeedbackId]="'trackStartSecondsError'"
-              [errorFeedbackMessages]="errorMessageSeconds">
+              [errorFeedbackMessages]="errorMessageMapSeconds()">
             </app-form-error-feedback>
           </div>
         </fieldset>
@@ -137,7 +141,7 @@
     </div>
     <div
       class="d-flex"
-      [formGroup]="trackEndTimeForm">
+      formGroupName="trackEndTime">
       <div class="mb-3">
         <fieldset>
           <legend>
@@ -149,55 +153,53 @@
           <div class="input-group">
             <app-form-input-number
               formControlName="trackHours"
-              [inputErrorMessageId]="'trackEndHoursError'"
-              [inputId]="'trackEndTimeHours'"
-              [inputLabelInvisible]="true"
-              [inputLabelText]="'Hours'"
-              [inputMin]="0"
-              [inputMax]="99">
+              inputErrorMessageId="trackEndHoursError"
+              inputId="trackEndTimeHours"
+              inputLabelInvisible="true"
+              inputLabelText="Hours"
+              inputMin="0"
+              inputMax="99">
             </app-form-input-number>
             <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
             <app-form-input-number
               formControlName="trackMinutes"
-              [inputErrorMessageId]="'trackEndMinutesError'"
-              [inputId]="'trackEndTimeMinutes'"
-              [inputLabelInvisible]="true"
-              [inputLabelText]="'Minutes'"
-              [inputMin]="0"
-              [inputMax]="59">
+              inputErrorMessageId="trackEndMinutesError"
+              inputId="trackEndTimeMinutes"
+              inputLabelInvisible="true"
+              inputLabelText="Minutes"
+              inputMin="0"
+              inputMax="59">
             </app-form-input-number>
             <div class="input-group-append ms-1 me-1">
               <span class="input-group-text">:</span>
             </div>
             <app-form-input-number
               formControlName="trackSeconds"
-              [inputErrorMessageId]="'trackEndSecondsError'"
-              [inputId]="'trackEndTimeSeconds'"
-              [inputLabelInvisible]="true"
-              [inputLabelText]="'Seconds'"
-              [inputMin]="0"
-              [inputMax]="59">
+              inputErrorMessageId="trackEndSecondsError"
+              inputId="trackEndTimeSeconds"
+              inputLabelInvisible="true"
+              inputLabelText="Seconds"
+              inputMin="0"
+              inputMax="59">
             </app-form-input-number>
           </div>
-          <div
-            [ngClass]="{
-              'mt-1' : trackEndTimeForm.invalid}">
+          <div [class.mt-1]="trackEndTimeForm.invalid">
             <app-form-error-feedback
+              errorFeedbackId="trackEndHoursError"
               [errorFeedbackControl]="trackEndTimeForm.controls.trackHours"
-              [errorFeedbackId]="'trackEndHoursError'"
-              [errorFeedbackMessages]="errorMessageHours">
+              [errorFeedbackMessages]="errorMessageMapHours()">
             </app-form-error-feedback>
             <app-form-error-feedback
+              errorFeedbackId="trackEndMinutesError"
               [errorFeedbackControl]="trackEndTimeForm.controls.trackMinutes"
-              [errorFeedbackId]="'trackEndMinutesError'"
-              [errorFeedbackMessages]="errorMessageMinutes">
+              [errorFeedbackMessages]="errorMessageMapMinutes()">
             </app-form-error-feedback>
             <app-form-error-feedback
+              errorFeedbackId="trackEndSecondsError"
               [errorFeedbackControl]="trackEndTimeForm.controls.trackSeconds"
-              [errorFeedbackId]="'trackEndSecondsError'"
-              [errorFeedbackMessages]="errorMessageSeconds">
+              [errorFeedbackMessages]="errorMessageMapSeconds()">
             </app-form-error-feedback>
           </div>
         </fieldset>
@@ -207,21 +209,23 @@
       <button
         class="btn btn-primary mb-1 me-1"
         type="submit"
-        [disabled]="isWorking()">
+        [disabled]="trackWorkInProgress()">
         Submit
       </button>
       <button
         class="btn btn-secondary mb-1"
         type="button"
-        [disabled]="isWorking()"
+        [disabled]="trackWorkInProgress()"
         (click)="cancel()">
         Cancel
       </button>
-      <span *ngIf="isWorking()" class="ms-2">
-        <app-spinner
-          [spinnerSmall]="true">
-        </app-spinner>
-      </span>
+      @if (trackWorkInProgress()) {
+        <span class="ms-2">
+          <app-spinner
+            spinnerSmall="true">
+          </app-spinner>
+        </span>
+      }
     </div>
   </fieldset>
 </form>

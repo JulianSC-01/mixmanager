@@ -1,27 +1,28 @@
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { provideRouter } from '@angular/router';
 import firebase from 'firebase/compat/app';
 import { of } from 'rxjs';
 import { AppTrackService } from 'src/app/services/app-track.service';
 import { AppTracklistService } from 'src/app/services/app-tracklist.service';
-import { AppTracklist, TracklistBuilder } from '../app-tracklist';
+import { AppTracklist } from '../models/app-tracklist';
+import { AppTracklistBuilder } from '../models/app-tracklist-builder';
 import { AppEditTracklistComponent } from './app-edit-tracklist.component';
 
 describe('AppEditTracklistComponent', () => {
   let component: AppEditTracklistComponent;
+  let componentRef: ComponentRef<AppEditTracklistComponent>;
+  let fixture: ComponentFixture<AppEditTracklistComponent>;
+
   let trackService: AppTrackService;
   let tracklistService: AppTracklistService;
 
   let tracklist: AppTracklist;
 
-  let fixture: ComponentFixture<AppEditTracklistComponent>;
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
-        AppEditTracklistComponent,
-        FormsModule
+        AppEditTracklistComponent
       ],
       providers: [
         provideRouter([])
@@ -38,7 +39,7 @@ describe('AppEditTracklistComponent', () => {
       TestBed.inject(AppTrackService);
 
     tracklist =
-      new TracklistBuilder().
+      new AppTracklistBuilder().
         withId('0').
         withTitle('Title').
         withCreationDate(
@@ -51,6 +52,10 @@ describe('AppEditTracklistComponent', () => {
       and.returnValue(of([]));
 
     component = fixture.componentInstance;
+
+    componentRef = fixture.componentRef;
+    componentRef.setInput('tracklistId', '');
+
     fixture.detectChanges();
   });
 
@@ -59,6 +64,6 @@ describe('AppEditTracklistComponent', () => {
   });
 
   it('should have title', () => {
-    expect(component.tracklistTitle).toEqual('Title');
+    expect(component.tracklistTitle()).toEqual('Title');
   });
 });

@@ -1,29 +1,34 @@
 @media (min-width: 0px) {
-    .track-detail-responsive {
-        display: block;
-    }
-    .track-length-responsive {
-        display: block;
-    }
+  .track-detail-responsive {
+      display: block;
+  }
+  .track-length-responsive {
+      display: block;
+  }
 }
+
 @media (min-width: 992px) {
-    .track-detail-responsive {
-        display: inline;
-    }
-    .track-length-responsive {
-        float: right;
-    }
+  .track-detail-responsive {
+      display: inline;
+  }
+  .track-length-responsive {
+      float: right;
+  }
 }
+
 #selectCol {
-    text-align: center;
-    width: 6%;
+  text-align: center;
+  width: 6%;
 }
+
 #trackCol {
-    width: 84%;
+  width: 84%;
 }
+
 #bpmCol {
-    width: 5%;
+  width: 5%;
 }
+
 #keyCol {
-    width: 5%;
+  width: 5%;
 }

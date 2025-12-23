@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { AppLoginComponent } from './app-login.component';
 import { AppStartupComponent } from './app-startup.component';
 
 describe('AppStartupComponent', () => {
@@ -12,7 +13,10 @@ describe('AppStartupComponent', () => {
         AppStartupComponent
       ],
       providers: [
-        provideRouter([])
+        provideRouter([{
+          path : 'login',
+          component : AppLoginComponent
+        }])
       ]
     })
     .compileComponents();

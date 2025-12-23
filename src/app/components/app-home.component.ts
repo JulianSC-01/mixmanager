@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { PageHeaderComponent } from 'js-shared';
+import { PageHeaderComponent } from 'ngx-js-shared';
 
 @Component({
   imports: [
@@ -9,8 +9,8 @@ import { PageHeaderComponent } from 'js-shared';
   ],
   selector: 'app-home',
   standalone: true,
-  templateUrl: './app-home.component.html'
+  templateUrl: './app-home.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AppHomeComponent {
-  constructor() { }
 }
