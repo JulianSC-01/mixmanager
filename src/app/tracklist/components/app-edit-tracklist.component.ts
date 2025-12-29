@@ -34,7 +34,6 @@ import { AppTracklistMessages } from '../util/app-tracklist-messages';
     SpinnerComponent
   ],
   selector: 'app-edit-tracklist',
-  standalone: true,
   styleUrl: './app-edit-tracklist.component.css',
   templateUrl: './app-edit-tracklist.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush

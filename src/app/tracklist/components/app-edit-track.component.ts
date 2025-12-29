@@ -46,7 +46,6 @@ interface TrackTimeForm {
     SpinnerComponent
   ],
   selector: 'app-edit-track',
-  standalone: true,
   templateUrl: './app-edit-track.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

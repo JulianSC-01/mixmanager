@@ -1,8 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'trackNumber',
-  standalone: true
+  name: 'trackNumber'
 })
 export class AppTrackNumberPipe
   implements PipeTransform {

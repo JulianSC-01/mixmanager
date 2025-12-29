@@ -10,7 +10,6 @@ import { AppLoginService } from '../services/app-login.service';
     SpinnerComponent
   ],
   selector: 'app-startup',
-  standalone: true,
   templateUrl: './app-startup.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

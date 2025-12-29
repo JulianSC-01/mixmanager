@@ -21,9 +21,8 @@ interface LoginForm {
     PageHeaderComponent,
     ReactiveFormsModule,
     SpinnerComponent
-],
+  ],
   selector: 'app-login',
-  standalone: true,
   templateUrl: './app-login.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

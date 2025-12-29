@@ -8,7 +8,6 @@ import { PageHeaderComponent } from 'ngx-js-shared';
     RouterLink
   ],
   selector: 'app-not-found',
-  standalone: true,
   templateUrl: './app-not-found.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })

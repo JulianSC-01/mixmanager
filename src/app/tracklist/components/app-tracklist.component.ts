@@ -22,7 +22,6 @@ import { AppTracklistMessages } from '../util/app-tracklist-messages';
     SpinnerComponent
   ],
   selector: 'app-tracklist',
-  standalone: true,
   styleUrl: './app-tracklist.component.css',
   templateUrl: './app-tracklist.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush

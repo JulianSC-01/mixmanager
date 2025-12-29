@@ -10,7 +10,6 @@ import { AppNavbarComponent } from './components/app-navbar.component';
     RouterOutlet
   ],
   selector: 'app-root',
-  standalone: true,
   templateUrl: './app.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
