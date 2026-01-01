@@ -102,15 +102,11 @@ export class AppLoginComponent {
       this.formErrorHeader().countErrors();
       break;
     case AppLoginService.ERR_TOO_MANY_REQUESTS:
-      this.loginForm.setErrors(
-        { invalidLogin : true });
       this.loginErrorMessage.set(
         AppLoginService.MSG_TOO_MANY_REQUESTS);
       this.focusService.focusErrorHeader();
       break;
     default:
-      this.loginForm.setErrors(
-        { invalidLogin : true });
       this.loginErrorMessage.set(
         AppLoginService.MSG_INVALID_CREDENTIALS);
       this.focusService.focusErrorHeader();

@@ -15,7 +15,7 @@ export const loginGuard: CanActivateFn = (
     inject(Router);
 
   return loginService.
-    authentication().pipe(
+    authentication$.pipe(
       take(1),
       map((authentication) => {
         if (authentication) {

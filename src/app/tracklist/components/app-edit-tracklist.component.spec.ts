@@ -1,7 +1,6 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import firebase from 'firebase/compat/app';
 import { of } from 'rxjs';
 import { AppTrackService } from 'src/app/services/app-track.service';
 import { AppTracklistService } from 'src/app/services/app-tracklist.service';
@@ -42,8 +41,6 @@ describe('AppEditTracklistComponent', () => {
       new AppTracklistBuilder().
         withId('0').
         withTitle('Title').
-        withCreationDate(
-          firebase.firestore.Timestamp.fromDate(new Date())).
         buildTracklist();
 
     spyOn(tracklistService, 'retrieveTracklist').

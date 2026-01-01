@@ -120,9 +120,10 @@ export class AppEditTracklistComponent
   private loadTracklist() {
     const tracklist$ =
       this.tracklistService.
-      retrieveTracklist(this.tracklistId()).pipe(
-        tap(data => {
-          if (!data) {
+      retrieveTracklist(
+        this.tracklistId()).pipe(
+        tap(tracklist => {
+          if (!tracklist) {
             this.router.navigate(['/notfound']);
           }
         }),
@@ -141,7 +142,8 @@ export class AppEditTracklistComponent
   private loadTracks() {
     const tracks$ =
       this.trackService.
-      retrieveTracks(this.tracklistId()).pipe(
+      retrieveTracks(
+        this.tracklistId()).pipe(
         catchError(() => {
           this.displayErrorMessage(
             AppTracklistMessages.MSG_RETRIEVE_TRACKS_FAILED);

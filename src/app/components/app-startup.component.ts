@@ -21,7 +21,7 @@ export class AppStartupComponent {
 
   constructor() {
     this.loginService.
-      authentication().pipe(
+      authentication$.pipe(
         take(1)).subscribe(
         authentication => {
           if (authentication) {
