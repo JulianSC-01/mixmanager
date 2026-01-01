@@ -6,9 +6,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
-  AlertComponent, FocusService,
-  FormInputTextComponent,
-  FormLabelComponent, PageHeaderComponent, SpinnerComponent
+  AlertComponent, FocusService, FormInputTextComponent,
+  FormLabelComponent, LeadingZeroPipe, PageHeaderComponent, SpinnerComponent
 } from 'ngx-js-shared';
 import { catchError, of, tap } from 'rxjs';
 import { AppTrackService } from '../../services/app-track.service';
@@ -17,7 +16,6 @@ import { AppTrack } from '../models/app-track';
 import { AppTracklist } from '../models/app-tracklist';
 import { AppTrackLengthA11yPipe } from '../pipes/app-track-length-a11y.pipe';
 import { AppTrackLengthPipe } from '../pipes/app-track-length.pipe';
-import { AppTrackNumberPipe } from '../pipes/app-track-number.pipe';
 import { AppTracklistMessages } from '../util/app-tracklist-messages';
 
 @Component({
@@ -25,10 +23,10 @@ import { AppTracklistMessages } from '../util/app-tracklist-messages';
     AlertComponent,
     AppTrackLengthPipe,
     AppTrackLengthA11yPipe,
-    AppTrackNumberPipe,
     FormInputTextComponent,
     FormLabelComponent,
     FormsModule,
+    LeadingZeroPipe,
     PageHeaderComponent,
     RouterLink,
     SpinnerComponent
@@ -122,9 +120,11 @@ export class AppEditTracklistComponent
       this.tracklistService.
       retrieveTracklist(
         this.tracklistId()).pipe(
-        tap(tracklist => {
-          if (!tracklist) {
-            this.router.navigate(['/notfound']);
+        tap({
+          next: tracklist => {
+            if (!tracklist) {
+              this.router.navigate(['/notfound']);
+            }
           }
         }),
         catchError(() => {

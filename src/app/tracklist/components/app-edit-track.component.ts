@@ -1,6 +1,6 @@
 import {
-  ChangeDetectionStrategy, Component, computed, inject, Injector,
-  input, OnInit, Signal, signal
+  ChangeDetectionStrategy, Component, computed,
+  inject, Injector, input, OnInit, Signal, signal
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -203,11 +203,13 @@ export class AppEditTrackComponent implements OnInit {
       retrieveTrack(
         this.tracklistId(),
         this.trackId()).pipe(
-          tap(track => {
-            if (track) {
-              this.populateForm(track);
-            } else {
-              this.router.navigate(['/notfound']);
+          tap({
+            next: track => {
+              if (track) {
+                this.populateForm(track);
+              } else {
+                this.router.navigate(['/notfound']);
+              }
             }
           }),
           catchError(() => {
