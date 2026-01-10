@@ -1,6 +1,10 @@
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
+import { environment } from 'src/environments/environment';
 import { AppEditTrackComponent } from './app-edit-track.component';
 
 describe('AppEditTrackComponent', () => {
@@ -8,29 +12,33 @@ describe('AppEditTrackComponent', () => {
   let componentRef: ComponentRef<AppEditTrackComponent>;
   let fixture: ComponentFixture<AppEditTrackComponent>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         AppEditTrackComponent
       ],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
+        provideFirebaseApp(() =>
+          initializeApp(
+            environment.firebaseConfig)),
+        provideAuth(() =>
+          getAuth()),
+        provideFirestore(() =>
+          getFirestore()),
         provideRouter([])
       ],
     })
     .compileComponents();
-  });
 
-  beforeEach(() => {
-    fixture =
-      TestBed.createComponent(AppEditTrackComponent);
-
+    fixture = TestBed.createComponent(AppEditTrackComponent);
     component = fixture.componentInstance;
 
     componentRef = fixture.componentRef;
     componentRef.setInput('tracklistId', 'ABC');
     componentRef.setInput('trackId', '');
 
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
