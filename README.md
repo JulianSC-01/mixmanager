@@ -8,19 +8,15 @@ The user must login to the application to read or update their tracklists.
 
 The application is written in TypeScript and HTML using the Angular framework.
 
-## Supported Features
-
-Secure Login
-- E-mail and password required.
-
-Tracklist Editor
-- Add, Update or Delete tracklists. (Tracklist attributes include: Title, Tracks)
-- Add, Update or Delete tracks within tracklists. (Track attributes include: Artist, Title, BPM and Key.)
-
 ## Change Log
 
+2026-01-10 (19.0.0)
+  - Upgraded to Angular 19
+  - Upgraded to new _@angular/build_ package
+  - Add _LeadingZeroPipe_
+  - Convert to Zoneless
+
 2025-12-22 (18.0.0)
-Latest Version
   - Upgraded to Angular 18
   - Installed ngx-js-shared library 18.0.0
   - Convert entire application to use signals
