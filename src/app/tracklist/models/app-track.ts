@@ -1,4 +1,4 @@
-import firebase from 'firebase/compat/app';
+import { Timestamp } from '@angular/fire/firestore';
 import { AppTrackBuilder } from './app-track-builder';
 
 export class AppTrack {
@@ -10,7 +10,7 @@ export class AppTrack {
   startTime: number;
   endTime: number;
   totalTime?: number;
-  created: firebase.firestore.Timestamp;
+  created: Timestamp;
 
   constructor(builder: AppTrackBuilder) {
     this.id = builder.id;

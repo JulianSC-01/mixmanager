@@ -1,23 +1,26 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppAddIconComponent } from './app-add-icon.component';
 
 describe('AppAddIconComponent', () => {
   let component: AppAddIconComponent;
   let fixture: ComponentFixture<AppAddIconComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         AppAddIconComponent
+      ],
+      providers: [
+        provideExperimentalZonelessChangeDetection()
       ]
     })
     .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AppAddIconComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+
+    await fixture.whenStable();
   });
 
   it('should create', () => {

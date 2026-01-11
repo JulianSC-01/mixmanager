@@ -1,12 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Auth, authState, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppLoginService {
-  private readonly fireAuth =
-    inject(AngularFireAuth);
+  private auth = inject(Auth);
 
   static ERR_BAD_EMAIL_FORMAT =
     'auth/invalid-email';
@@ -20,16 +19,14 @@ export class AppLoginService {
 
   readonly userLogout = signal(false);
 
-  authentication() {
-    return this.fireAuth.authState;
-  }
+  authentication$ = authState(this.auth);
 
   login(username: string, password: string) {
-    return this.fireAuth.
-      signInWithEmailAndPassword(username, password);
+    return signInWithEmailAndPassword(
+      this.auth, username, password);
   }
 
   logout() {
-    return this.fireAuth.signOut();
+    return signOut(this.auth);
   }
 }

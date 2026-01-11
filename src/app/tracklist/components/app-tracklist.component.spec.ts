@@ -1,7 +1,12 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { AppTracklistService } from 'src/app/services/app-tracklist.service';
+import { environment } from 'src/environments/environment';
 import { AppTracklistComponent } from './app-tracklist.component';
 
 describe('AppTracklistComponent', () => {
@@ -10,19 +15,27 @@ describe('AppTracklistComponent', () => {
 
   let fixture: ComponentFixture<AppTracklistComponent>;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         AppTracklistComponent
       ],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
+        provideFirebaseApp(() =>
+          initializeApp(
+            environment.firebaseConfig)),
+        provideAuth(() =>
+          getAuth()),
+        provideFirestore(() =>
+          getFirestore()),
         provideRouter([])
       ],
     })
     .compileComponents();
 
-    fixture =
-      TestBed.createComponent(AppTracklistComponent);
+    fixture = TestBed.createComponent(AppTracklistComponent);
+    component = fixture.componentInstance;
 
     tracklistService =
       TestBed.inject(AppTracklistService);
@@ -30,8 +43,7 @@ describe('AppTracklistComponent', () => {
     spyOn(tracklistService, 'retrieveTracklists').
       and.returnValue(of([]));
 
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {

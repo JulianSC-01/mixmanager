@@ -12,7 +12,7 @@
         title="Mix Manager">
       </app-music-icon>
     </button>
-    @if (loginService.authentication() | async) {
+    @if (loginService.authentication$ | async) {
       <button
         class="navbar-toggler"
         type="button"

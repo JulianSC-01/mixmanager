@@ -2,8 +2,7 @@ import { inject, Pipe, PipeTransform } from '@angular/core';
 import { AppTrackService } from 'src/app/services/app-track.service';
 
 @Pipe({
-  name: 'trackLength',
-  standalone: true
+  name: 'trackLength'
 })
 export class AppTrackLengthPipe
   implements PipeTransform {

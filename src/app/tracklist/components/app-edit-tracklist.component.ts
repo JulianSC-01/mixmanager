@@ -6,9 +6,8 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
-  AlertComponent, FocusService,
-  FormInputTextComponent,
-  FormLabelComponent, PageHeaderComponent, SpinnerComponent
+  AlertComponent, FocusService, FormInputTextComponent,
+  FormLabelComponent, LeadingZeroPipe, PageHeaderComponent, SpinnerComponent
 } from 'ngx-js-shared';
 import { catchError, of, tap } from 'rxjs';
 import { AppTrackService } from '../../services/app-track.service';
@@ -17,7 +16,6 @@ import { AppTrack } from '../models/app-track';
 import { AppTracklist } from '../models/app-tracklist';
 import { AppTrackLengthA11yPipe } from '../pipes/app-track-length-a11y.pipe';
 import { AppTrackLengthPipe } from '../pipes/app-track-length.pipe';
-import { AppTrackNumberPipe } from '../pipes/app-track-number.pipe';
 import { AppTracklistMessages } from '../util/app-tracklist-messages';
 
 @Component({
@@ -25,16 +23,15 @@ import { AppTracklistMessages } from '../util/app-tracklist-messages';
     AlertComponent,
     AppTrackLengthPipe,
     AppTrackLengthA11yPipe,
-    AppTrackNumberPipe,
     FormInputTextComponent,
     FormLabelComponent,
     FormsModule,
+    LeadingZeroPipe,
     PageHeaderComponent,
     RouterLink,
     SpinnerComponent
   ],
   selector: 'app-edit-tracklist',
-  standalone: true,
   styleUrl: './app-edit-tracklist.component.css',
   templateUrl: './app-edit-tracklist.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -121,10 +118,13 @@ export class AppEditTracklistComponent
   private loadTracklist() {
     const tracklist$ =
       this.tracklistService.
-      retrieveTracklist(this.tracklistId()).pipe(
-        tap(data => {
-          if (!data) {
-            this.router.navigate(['/notfound']);
+      retrieveTracklist(
+        this.tracklistId()).pipe(
+        tap({
+          next: tracklist => {
+            if (!tracklist) {
+              this.router.navigate(['/notfound']);
+            }
           }
         }),
         catchError(() => {
@@ -142,7 +142,8 @@ export class AppEditTracklistComponent
   private loadTracks() {
     const tracks$ =
       this.trackService.
-      retrieveTracks(this.tracklistId()).pipe(
+      retrieveTracks(
+        this.tracklistId()).pipe(
         catchError(() => {
           this.displayErrorMessage(
             AppTracklistMessages.MSG_RETRIEVE_TRACKS_FAILED);

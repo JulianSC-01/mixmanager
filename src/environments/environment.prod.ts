@@ -1,5 +1,4 @@
 export const environment = {
-  production: true,
   firebaseConfig : {
     apiKey: "AIzaSyDsw4Ajf9Zj9Tw_OimBqzyhmn5XIHZnGg8",
     authDomain: "mixmanager-dd088.firebaseapp.com",

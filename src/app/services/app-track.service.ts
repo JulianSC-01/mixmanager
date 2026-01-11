@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import firebase from 'firebase/compat/app';
+import {
+  addDoc, collection, collectionSnapshots, deleteDoc, doc, docSnapshots,
+  Firestore, orderBy, query, serverTimestamp, updateDoc
+} from '@angular/fire/firestore';
 import { combineLatest, firstValueFrom } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AppTrack } from '../tracklist/models/app-track';
@@ -14,8 +16,8 @@ const TRACKLIST_COLLECTION = 'tracklists';
   providedIn: 'root'
 })
 export class AppTrackService {
-  private readonly firestoreService =
-    inject(AngularFirestore);
+  private readonly firestore =
+    inject(Firestore);
 
   recentlyAddedTrackTitle: string;
   recentlyUpdatedTrackTitle: string;
@@ -25,22 +27,24 @@ export class AppTrackService {
 
   retrieveTracks(
     tracklistId: string) {
-    const trackCollection =
-      this.firestoreService.collection<AppTrack>(
-        `${TRACKLIST_COLLECTION}/${tracklistId}/` +
-        `${TRACK_COLLECTION}`,
-        ref => ref.orderBy('created'));
+    const trackQuery =
+      query(
+        collection(
+          this.firestore,
+          `${TRACKLIST_COLLECTION}/` +
+          `${tracklistId}/${TRACK_COLLECTION}`),
+        orderBy('created'));
 
-    return trackCollection.
-      snapshotChanges().pipe(
-        map(actions =>
-          actions.map(action => {
-          const data = action.payload.doc.data();
-          const id = action.payload.doc.id;
+    return collectionSnapshots(
+      trackQuery).pipe(
+        map(snapshot =>
+          snapshot.map(document => {
+          const data =
+            document.data() as AppTrack;
 
           if (data) {
             return new AppTrackBuilder().
-              withId(id).
+              withId(document.id).
               withArtist(data.artist).
               withTitle(data.title).
               withBPM(data.bpm).
@@ -60,19 +64,20 @@ export class AppTrackService {
     tracklistId: string,
     trackId: string) {
     const trackDoc =
-      this.firestoreService.doc<AppTrack>(
-        `${TRACKLIST_COLLECTION}/${tracklistId}/` +
-        `${TRACK_COLLECTION}/${trackId}`);
+      doc(
+        this.firestore,
+        `${TRACKLIST_COLLECTION}/` +
+        `${tracklistId}/${TRACK_COLLECTION}/${trackId}`);
 
-    return trackDoc.
-      snapshotChanges().pipe(
-        map(snapshot => {
-          const data = snapshot.payload.data();
-          const id = snapshot.payload.id;
+    return docSnapshots(
+      trackDoc).pipe(
+        map(document => {
+          const data =
+            document.data() as AppTrack;
 
           if (data) {
             return new AppTrackBuilder().
-              withId(id).
+              withId(document.id).
               withArtist(data.artist).
               withTitle(data.title).
               withBPM(data.bpm).
@@ -92,23 +97,21 @@ export class AppTrackService {
     tracklistId: string,
     track: Partial<AppTrack>) {
     const trackCollection =
-      this.firestoreService.collection<AppTrack>(
-        `${TRACKLIST_COLLECTION}/${tracklistId}/` +
-        `${TRACK_COLLECTION}`);
+      collection(
+        this.firestore,
+        `${TRACKLIST_COLLECTION}/` +
+        `${tracklistId}/${TRACK_COLLECTION}`);
 
-    const creationTimestamp =
-      firebase.firestore.Timestamp.
-        fromDate(new Date());
-
-    return trackCollection.add({
-      artist: track.artist,
-      title: track.title,
-      bpm: track.bpm,
-      key: track.key,
-      startTime: track.startTime,
-      endTime: track.endTime,
-      created: creationTimestamp
-    });
+    return addDoc(
+      trackCollection, {
+        artist: track.artist,
+        title: track.title,
+        bpm: track.bpm,
+        key: track.key,
+        startTime: track.startTime,
+        endTime: track.endTime,
+        created: serverTimestamp()
+      });
   }
 
   updateTrack(
@@ -116,22 +119,25 @@ export class AppTrackService {
     trackId: string,
     track: Partial<AppTrack>) {
     const trackDoc =
-      this.firestoreService.doc<AppTrack>(
-        `${TRACKLIST_COLLECTION}/${tracklistId}/` +
-        `${TRACK_COLLECTION}/${trackId}`);
+      doc(
+        this.firestore,
+        `${TRACKLIST_COLLECTION}/` +
+        `${tracklistId}/${TRACK_COLLECTION}/${trackId}`);
 
-    return trackDoc.update(track);
+    return updateDoc(
+      trackDoc, track);
   }
 
   removeTrack(
     tracklistId: string,
     trackId: string) {
     const trackDoc =
-      this.firestoreService.doc<AppTrack>(
-        `${TRACKLIST_COLLECTION}/${tracklistId}/` +
-        `${TRACK_COLLECTION}/${trackId}`)
+      doc(
+        this.firestore,
+        `${TRACKLIST_COLLECTION}/` +
+        `${tracklistId}/${TRACK_COLLECTION}/${trackId}`);
 
-    return trackDoc.delete();
+    return deleteDoc(trackDoc);
   }
 
   removeTracks(

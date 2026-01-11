@@ -1,10 +1,10 @@
-import firebase from 'firebase/compat/app';
+import { Timestamp } from '@angular/fire/firestore';
 import { AppTracklistBuilder } from './app-tracklist-builder';
 
 export class AppTracklist {
   id?: string;
   title: string;
-  created: firebase.firestore.Timestamp;
+  created: Timestamp;
 
   constructor(builder: AppTracklistBuilder) {
     this.id = builder.id;

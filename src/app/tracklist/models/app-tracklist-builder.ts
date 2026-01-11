@@ -1,10 +1,10 @@
-import firebase from 'firebase/compat/app';
+import { Timestamp } from '@angular/fire/firestore';
 import { AppTracklist } from "./app-tracklist";
 
 export class AppTracklistBuilder {
   id: string;
   title: string;
-  created: firebase.firestore.Timestamp;
+  created: Timestamp;
 
   withId(id: string) {
     this.id  = id;
@@ -16,7 +16,7 @@ export class AppTracklistBuilder {
     return this;
   }
 
-  withCreationDate(created: firebase.firestore.Timestamp) {
+  withCreationDate(created: Timestamp) {
     this.created = created;
     return this;
   }

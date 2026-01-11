@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
-import firebase from 'firebase/compat/app';
+import {
+  addDoc, collection, collectionSnapshots, deleteDoc, doc, docSnapshots,
+  Firestore, orderBy, query, serverTimestamp, updateDoc
+} from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { AppTracklist } from '../tracklist/models/app-tracklist';
 import { AppTracklistBuilder } from '../tracklist/models/app-tracklist-builder';
@@ -12,28 +14,29 @@ const TRACKLIST_COLLECTION = 'tracklists';
   providedIn: 'root'
 })
 export class AppTracklistService {
-  private readonly firestoreService =
-    inject(AngularFirestore);
+  private readonly firestore =
+    inject(Firestore);
   private readonly trackService =
     inject(AppTrackService);
 
   retrieveTracklists() {
-    const tracklistCollection =
-      this.firestoreService.
-        collection<AppTracklist>(
-          TRACKLIST_COLLECTION,
-          ref => ref.orderBy('created'));
+    const tracklistQuery =
+      query(
+        collection(
+          this.firestore,
+          TRACKLIST_COLLECTION),
+        orderBy('created'));
 
-    return tracklistCollection.
-      snapshotChanges().pipe(
-        map(actions =>
-          actions.map(action => {
-          const data = action.payload.doc.data();
-          const id = action.payload.doc.id;
+    return collectionSnapshots(
+      tracklistQuery).pipe(
+        map(snapshot =>
+          snapshot.map(document => {
+          const data =
+            document.data() as AppTracklist;
 
           if (data) {
             return new AppTracklistBuilder().
-              withId(id).
+              withId(document.id).
               withTitle(data.title).
               withCreationDate(data.created).
               buildTracklist();
@@ -44,18 +47,19 @@ export class AppTracklistService {
   retrieveTracklist(
     tracklistId: string) {
     const tracklistDoc =
-      this.firestoreService.doc<AppTracklist>(
+      doc(
+        this.firestore,
         `${TRACKLIST_COLLECTION}/${tracklistId}`);
 
-    return tracklistDoc.
-      snapshotChanges().pipe(
-        map(snapshot => {
-          const data = snapshot.payload.data();
-          const id = snapshot.payload.id;
+    return docSnapshots(
+      tracklistDoc).pipe(
+        map(document => {
+          const data =
+            document.data() as AppTracklist;
 
           if (data) {
             return new AppTracklistBuilder().
-              withId(id).
+              withId(document.id).
               withTitle(data.title).
               withCreationDate(data.created).
               buildTracklist();
@@ -66,28 +70,27 @@ export class AppTracklistService {
   addTracklist(
     tracklist: Partial<AppTracklist>) {
     const tracklistCollection =
-      this.firestoreService.
-        collection<AppTracklist>(
-          TRACKLIST_COLLECTION);
+      collection(
+        this.firestore,
+        TRACKLIST_COLLECTION);
 
-    const creationTimestamp =
-      firebase.firestore.Timestamp.
-        fromDate(new Date());
-
-    return tracklistCollection.add({
-      title: tracklist.title,
-      created: creationTimestamp
-    });
+    return addDoc(
+      tracklistCollection, {
+        title: tracklist.title,
+        created: serverTimestamp()
+      });
   }
 
   updateTracklist(
     tracklistId: string,
     tracklist: Partial<AppTracklist>) {
     const tracklistDoc =
-      this.firestoreService.doc<AppTracklist>(
+      doc(
+        this.firestore,
         `${TRACKLIST_COLLECTION}/${tracklistId}`);
 
-    return tracklistDoc.update(tracklist);
+    return updateDoc(
+      tracklistDoc, tracklist);
   }
 
   async removeTracklist(
@@ -97,10 +100,11 @@ export class AppTracklistService {
         removeAllTracks(tracklistId);
 
       const tracklistDoc =
-        this.firestoreService.doc<AppTracklist>(
+        doc(
+          this.firestore,
           `${TRACKLIST_COLLECTION}/${tracklistId}`);
 
-      return tracklistDoc.delete();
+      return deleteDoc(tracklistDoc);
     } catch (error) {
       return Promise.reject();
     }

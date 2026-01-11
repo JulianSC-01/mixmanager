@@ -1,4 +1,5 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { AppNotFoundComponent } from './app-not-found.component';
 
@@ -6,22 +7,22 @@ describe('AppNotFoundComponent', () => {
   let component: AppNotFoundComponent;
   let fixture: ComponentFixture<AppNotFoundComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         AppNotFoundComponent
       ],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         provideRouter([])
       ]
     })
     .compileComponents();
-  }));
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(AppNotFoundComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+
+    await fixture.whenStable();
   });
 
   it('should create', () => {

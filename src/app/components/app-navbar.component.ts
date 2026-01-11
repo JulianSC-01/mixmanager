@@ -14,7 +14,6 @@ import { AppMusicIconComponent } from '../shared/components/app-music-icon.compo
     SpinnerComponent
   ],
   selector: 'app-navbar',
-  standalone: true,
   styleUrl: './app-navbar.component.css',
   templateUrl: './app-navbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush

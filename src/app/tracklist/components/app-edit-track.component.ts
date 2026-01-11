@@ -1,6 +1,6 @@
 import {
-  ChangeDetectionStrategy, Component, computed, inject, Injector,
-  input, OnInit, Signal, signal
+  ChangeDetectionStrategy, Component, computed,
+  inject, Injector, input, OnInit, Signal, signal
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -46,7 +46,6 @@ interface TrackTimeForm {
     SpinnerComponent
   ],
   selector: 'app-edit-track',
-  standalone: true,
   templateUrl: './app-edit-track.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -199,60 +198,29 @@ export class AppEditTrackComponent implements OnInit {
   }
 
   private loadTrack() {
-    const tracks =
-      this.trackService.retrieveTrack(
-      this.tracklistId(), this.trackId()).pipe(
-        tap(data => {
-          if (data) {
-            this.trackForm.controls.
-              trackArtist.setValue(data.artist);
-            this.trackForm.controls.
-              trackTitle.setValue(data.title);
-
-            if (data.bpm !== null) {
-              this.trackForm.controls.
-                trackBPM.setValue(data.bpm);
+    const tracks$ =
+      this.trackService.
+      retrieveTrack(
+        this.tracklistId(),
+        this.trackId()).pipe(
+          tap({
+            next: track => {
+              if (track) {
+                this.populateForm(track);
+              } else {
+                this.router.navigate(['/notfound']);
+              }
             }
+          }),
+          catchError(() => {
+            this.displayErrorMessage(
+              AppTracklistMessages.MSG_RETRIEVE_TRACK_FAILED);
 
-            this.trackForm.controls.
-              trackKey.setValue(data.key);
-
-            if (data.startTime !== null) {
-              let hhmmss : number[] =
-                this.trackService.trackHelper.
-                  getLengthHHMMSS(data.startTime);
-              this.trackStartTimeForm.controls.
-                trackHours.setValue(hhmmss[0]);
-              this.trackStartTimeForm.controls.
-                trackMinutes.setValue(hhmmss[1]);
-              this.trackStartTimeForm.controls.
-                trackSeconds.setValue(hhmmss[2]);
-            }
-
-            if (data.endTime !== null) {
-              let hhmmss : number[] =
-                this.trackService.trackHelper.
-                  getLengthHHMMSS(data.endTime);
-              this.trackEndTimeForm.controls.
-                trackHours.setValue(hhmmss[0]);
-              this.trackEndTimeForm.controls.
-                trackMinutes.setValue(hhmmss[1]);
-              this.trackEndTimeForm.controls.
-                trackSeconds.setValue(hhmmss[2]);
-            }
-          } else {
-            this.router.navigate(['/notfound']);
-          }
-        }),
-        catchError(() => {
-          this.displayErrorMessage(
-            AppTracklistMessages.MSG_RETRIEVE_TRACK_FAILED);
-
-          return of(null);
-        }));
+            return of(null);
+          }));
 
     this.track =
-      toSignal(tracks,
+      toSignal(tracks$,
         { injector: this.injector });
   }
 
@@ -345,6 +313,45 @@ export class AppEditTrackComponent implements OnInit {
 
   cancel() {
     this.displayPreviousPage();
+  }
+
+  private populateForm(track: AppTrack) {
+    this.trackForm.controls.
+      trackArtist.setValue(track.artist);
+    this.trackForm.controls.
+      trackTitle.setValue(track.title);
+
+    if (track.bpm !== null) {
+      this.trackForm.controls.
+        trackBPM.setValue(track.bpm);
+    }
+
+    this.trackForm.controls.
+      trackKey.setValue(track.key);
+
+    if (track.startTime !== null) {
+      const hhmmss =
+        this.trackService.trackHelper.
+          getLengthHHMMSS(track.startTime);
+      this.trackStartTimeForm.controls.
+        trackHours.setValue(hhmmss[0]);
+      this.trackStartTimeForm.controls.
+        trackMinutes.setValue(hhmmss[1]);
+      this.trackStartTimeForm.controls.
+        trackSeconds.setValue(hhmmss[2]);
+    }
+
+    if (track.endTime !== null) {
+      const hhmmss =
+        this.trackService.trackHelper.
+          getLengthHHMMSS(track.endTime);
+      this.trackEndTimeForm.controls.
+        trackHours.setValue(hhmmss[0]);
+      this.trackEndTimeForm.controls.
+        trackMinutes.setValue(hhmmss[1]);
+      this.trackEndTimeForm.controls.
+        trackSeconds.setValue(hhmmss[2]);
+    }
   }
 
   private displayPreviousPage() {

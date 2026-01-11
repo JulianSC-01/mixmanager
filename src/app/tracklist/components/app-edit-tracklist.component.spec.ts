@@ -1,10 +1,13 @@
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
-import firebase from 'firebase/compat/app';
 import { of } from 'rxjs';
 import { AppTrackService } from 'src/app/services/app-track.service';
 import { AppTracklistService } from 'src/app/services/app-tracklist.service';
+import { environment } from 'src/environments/environment';
 import { AppTracklist } from '../models/app-tracklist';
 import { AppTracklistBuilder } from '../models/app-tracklist-builder';
 import { AppEditTracklistComponent } from './app-edit-tracklist.component';
@@ -19,19 +22,27 @@ describe('AppEditTracklistComponent', () => {
 
   let tracklist: AppTracklist;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [
         AppEditTracklistComponent
       ],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
+        provideFirebaseApp(() =>
+          initializeApp(
+            environment.firebaseConfig)),
+        provideAuth(() =>
+          getAuth()),
+        provideFirestore(() =>
+          getFirestore()),
         provideRouter([])
       ],
     })
     .compileComponents();
 
-    fixture =
-      TestBed.createComponent(AppEditTracklistComponent);
+    fixture = TestBed.createComponent(AppEditTracklistComponent);
+    component = fixture.componentInstance;
 
     tracklistService =
       TestBed.inject(AppTracklistService);
@@ -42,8 +53,6 @@ describe('AppEditTracklistComponent', () => {
       new AppTracklistBuilder().
         withId('0').
         withTitle('Title').
-        withCreationDate(
-          firebase.firestore.Timestamp.fromDate(new Date())).
         buildTracklist();
 
     spyOn(tracklistService, 'retrieveTracklist').
@@ -51,12 +60,10 @@ describe('AppEditTracklistComponent', () => {
     spyOn(trackService, 'retrieveTracks').
       and.returnValue(of([]));
 
-    component = fixture.componentInstance;
-
     componentRef = fixture.componentRef;
     componentRef.setInput('tracklistId', '');
 
-    fixture.detectChanges();
+    await fixture.whenStable();
   });
 
   it('should create', () => {
