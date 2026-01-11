@@ -12,6 +12,8 @@ The application is written in TypeScript and HTML using the Angular framework.
 
 2026-01-10 (19.0.0)
   - Upgraded to Angular 19
+  - Upgraded to Firebase 11.10.0
+  - Upgraded to use new Firebase modular API
   - Upgraded to new _@angular/build_ package
   - Add _LeadingZeroPipe_
   - Convert to Zoneless
