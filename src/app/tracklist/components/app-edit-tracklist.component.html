@@ -92,8 +92,8 @@
 </h2>
 <div class="table-responsive">
   <table class="table table-sm table-bordered table-striped mb-1">
-    <caption>
-      Table of {{ trackCount() }} tracks
+    <caption class="sr-only">
+      Tracks
     </caption>
     <thead>
       <tr>
@@ -122,12 +122,12 @@
               <input
                 type="checkbox"
                 class="form-check-input"
-                [id]="'chk' + i"
+                [id]="`chk${i}`"
                 [value]="track.id"
                 (change)="onTrackSelected($event, track.title, track.id)">
               <app-form-label
                 labelInvisible="true"
-                [labelControlId]="'chk' + i">
+                [labelControlId]="`chk${i}`">
                 Select track {{ (i+1) }}. {{ track.artist }} - {{ track.title }}
               </app-form-label>
             </td>

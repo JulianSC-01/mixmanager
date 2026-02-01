@@ -74,9 +74,6 @@ export class AppEditTracklistComponent
 
   readonly tracksAreLoading =
     computed(() => !this.tracks());
-  readonly trackCount =
-    computed(() => !!this.tracks() ?
-      this.tracks().length : 0);
 
   readonly tracksSelected =
     signal<string[]>([]);

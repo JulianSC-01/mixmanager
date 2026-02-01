@@ -49,9 +49,6 @@ export class AppTracklistComponent {
 
   readonly tracklists =
     toSignal(this.tracklists$);
-  readonly tracklistCount =
-    computed(() => !!this.tracklists() ?
-      this.tracklists().length : 0);
 
   readonly isAdding =
     signal(false);
