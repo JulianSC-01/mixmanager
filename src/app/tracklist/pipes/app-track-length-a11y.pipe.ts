@@ -9,8 +9,10 @@ export class AppTrackLengthA11yPipe
   private readonly trackService =
     inject(AppTrackService);
 
-  transform(totalSeconds: number) {
-    if (totalSeconds === null || totalSeconds < 0) {
+  transform(totalSeconds?: number) {
+    if (totalSeconds === undefined ||
+        totalSeconds === null ||
+        totalSeconds < 0) {
       return 'undefined';
     } else {
       const hoursMinutesSeconds =

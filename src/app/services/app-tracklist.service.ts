@@ -34,13 +34,11 @@ export class AppTracklistService {
           const data =
             document.data() as AppTracklist;
 
-          if (data) {
-            return new AppTracklistBuilder().
-              withId(document.id).
-              withTitle(data.title).
-              withCreationDate(data.created).
-              buildTracklist();
-          }
+          return new AppTracklistBuilder().
+            withId(document.id).
+            withTitle(data.title).
+            withCreationDate(data.created).
+            buildTracklist();
         })));
   }
 

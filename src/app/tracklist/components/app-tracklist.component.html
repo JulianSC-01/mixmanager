@@ -23,8 +23,8 @@
   <div class="table-responsive">
     <table
       class="table table-bordered table-striped mb-1">
-      <caption>
-        Table of {{ tracklistCount() }} tracklists
+      <caption class="sr-only">
+        Tracklists
       </caption>
       <thead>
         <tr>
@@ -58,7 +58,7 @@
                   title="Remove tracklist"
                   type="button"
                   (click)="removeTracklist(
-                    tracklist.id, tracklist.title)">
+                    tracklist.id ?? '', tracklist.title)">
                   <app-delete-icon/>
                   <span class="sr-only">
                     Remove tracklist {{ tracklist.title }}

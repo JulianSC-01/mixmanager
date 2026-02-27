@@ -56,8 +56,8 @@
             @for (minorKey of minorKeys();
               track $index; let i = $index) {
               <option
-                [value]="(i+1) + 'A'">
-                {{ (i+1) + 'A' }} - {{ minorKey }} Minor
+                [value]="`${(i+1)}A`">
+                {{ `${(i+1)}A - ${minorKey} Minor` }}
               </option>
             }
           </optgroup>
@@ -65,8 +65,8 @@
             @for (majorKey of majorKeys();
               track $index; let i = $index) {
               <option
-                [value]="(i+1) + 'B'">
-                {{ (i+1) + 'B' }} - {{ majorKey }} Major
+                [value]="`${(i+1)}B`">
+                {{ `${(i+1)}B - ${majorKey} Major` }}
               </option>
             }
           </optgroup>

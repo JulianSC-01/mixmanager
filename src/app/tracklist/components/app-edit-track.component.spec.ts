@@ -1,4 +1,4 @@
-import { ComponentRef, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ComponentRef, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -18,7 +18,7 @@ describe('AppEditTrackComponent', () => {
         AppEditTrackComponent
       ],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideFirebaseApp(() =>
           initializeApp(
             environment.firebaseConfig)),
