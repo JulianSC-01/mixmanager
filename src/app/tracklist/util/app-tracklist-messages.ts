@@ -16,7 +16,7 @@ export class AppTracklistMessages {
   static MSG_REMOVE_TRACKS_SUCCESSFUL : string              = 'Successfully removed {0} track(s).';
   static MSG_REMOVE_TRACKLIST_FAILED : string               = 'Unable to remove tracklist. Please try again later.';
   static MSG_REMOVE_TRACK_FAILED : string                   = 'Unable to remove 1 or more tracks. Please try again later.';
-  static MSG_SWAP_TRACKS_SUCCESSFUL : string                = 'Successfully swapped {0} tracks.';
+  static MSG_SWAP_TRACKS_SUCCESSFUL : string                = 'Successfully swapped 2 tracks.';
   static MSG_SWAP_TRACKS_FAILED : string                    = 'Unable to swap tracks. Please try again later.';
   static MSG_UPDATE_TITLE_SUCCESSFUL : string               = 'Tracklist title updated successfully.';
   static MSG_UPDATE_TITLE_FAILED : string                   = 'Unable to update title. Please try again later.';

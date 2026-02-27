@@ -250,8 +250,7 @@ export class AppEditTracklistComponent
           this.tracksSelected()[1]).
         then(() => {
           this.displaySuccessMessage(
-            AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL.
-              replace('{0}', `${this.tracksSelectedCount()}`));
+            AppTracklistMessages.MSG_SWAP_TRACKS_SUCCESSFUL);
         }, () => {
           this.displayErrorMessage(
             AppTracklistMessages.MSG_SWAP_TRACKS_FAILED);
@@ -264,9 +263,8 @@ export class AppEditTracklistComponent
   }
 
   onTrackSelected(
-    event : Event,
-    trackTitle : string,
-    trackId : string) {
+    event: Event,
+    trackId: string) {
     const selected =
       (<HTMLInputElement>event.target).checked
 
@@ -279,10 +277,14 @@ export class AppEditTracklistComponent
           id => id !== trackId));
     }
 
-    if (this.tracksSelectedCount() === 1)
-      this.trackTitleSelected.set(trackTitle);
-    else
+    if (this.tracksSelectedCount() === 1) {
+      this.trackTitleSelected.set(
+        this.tracks().find(track =>
+          this.tracksSelected()[0] ===
+            track.id)?.title ?? null);
+    } else {
       this.trackTitleSelected.set(null);
+    }
   }
 
   private displaySuccessMessage(successMessage : string) {

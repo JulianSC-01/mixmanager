@@ -94,13 +94,13 @@ export class AppTracklistComponent {
   }
 
   removeTracklist(
-    tracklistId: string, tracklistName: string) {
+    tracklistId: string, tracklistTitle: string) {
     this.tracklistService.
       removeTracklist(tracklistId).
       then(() => {
         this.successMessage.set(
           AppTracklistMessages.MSG_REMOVE_SUCCESSFUL.
-            replace('{0}', tracklistName));
+            replace('{0}', tracklistTitle));
         this.focusService.focusSuccessHeader();
       }, () => {
         this.errorMessage.set(
