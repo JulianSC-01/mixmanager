@@ -42,21 +42,19 @@ export class AppTrackService {
           const data =
             document.data() as AppTrack;
 
-          if (data) {
-            return new AppTrackBuilder().
-              withId(document.id).
-              withArtist(data.artist).
-              withTitle(data.title).
-              withBPM(data.bpm).
-              withKey(data.key).
-              withStartTime(data.startTime).
-              withEndTime(data.endTime).
-              withTotalTime(
-                this.trackHelper.getTrackLength(
-                  data.startTime, data.endTime)).
-              withCreationDate(data.created).
-              buildTrack();
-          }
+          return new AppTrackBuilder().
+            withId(document.id).
+            withArtist(data.artist).
+            withTitle(data.title).
+            withBPM(data.bpm).
+            withKey(data.key).
+            withStartTime(data.startTime).
+            withEndTime(data.endTime).
+            withTotalTime(
+              this.trackHelper.getTrackLength(
+                data.startTime, data.endTime)).
+            withCreationDate(data.created).
+            buildTrack();
         })));
   }
 
