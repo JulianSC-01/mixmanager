@@ -10,7 +10,7 @@ The application is written in TypeScript and HTML using the Angular framework.
 
 ## Change Log
 
-2026-02-01 (20.0.0)
+2026-02-27 (20.0.0)
   - Upgraded to Angular 20
 
 2026-01-10 (19.0.0)
