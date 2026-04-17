@@ -5,8 +5,8 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
-import { AppTracklistService } from 'src/app/services/app-tracklist.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
+import { AppTracklistService } from '../../services/app-tracklist.service';
 import { AppTracklistComponent } from './app-tracklist.component';
 
 describe('AppTracklistComponent', () => {

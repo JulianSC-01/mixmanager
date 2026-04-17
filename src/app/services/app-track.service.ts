@@ -19,8 +19,8 @@ export class AppTrackService {
   private readonly firestore =
     inject(Firestore);
 
-  recentlyAddedTrackTitle: string;
-  recentlyUpdatedTrackTitle: string;
+  recentlyAddedTrackTitle: string | null = null;
+  recentlyUpdatedTrackTitle: string | null = null;
 
   trackHelper =
     AppTrackHelper.getInstance();
@@ -186,6 +186,11 @@ export class AppTrackService {
             this.retrieveTrack(
               tracklistId, trackIdSecond)
           ]));
+
+      if (!tracks[0] ||
+          !tracks[1]) {
+        return Promise.reject();
+      }
 
       return Promise.all([
         this.updateTrack(

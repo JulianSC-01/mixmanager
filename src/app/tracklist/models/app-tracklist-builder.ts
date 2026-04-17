@@ -2,9 +2,9 @@ import { Timestamp } from '@angular/fire/firestore';
 import { AppTracklist } from "./app-tracklist";
 
 export class AppTracklistBuilder {
-  id: string;
-  title: string;
-  created: Timestamp;
+  id: string = '';
+  title: string = '';
+  created?: Timestamp;
 
   withId(id: string) {
     this.id  = id;
@@ -16,7 +16,7 @@ export class AppTracklistBuilder {
     return this;
   }
 
-  withCreationDate(created: Timestamp) {
+  withCreationDate(created?: Timestamp) {
     this.created = created;
     return this;
   }

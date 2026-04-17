@@ -2,15 +2,15 @@ import { Timestamp } from '@angular/fire/firestore';
 import { AppTrackBuilder } from './app-track-builder';
 
 export class AppTrack {
-  id?: string;
+  id: string;
   artist: string;
   title: string;
-  bpm: number;
+  bpm: number | null;
   key: string;
-  startTime: number;
-  endTime: number;
-  totalTime?: number;
-  created: Timestamp;
+  startTime: number | null;
+  endTime: number | null;
+  totalTime: number | null;
+  created?: Timestamp;
 
   constructor(builder: AppTrackBuilder) {
     this.id = builder.id;

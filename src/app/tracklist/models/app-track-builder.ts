@@ -2,15 +2,15 @@ import { Timestamp } from '@angular/fire/firestore';
 import { AppTrack } from "./app-track";
 
 export class AppTrackBuilder {
-  id: string;
-  artist: string;
-  title: string;
-  bpm: number;
-  key: string;
-  startTime: number;
-  endTime: number;
-  totalTime: number;
-  created: Timestamp;
+  id: string = '';
+  artist: string = '';
+  title: string = '';
+  bpm: number | null = null;
+  key: string = '';
+  startTime: number | null = null;
+  endTime: number | null = null;
+  totalTime: number | null = null;
+  created?: Timestamp;
 
   withId(id: string) {
     this.id = id;
@@ -27,7 +27,7 @@ export class AppTrackBuilder {
     return this;
   }
 
-  withBPM(bpm: number) {
+  withBPM(bpm: number | null) {
     this.bpm = bpm;
     return this;
   }
@@ -37,23 +37,22 @@ export class AppTrackBuilder {
     return this;
   }
 
-  withStartTime(startTime: number) {
+  withStartTime(startTime: number | null) {
     this.startTime = startTime;
     return this;
   }
 
-  withEndTime(endTime: number) {
+  withEndTime(endTime: number | null) {
     this.endTime = endTime;
     return this;
   }
 
-  withTotalTime(totalTime: number) {
+  withTotalTime(totalTime: number | null) {
     this.totalTime = totalTime;
     return this;
   }
 
-  withCreationDate(
-    created: Timestamp) {
+  withCreationDate(created?: Timestamp) {
     this.created = created;
     return this;
   }

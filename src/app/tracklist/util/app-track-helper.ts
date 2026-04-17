@@ -11,7 +11,7 @@ export class AppTrackHelper {
     return AppTrackHelper.instance;
   }
 
-  getLengthHHMMSS(totalSeconds: number) {
+  getLengthHHMMSS(totalSeconds: number | null) {
     if (totalSeconds === null ||
         totalSeconds < 0) {
       return [null, null, null];
@@ -35,7 +35,7 @@ export class AppTrackHelper {
     return [trackHours, trackMinutes, trackSeconds];
   }
 
-  getLengthSeconds(hoursMinutesSeconds: number[]) {
+  getLengthSeconds(hoursMinutesSeconds: (number | null)[]) {
     if (hoursMinutesSeconds[0] === null &&
         hoursMinutesSeconds[1] === null &&
         hoursMinutesSeconds[2] === null) {
@@ -79,7 +79,7 @@ export class AppTrackHelper {
   }
 
   getTrackLength(
-    startTime: number, endTime: number) {
+    startTime: number | null, endTime: number | null) {
     if (endTime === null) {
       return null;
     } else if (startTime === null) {

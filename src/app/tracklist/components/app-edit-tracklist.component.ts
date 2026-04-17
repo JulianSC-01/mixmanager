@@ -1,6 +1,6 @@
 import {
   ChangeDetectionStrategy, Component, computed,
-  inject, Injector, input, OnDestroy, OnInit, signal, Signal
+  inject, Injector, input, OnDestroy, OnInit, Signal, signal
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -17,6 +17,9 @@ import { AppTracklist } from '../models/app-tracklist';
 import { AppTrackLengthA11yPipe } from '../pipes/app-track-length-a11y.pipe';
 import { AppTrackLengthPipe } from '../pipes/app-track-length.pipe';
 import { AppTracklistMessages } from '../util/app-tracklist-messages';
+
+type TracklistResponse = AppTracklist | null | undefined;
+type TracksResponse = AppTrack[] | undefined;
 
 @Component({
   imports: [
@@ -54,14 +57,16 @@ export class AppEditTracklistComponent
   readonly tracklistId =
     input.required<string>();
 
-  tracklist: Signal<AppTracklist>;
+  tracklist: Signal<TracklistResponse> | null = null;
 
   readonly tracklistIsLoading =
     computed(() =>
-      this.tracklist() === undefined);
+      !this.tracklist ||
+       this.tracklist() === undefined);
   readonly tracklistTitle =
-    computed(() => !!this.tracklist() ?
-      this.tracklist().title : '');
+    computed(() =>
+      !!this.tracklist &&
+      !!this.tracklist() ? this.tracklist()!.title : '');
 
   readonly tracklistTitleToEdit =
     signal('');
@@ -70,10 +75,12 @@ export class AppEditTracklistComponent
   readonly isTitleBeingSaved =
     signal(false);
 
-  tracks: Signal<AppTrack[]>;
+  tracks: Signal<TracksResponse> | null = null;
 
   readonly tracksAreLoading =
-    computed(() => !this.tracks());
+    computed(() =>
+      !this.tracks ||
+      !this.tracks());
 
   readonly tracksSelected =
     signal<string[]>([]);
@@ -82,7 +89,7 @@ export class AppEditTracklistComponent
       this.tracksSelected().length);
 
   readonly trackTitleSelected =
-    signal<string>(null);
+    signal<string | null>(null);
   readonly tracksAreUpdating =
     signal(false);
 
@@ -221,7 +228,7 @@ export class AppEditTracklistComponent
           if (this.trackTitleSelected()) {
             this.displaySuccessMessage(
               AppTracklistMessages.MSG_REMOVE_SUCCESSFUL.
-                replace('{0}', this.trackTitleSelected()));
+                replace('{0}', this.trackTitleSelected()!));
           } else {
             this.displaySuccessMessage(
               AppTracklistMessages.MSG_REMOVE_TRACKS_SUCCESSFUL.
@@ -277,9 +284,13 @@ export class AppEditTracklistComponent
           id => id !== trackId));
     }
 
+    const tracks =
+      (this.tracks &&
+       this.tracks()) ?? [];
+
     if (this.tracksSelectedCount() === 1) {
       this.trackTitleSelected.set(
-        this.tracks().find(track =>
+        tracks.find(track =>
           this.tracksSelected()[0] ===
             track.id)?.title ?? null);
     } else {

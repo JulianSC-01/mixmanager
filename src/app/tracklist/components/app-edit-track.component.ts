@@ -20,17 +20,19 @@ const BPM_PATTERN : RegExp = /^[0-9]{0,3}$/;
 interface TrackForm {
   trackArtist: FormControl<string>;
   trackTitle: FormControl<string>;
-  trackBPM: FormControl<number>;
+  trackBPM: FormControl<number | null>;
   trackKey: FormControl<string>;
   trackStartTime: FormGroup<TrackTimeForm>;
   trackEndTime: FormGroup<TrackTimeForm>;
 }
 
 interface TrackTimeForm {
-  trackHours: FormControl<number>;
-  trackMinutes: FormControl<number>;
-  trackSeconds: FormControl<number>;
+  trackHours: FormControl<number | null>;
+  trackMinutes: FormControl<number | null>;
+  trackSeconds: FormControl<number | null>;
 }
+
+type TrackResponse = AppTrack | null | undefined;
 
 @Component({
   imports: [
@@ -75,10 +77,12 @@ export class AppEditTrackComponent implements OnInit {
     computed(() => !this.trackId() ?
       'Add track' : 'Edit track');
 
-  track: Signal<AppTrack>;
+  track: Signal<TrackResponse> | null = null;
 
   readonly trackIsLoading =
-    computed(() => this.track() === undefined);
+    computed(() =>
+      !this.track ||
+       this.track() === undefined);
   readonly trackIsUpdating =
     signal(false);
   readonly trackWorkInProgress =
@@ -193,7 +197,7 @@ export class AppEditTrackComponent implements OnInit {
       this.loadTrack();
     } else {
       this.track =
-        signal<AppTrack>(null);
+        signal<TrackResponse>(null);
     }
   }
 
@@ -248,12 +252,12 @@ export class AppEditTrackComponent implements OnInit {
       let trackKey =
         this.trackForm.controls.trackKey.value;
 
-      let trackStartTimeHHMMSS : number[] = [
+      let trackStartTimeHHMMSS = [
         this.trackStartTimeForm.controls.trackHours.value,
         this.trackStartTimeForm.controls.trackMinutes.value,
         this.trackStartTimeForm.controls.trackSeconds.value
       ];
-      let trackEndTimeHHMMSS : number[] = [
+      let trackEndTimeHHMMSS = [
         this.trackEndTimeForm.controls.trackHours.value,
         this.trackEndTimeForm.controls.trackMinutes.value,
         this.trackEndTimeForm.controls.trackSeconds.value

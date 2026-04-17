@@ -5,7 +5,7 @@ import {
   AlertComponent, FocusService, FormA11yDirective, FormErrorHeaderComponent,
   FormInputTextComponent, PageHeaderComponent, SpinnerComponent
 } from 'ngx-js-shared';
-import { AppLoginService } from 'src/app/services/app-login.service';
+import { AppLoginService } from '../services/app-login.service';
 
 interface LoginForm {
   loginEmail: FormControl<string>;
