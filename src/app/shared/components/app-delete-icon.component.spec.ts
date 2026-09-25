@@ -1,4 +1,3 @@
-import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppDeleteIconComponent } from './app-delete-icon.component';
 
@@ -10,9 +9,6 @@ describe('AppDeleteIconComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AppDeleteIconComponent
-      ],
-      providers: [
-        provideZonelessChangeDetection()
       ]
     })
     .compileComponents();

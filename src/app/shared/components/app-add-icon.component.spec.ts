@@ -1,4 +1,3 @@
-import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppAddIconComponent } from './app-add-icon.component';
 
@@ -10,9 +9,6 @@ describe('AppAddIconComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         AppAddIconComponent
-      ],
-      providers: [
-        provideZonelessChangeDetection()
       ]
     })
     .compileComponents();
