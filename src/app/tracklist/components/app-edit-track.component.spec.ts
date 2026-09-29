@@ -1,10 +1,6 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
-import { environment } from '../../../environments/environment';
 import { AppEditTrackComponent } from './app-edit-track.component';
 
 describe('AppEditTrackComponent', () => {
@@ -18,13 +14,6 @@ describe('AppEditTrackComponent', () => {
         AppEditTrackComponent
       ],
       providers: [
-        provideFirebaseApp(() =>
-          initializeApp(
-            environment.firebaseConfig)),
-        provideAuth(() =>
-          getAuth()),
-        provideFirestore(() =>
-          getFirestore()),
         provideRouter([])
       ],
     })

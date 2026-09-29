@@ -1,8 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideRouter } from '@angular/router';
-import { environment } from '../../environments/environment';
 import { AppNavbarComponent } from './app-navbar.component';
 
 describe('AppNavbarComponent', () => {
@@ -15,11 +12,6 @@ describe('AppNavbarComponent', () => {
         AppNavbarComponent
       ],
       providers: [
-        provideFirebaseApp(() =>
-          initializeApp(
-            environment.firebaseConfig)),
-        provideAuth(() =>
-          getAuth()),
         provideRouter([])
       ]
     })

@@ -1,8 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
 import { provideRouter } from '@angular/router';
-import { environment } from '../environments/environment';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -15,11 +12,6 @@ describe('AppComponent', () => {
         AppComponent
       ],
       providers: [
-        provideFirebaseApp(() =>
-          initializeApp(
-            environment.firebaseConfig)),
-        provideAuth(() =>
-          getAuth()),
         provideRouter([])
       ]
     }).compileComponents();

@@ -1,6 +1,6 @@
 {
   "name": "mix-manager",
-  "version": "20.0.0",
+  "version": "21.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -14,7 +14,6 @@
     "@angular/core": "~21.2.24",
     "@angular/forms": "~21.2.24",
     "@angular/platform-browser": "~21.2.24",
-    "@angular/platform-browser-dynamic": "~21.2.24",
     "@angular/router": "~21.2.24",
     "firebase": "~12.19.0",
     "ngx-js-shared": "file:src/lib/ngx-js-shared-21.0.0.tgz",
@@ -38,6 +37,15 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.5.0",
+    "temporal-spec": "~1.0.1",
     "typescript": "~5.9.3"
+  },
+  "allowScripts": {
+    "@firebase/util@1.15.3": true,
+    "@parcel/watcher": false,
+    "esbuild": false,
+    "lmdb": false,
+    "msgpackr-extract": false,
+    "protobufjs": false
   }
 }

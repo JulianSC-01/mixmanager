@@ -1,4 +1,4 @@
-import { Timestamp } from '@angular/fire/firestore';
+import { Timestamp } from 'firebase/firestore';
 import { AppTrackBuilder } from './app-track-builder';
 
 export class AppTrack {

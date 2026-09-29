@@ -1,10 +1,10 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
-  addDoc, collection, collectionSnapshots, deleteDoc, doc, docSnapshots,
-  Firestore, orderBy, query, serverTimestamp, updateDoc
-} from '@angular/fire/firestore';
-import { combineLatest, firstValueFrom } from 'rxjs';
-import { map } from 'rxjs/operators';
+  addDoc, collection, deleteDoc, doc, getFirestore, onSnapshot,
+  orderBy, query, serverTimestamp, updateDoc
+} from 'firebase/firestore';
+import { combineLatest, firstValueFrom, Observable } from 'rxjs';
+import { FIREBASE_APP } from '../../main';
 import { AppTrack } from '../tracklist/models/app-track';
 import { AppTrackBuilder } from '../tracklist/models/app-track-builder';
 import { AppTrackHelper } from '../tracklist/util/app-track-helper';
@@ -16,66 +16,37 @@ const TRACKLIST_COLLECTION = 'tracklists';
   providedIn: 'root'
 })
 export class AppTrackService {
-  private readonly firestore =
-    inject(Firestore);
+  public recentlyAddedTrackTitle: string | null = null;
+  public recentlyUpdatedTrackTitle: string | null = null;
 
-  recentlyAddedTrackTitle: string | null = null;
-  recentlyUpdatedTrackTitle: string | null = null;
-
-  trackHelper =
+  public trackHelper =
     AppTrackHelper.getInstance();
+
+  private readonly firestore =
+    getFirestore(FIREBASE_APP);
 
   retrieveTracks(
     tracklistId: string) {
-    const trackQuery =
-      query(
-        collection(
-          this.firestore,
-          `${TRACKLIST_COLLECTION}/` +
-          `${tracklistId}/${TRACK_COLLECTION}`),
-        orderBy('created'));
+    return new Observable<AppTrack[]>(
+      subscriber => {
+      const trackQuery =
+        query(
+          collection(
+            this.firestore,
+            `${TRACKLIST_COLLECTION}/` +
+            `${tracklistId}/${TRACK_COLLECTION}`),
+          orderBy('created'));
 
-    return collectionSnapshots(
-      trackQuery).pipe(
-        map(snapshot =>
-          snapshot.map(document => {
-          const data =
-            document.data() as AppTrack;
+      const unsubscribe =
+        onSnapshot(trackQuery,
+        snapshot => {
+        subscriber.next(
+          snapshot.docs.map(doc => {
+            const data =
+              doc.data() as AppTrack;
 
-          return new AppTrackBuilder().
-            withId(document.id).
-            withArtist(data.artist).
-            withTitle(data.title).
-            withBPM(data.bpm).
-            withKey(data.key).
-            withStartTime(data.startTime).
-            withEndTime(data.endTime).
-            withTotalTime(
-              this.trackHelper.getTrackLength(
-                data.startTime, data.endTime)).
-            withCreationDate(data.created).
-            buildTrack();
-        })));
-  }
-
-  retrieveTrack(
-    tracklistId: string,
-    trackId: string) {
-    const trackDoc =
-      doc(
-        this.firestore,
-        `${TRACKLIST_COLLECTION}/` +
-        `${tracklistId}/${TRACK_COLLECTION}/${trackId}`);
-
-    return docSnapshots(
-      trackDoc).pipe(
-        map(document => {
-          const data =
-            document.data() as AppTrack;
-
-          if (data) {
             return new AppTrackBuilder().
-              withId(document.id).
+              withId(doc.id).
               withArtist(data.artist).
               withTitle(data.title).
               withBPM(data.bpm).
@@ -87,8 +58,60 @@ export class AppTrackService {
                   data.startTime, data.endTime)).
               withCreationDate(data.created).
               buildTrack();
-          }
-        }));
+          })
+        );
+        }, error => {
+          subscriber.error(error)
+        }
+      );
+
+      return () => unsubscribe;
+    });
+  }
+
+  retrieveTrack(
+    tracklistId: string,
+    trackId: string) {
+    return new Observable<AppTrack | undefined>(
+      subscriber => {
+      const tracklistDoc =
+        doc(
+          this.firestore,
+          `${TRACKLIST_COLLECTION}/` +
+          `${tracklistId}/${TRACK_COLLECTION}/${trackId}`);
+
+      const unsubscribe =
+        onSnapshot(tracklistDoc,
+        snapshot => {
+        const data =
+          snapshot.data() as AppTrack;
+
+        if (data) {
+          subscriber.next(
+            new AppTrackBuilder().
+              withId(snapshot.id).
+              withArtist(data.artist).
+              withTitle(data.title).
+              withBPM(data.bpm).
+              withKey(data.key).
+              withStartTime(data.startTime).
+              withEndTime(data.endTime).
+              withTotalTime(
+                this.trackHelper.getTrackLength(
+                  data.startTime, data.endTime)).
+              withCreationDate(data.created).
+              buildTrack());
+        } else {
+          subscriber.next(
+            undefined);
+        }
+        }, error => {
+          subscriber.error(error)
+        }
+      );
+
+      return () => unsubscribe;
+    });
   }
 
   addTrack(

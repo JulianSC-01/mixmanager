@@ -10,7 +10,10 @@
     "moduleResolution": "bundler",
     "importHelpers": true,
     "target": "ES2022",
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "types": [
+      "jasmine"
+    ]
   },
   "angularCompilerOptions": {
     "strictInjectionParameters": true,

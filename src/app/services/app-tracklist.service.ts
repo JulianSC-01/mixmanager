@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import {
-  addDoc, collection, collectionSnapshots, deleteDoc, doc, docSnapshots,
-  Firestore, orderBy, query, serverTimestamp, updateDoc
-} from '@angular/fire/firestore';
-import { map } from 'rxjs/operators';
+  addDoc, collection, deleteDoc, doc, getFirestore, onSnapshot,
+  orderBy, query, serverTimestamp, updateDoc
+} from 'firebase/firestore';
+import { Observable } from 'rxjs';
+import { FIREBASE_APP } from '../../main';
 import { AppTracklist } from '../tracklist/models/app-tracklist';
 import { AppTracklistBuilder } from '../tracklist/models/app-tracklist-builder';
 import { AppTrackService } from './app-track.service';
@@ -14,55 +15,79 @@ const TRACKLIST_COLLECTION = 'tracklists';
   providedIn: 'root'
 })
 export class AppTracklistService {
-  private readonly firestore =
-    inject(Firestore);
   private readonly trackService =
     inject(AppTrackService);
 
+  private readonly firestore =
+    getFirestore(FIREBASE_APP);
+
   retrieveTracklists() {
-    const tracklistQuery =
-      query(
-        collection(
-          this.firestore,
-          TRACKLIST_COLLECTION),
-        orderBy('created'));
+    return new Observable<AppTracklist[]>(
+      subscriber => {
+      const tracklistQuery =
+        query(
+          collection(
+            this.firestore,
+            TRACKLIST_COLLECTION),
+          orderBy('created'));
 
-    return collectionSnapshots(
-      tracklistQuery).pipe(
-        map(snapshot =>
-          snapshot.map(document => {
-          const data =
-            document.data() as AppTracklist;
+      const unsubscribe =
+        onSnapshot(tracklistQuery,
+        snapshot => {
+        subscriber.next(
+          snapshot.docs.map(doc => {
+            const data =
+              doc.data() as AppTracklist;
 
-          return new AppTracklistBuilder().
-            withId(document.id).
-            withTitle(data.title).
-            withCreationDate(data.created).
-            buildTracklist();
-        })));
+            return new AppTracklistBuilder().
+              withId(doc.id).
+              withTitle(data.title).
+              withCreationDate(data.created).
+              buildTracklist();
+          })
+        );
+        }, error => {
+          subscriber.error(error)
+        }
+      );
+
+      return () => unsubscribe;
+    });
   }
 
   retrieveTracklist(
     tracklistId: string) {
-    const tracklistDoc =
-      doc(
-        this.firestore,
-        `${TRACKLIST_COLLECTION}/${tracklistId}`);
+    return new Observable<AppTracklist | undefined>(
+      subscriber => {
+      const tracklistDoc =
+        doc(
+          this.firestore,
+          `${TRACKLIST_COLLECTION}/${tracklistId}`);
 
-    return docSnapshots(
-      tracklistDoc).pipe(
-        map(document => {
-          const data =
-            document.data() as AppTracklist;
+      const unsubscribe =
+        onSnapshot(tracklistDoc,
+        snapshot => {
+        const data =
+          snapshot.data() as AppTracklist;
 
-          if (data) {
-            return new AppTracklistBuilder().
-              withId(document.id).
+        if (data) {
+          subscriber.next(
+            new AppTracklistBuilder().
+              withId(snapshot.id).
               withTitle(data.title).
               withCreationDate(data.created).
-              buildTracklist();
-          }
-        }));
+              buildTracklist());
+        } else {
+          subscriber.next(
+            undefined);
+        }
+        }, error => {
+          subscriber.error(error)
+        }
+      );
+
+      return () => unsubscribe;
+    });
   }
 
   addTracklist(

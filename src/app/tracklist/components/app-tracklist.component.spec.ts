@@ -1,10 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
-import { environment } from '../../../environments/environment';
 import { AppTracklistService } from '../../services/app-tracklist.service';
 import { AppTracklistComponent } from './app-tracklist.component';
 
@@ -20,13 +16,6 @@ describe('AppTracklistComponent', () => {
         AppTracklistComponent
       ],
       providers: [
-        provideFirebaseApp(() =>
-          initializeApp(
-            environment.firebaseConfig)),
-        provideAuth(() =>
-          getAuth()),
-        provideFirestore(() =>
-          getFirestore()),
         provideRouter([])
       ],
     })
