@@ -1,18 +1,18 @@
 @media (min-width: 0px) {
   .track-detail-responsive {
-      display: block;
+    display: block;
   }
   .track-length-responsive {
-      display: block;
+    display: block;
   }
 }
 
 @media (min-width: 992px) {
   .track-detail-responsive {
-      display: inline;
+    display: inline;
   }
   .track-length-responsive {
-      float: right;
+    float: right;
   }
 }
 

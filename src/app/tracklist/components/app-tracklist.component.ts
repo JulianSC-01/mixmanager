@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { AlertComponent, FocusService, FormInputTextComponent, PageHeaderComponent, SpinnerComponent } from 'ngx-js-shared';
@@ -35,30 +35,29 @@ export class AppTracklistComponent {
   readonly tracklistToAdd =
     signal('');
 
-  private readonly tracklists$ =
-    this.tracklistService.
-      retrieveTracklists().
-      pipe(catchError(() => {
-        this.errorMessage.set(
-          AppTracklistMessages.
-            MSG_RETRIEVE_TRACKLISTS_FAILED);
-        this.focusService.focusErrorHeader();
-
-        return of(Array<AppTracklist>());
-      }));
-
-  readonly tracklists =
-    toSignal(this.tracklists$);
-
   readonly isAdding =
     signal(false);
-  readonly isLoading =
-    computed(() => !this.tracklists());
 
   readonly errorMessage =
     signal('');
   readonly successMessage =
     signal('');
+
+  readonly tracklists =
+    rxResource({
+      defaultValue: [],
+      stream: () =>
+        this.tracklistService.
+          retrieveTracklists().pipe(
+        catchError(() => {
+          this.errorMessage.set(
+            AppTracklistMessages.
+              MSG_RETRIEVE_TRACKLISTS_FAILED);
+          this.focusService.focusErrorHeader();
+
+          return of(Array<AppTracklist>());
+        }))
+    });
 
   addTracklist() {
     this.isAdding.set(true);

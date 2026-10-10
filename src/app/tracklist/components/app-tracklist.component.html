@@ -33,7 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        @if (isLoading()) {
+        @if (tracklists.isLoading()) {
           <tr>
             <td>
               <app-spinner spinnerSmall="true">
@@ -43,7 +43,7 @@
             <td></td>
           </tr>
         } @else {
-          @for (tracklist of tracklists();
+          @for (tracklist of tracklists.value();
             track tracklist.id; let i = $index) {
             <tr>
               <td class="align-middle">
@@ -88,7 +88,7 @@
                 class="btn btn-primary"
                 type="submit"
                 aria-label="Add tracklist"
-                [disabled]="isAdding() || isLoading()">
+                [disabled]="isAdding() || tracklists.isLoading()">
                 <app-add-icon/>
                 Add
               </button>

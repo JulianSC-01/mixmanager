@@ -209,17 +209,17 @@
       <button
         class="btn btn-primary mb-1 me-1"
         type="submit"
-        [disabled]="trackWorkInProgress()">
+        [disabled]="trackIsUpdating()">
         Submit
       </button>
       <button
         class="btn btn-secondary mb-1"
         type="button"
-        [disabled]="trackWorkInProgress()"
+        [disabled]="trackIsUpdating()"
         (click)="cancel()">
         Cancel
       </button>
-      @if (trackWorkInProgress()) {
+      @if (trackIsUpdating()) {
         <span class="ms-2">
           <app-spinner
             spinnerSmall="true">
