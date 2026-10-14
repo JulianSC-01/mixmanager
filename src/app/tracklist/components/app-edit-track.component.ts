@@ -6,7 +6,7 @@ import {
   FormErrorHeaderComponent, FormInputNumberComponent, FormInputSelectComponent,
   FormInputTextComponent, FormLabelComponent, PageHeaderComponent, SpinnerComponent
 } from 'ngx-js-shared';
-import { catchError, firstValueFrom, of, tap } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { AppTrackService } from '../../services/app-track.service';
 import { AppTrack } from '../models/app-track';
 import { AppTracklistMessages } from '../util/app-tracklist-messages';
@@ -188,23 +188,18 @@ export class AppEditTrackComponent
         this.trackService.
           retrieveTrack(
             this.tracklistId(),
-            this.trackId()).pipe(
-        tap({
-          next: track => {
-            if (track) {
-              this.populateForm(track);
-            } else {
-              this.router.navigate(['/notfound']);
-            }
-          }
-        }),
-        catchError(() => {
-          this.displayErrorMessage(
-            AppTracklistMessages.MSG_RETRIEVE_TRACK_FAILED);
-
-          return of(undefined);
-        }))
-      ).
+            this.trackId())).
+      then(track => {
+        if (track) {
+          this.populateForm(track);
+        } else {
+          this.router.navigate(['/notfound']);
+        }
+      }).
+      catch(() => {
+        this.displayErrorMessage(
+          AppTracklistMessages.MSG_RETRIEVE_TRACK_FAILED);
+      }).
       finally(() => {
         this.trackIsUpdating.set(false);
       });
