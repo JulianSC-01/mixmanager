@@ -97,19 +97,14 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "browsers": "ChromeHeadless",
-            "tsConfig": "tsconfig.spec.json",
-            "watch": false,
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
+            "coverage": true,
+            "exclude": [
+              "src/main.ts"
             ],
-            "styles": [
-              "src/styles.css"
-            ],
-            "scripts": []
+            "runnerConfig": "vitest-base.config.ts",
+            "watch": false
           }
         }
       }

@@ -1,6 +1,7 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { beforeEach, describe, expect, it } from "vitest";
 import { AppEditTrackComponent } from './app-edit-track.component';
 
 describe('AppEditTrackComponent', () => {
@@ -9,13 +10,13 @@ describe('AppEditTrackComponent', () => {
   let fixture: ComponentFixture<AppEditTrackComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppEditTrackComponent
       ],
       providers: [
         provideRouter([])
-      ],
+      ]
     })
     .compileComponents();
 

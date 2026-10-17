@@ -4,7 +4,7 @@ import {
   orderBy, query, serverTimestamp, updateDoc
 } from 'firebase/firestore';
 import { combineLatest, firstValueFrom, Observable } from 'rxjs';
-import { FIREBASE_APP } from '../../main';
+import { FIREBASE_APP } from '../app.config';
 import { AppTrack } from '../tracklist/models/app-track';
 import { AppTrackBuilder } from '../tracklist/models/app-track-builder';
 import { AppTrackHelper } from '../tracklist/util/app-track-helper';

@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from "vitest";
 import { AppDeleteIconComponent } from './app-delete-icon.component';
 
 describe('AppDeleteIconComponent', () => {
@@ -6,7 +7,7 @@ describe('AppDeleteIconComponent', () => {
   let fixture: ComponentFixture<AppDeleteIconComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppDeleteIconComponent
       ]

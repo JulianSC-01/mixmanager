@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from "vitest";
 import { AppAddIconComponent } from './app-add-icon.component';
 
 describe('AppAddIconComponent', () => {
@@ -6,7 +7,7 @@ describe('AppAddIconComponent', () => {
   let fixture: ComponentFixture<AppAddIconComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppAddIconComponent
       ]

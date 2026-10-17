@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AppTracklistService } from '../../services/app-tracklist.service';
 import { AppTracklistComponent } from './app-tracklist.component';
 
@@ -11,13 +12,13 @@ describe('AppTracklistComponent', () => {
   let fixture: ComponentFixture<AppTracklistComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppTracklistComponent
       ],
       providers: [
         provideRouter([])
-      ],
+      ]
     })
     .compileComponents();
 
@@ -27,8 +28,8 @@ describe('AppTracklistComponent', () => {
     tracklistService =
       TestBed.inject(AppTracklistService);
 
-    spyOn(tracklistService, 'retrieveTracklists').
-      and.returnValue(of([]));
+    vi.spyOn(tracklistService, 'retrieveTracklists').
+      mockReturnValue(of([]));
 
     await fixture.whenStable();
   });

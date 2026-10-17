@@ -3,7 +3,7 @@ import {
   getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, User
 } from "firebase/auth";
 import { Observable } from 'rxjs';
-import { FIREBASE_APP } from '../../main';
+import { FIREBASE_APP } from '../app.config';
 
 @Injectable({
   providedIn: 'root'

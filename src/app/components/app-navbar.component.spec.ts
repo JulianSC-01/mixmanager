@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { beforeEach, describe, expect, it } from "vitest";
 import { AppNavbarComponent } from './app-navbar.component';
 
 describe('AppNavbarComponent', () => {
@@ -7,7 +8,7 @@ describe('AppNavbarComponent', () => {
   let fixture: ComponentFixture<AppNavbarComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppNavbarComponent
       ],

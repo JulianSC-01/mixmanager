@@ -2,6 +2,7 @@ import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { AppTrackService } from '../../services/app-track.service';
 import { AppTracklistService } from '../../services/app-tracklist.service';
 import { AppTracklist } from '../models/app-tracklist';
@@ -19,13 +20,13 @@ describe('AppEditTracklistComponent', () => {
   let tracklist: AppTracklist;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppEditTracklistComponent
       ],
       providers: [
         provideRouter([])
-      ],
+      ]
     })
     .compileComponents();
 
@@ -43,10 +44,10 @@ describe('AppEditTracklistComponent', () => {
         withTitle('Title').
         buildTracklist();
 
-    spyOn(tracklistService, 'retrieveTracklist').
-      and.returnValue(of(tracklist));
-    spyOn(trackService, 'retrieveTracks').
-      and.returnValue(of([]));
+    vi.spyOn(tracklistService, 'retrieveTracklist').
+      mockReturnValue(of(tracklist));
+    vi.spyOn(trackService, 'retrieveTracks').
+      mockReturnValue(of([]));
 
     componentRef = fixture.componentRef;
     componentRef.setInput('tracklistId', '');
@@ -59,6 +60,7 @@ describe('AppEditTracklistComponent', () => {
   });
 
   it('should have title', () => {
-    expect(component.tracklistTitle()).toEqual('Title');
+    expect(component.tracklistTitle()).
+      toEqual('Title');
   });
 });

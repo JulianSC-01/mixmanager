@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { beforeEach, describe, expect, it } from "vitest";
 import { AppLoginComponent } from './app-login.component';
 import { AppStartupComponent } from './app-startup.component';
 
@@ -8,7 +9,7 @@ describe('AppStartupComponent', () => {
   let fixture: ComponentFixture<AppStartupComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppStartupComponent
       ],
