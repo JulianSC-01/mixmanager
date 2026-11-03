@@ -2,8 +2,8 @@ import { Timestamp } from 'firebase/firestore';
 import { AppTracklist } from "./app-tracklist";
 
 export class AppTracklistBuilder {
-  id: string = '';
-  title: string = '';
+  id = '';
+  title = '';
   created?: Timestamp;
 
   withId(id: string) {

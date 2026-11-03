@@ -63,12 +63,12 @@ export class AppEditTrackComponent
   readonly tracklistId =
     input.required<string>();
   readonly trackId =
-    input.required<string>();
+    input<string>();
 
   readonly isAdd =
-    computed(() => !this.trackId());
+    computed(() => this.trackId() === undefined);
   readonly isEdit =
-    computed(() => !this.isAdd());
+    computed(() => this.trackId() !== undefined);
 
   readonly formTitle =
     computed(() => this.isAdd() ?
@@ -188,7 +188,7 @@ export class AppEditTrackComponent
         this.trackService.
           retrieveTrack(
             this.tracklistId(),
-            this.trackId())).
+            this.trackId()!)).
       then(track => {
         if (track) {
           this.populateForm(track);
@@ -273,10 +273,9 @@ export class AppEditTrackComponent
         finally(() => {
           this.trackIsUpdating.set(false)
         });
-      }
-      else {
+      } else {
         this.trackService.updateTrack(
-          this.tracklistId(), this.trackId(), track).
+          this.tracklistId(), this.trackId()!, track).
         then(() => {
           this.trackService.
             recentlyUpdatedTrackTitle = trackTitle;

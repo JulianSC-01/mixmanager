@@ -100,9 +100,6 @@
           "builder": "@angular/build:unit-test",
           "options": {
             "coverage": true,
-            "exclude": [
-              "src/main.ts"
-            ],
             "runnerConfig": "vitest-base.config.ts",
             "watch": false
           }

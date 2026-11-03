@@ -44,8 +44,7 @@ export class AppTracklistService {
               withTitle(data.title).
               withCreationDate(data.created).
               buildTracklist();
-          })
-        );
+          }));
         }, error => {
           subscriber.error(error)
         }

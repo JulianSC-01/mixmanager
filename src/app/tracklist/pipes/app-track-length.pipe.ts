@@ -19,11 +19,11 @@ export class AppTrackLengthPipe
       return '- -:- -:- -';
     }
 
-    let hours =
+    const hours =
       this.formatNumber(hoursMinutesSeconds[0]);
-    let minutes =
+    const minutes =
       this.formatNumber(hoursMinutesSeconds[1]);
-    let seconds =
+    const seconds =
       this.formatNumber(hoursMinutesSeconds[2]);
 
     return `${hours}:${minutes}:${seconds}`;

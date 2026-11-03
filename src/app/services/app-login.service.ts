@@ -1,7 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import {
-  getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, User
-} from "firebase/auth";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, User } from "firebase/auth";
 import { Observable } from 'rxjs';
 import { FIREBASE_APP } from '../app.component';
 

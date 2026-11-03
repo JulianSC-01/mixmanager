@@ -2,11 +2,11 @@ import { Timestamp } from 'firebase/firestore';
 import { AppTrack } from "./app-track";
 
 export class AppTrackBuilder {
-  id: string = '';
-  artist: string = '';
-  title: string = '';
+  id = '';
+  artist = '';
+  title = '';
   bpm: number | null = null;
-  key: string = '';
+  key = '';
   startTime: number | null = null;
   endTime: number | null = null;
   totalTime: number | null = null;

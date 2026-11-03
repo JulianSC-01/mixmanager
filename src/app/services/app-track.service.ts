@@ -58,8 +58,7 @@ export class AppTrackService {
                   data.startTime, data.endTime)).
               withCreationDate(data.created).
               buildTrack();
-          })
-        );
+          }));
         }, error => {
           subscriber.error(error)
         }
