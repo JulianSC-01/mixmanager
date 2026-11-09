@@ -1,13 +1,10 @@
-import { ComponentRef, provideZonelessChangeDetection } from '@angular/core';
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
-import { AppTrackService } from 'src/app/services/app-track.service';
-import { AppTracklistService } from 'src/app/services/app-tracklist.service';
-import { environment } from 'src/environments/environment';
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { AppTrackService } from '../../services/app-track.service';
+import { AppTracklistService } from '../../services/app-tracklist.service';
 import { AppTracklist } from '../models/app-tracklist';
 import { AppTracklistBuilder } from '../models/app-tracklist-builder';
 import { AppEditTracklistComponent } from './app-edit-tracklist.component';
@@ -23,21 +20,13 @@ describe('AppEditTracklistComponent', () => {
   let tracklist: AppTracklist;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppEditTracklistComponent
       ],
       providers: [
-        provideZonelessChangeDetection(),
-        provideFirebaseApp(() =>
-          initializeApp(
-            environment.firebaseConfig)),
-        provideAuth(() =>
-          getAuth()),
-        provideFirestore(() =>
-          getFirestore()),
         provideRouter([])
-      ],
+      ]
     })
     .compileComponents();
 
@@ -55,10 +44,10 @@ describe('AppEditTracklistComponent', () => {
         withTitle('Title').
         buildTracklist();
 
-    spyOn(tracklistService, 'retrieveTracklist').
-      and.returnValue(of(tracklist));
-    spyOn(trackService, 'retrieveTracks').
-      and.returnValue(of([]));
+    vi.spyOn(tracklistService, 'retrieveTracklist').
+      mockReturnValue(of(tracklist));
+    vi.spyOn(trackService, 'retrieveTracks').
+      mockReturnValue(of([]));
 
     componentRef = fixture.componentRef;
     componentRef.setInput('tracklistId', '');
@@ -71,6 +60,7 @@ describe('AppEditTracklistComponent', () => {
   });
 
   it('should have title', () => {
-    expect(component.tracklistTitle()).toEqual('Title');
+    expect(component.tracklistTitle()).
+      toEqual('Title');
   });
 });

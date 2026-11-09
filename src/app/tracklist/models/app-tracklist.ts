@@ -1,10 +1,10 @@
-import { Timestamp } from '@angular/fire/firestore';
+import { Timestamp } from 'firebase/firestore';
 import { AppTracklistBuilder } from './app-tracklist-builder';
 
 export class AppTracklist {
-  id?: string;
+  id: string;
   title: string;
-  created: Timestamp;
+  created?: Timestamp;
 
   constructor(builder: AppTracklistBuilder) {
     this.id = builder.id;

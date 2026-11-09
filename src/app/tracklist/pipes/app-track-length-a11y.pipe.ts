@@ -1,5 +1,5 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
-import { AppTrackService } from 'src/app/services/app-track.service';
+import { AppTrackService } from '../../services/app-track.service';
 
 @Pipe({
   name: 'trackLengthA11y'
@@ -9,47 +9,46 @@ export class AppTrackLengthA11yPipe
   private readonly trackService =
     inject(AppTrackService);
 
-  transform(totalSeconds?: number) {
-    if (totalSeconds === undefined ||
-        totalSeconds === null ||
-        totalSeconds < 0) {
+  transform(totalSeconds: number | null) {
+    const hoursMinutesSeconds =
+      this.trackService.trackHelper.
+        getLengthHHMMSS(totalSeconds);
+
+    if (hoursMinutesSeconds.every(
+        value => value === null)) {
       return 'undefined';
-    } else {
-      const hoursMinutesSeconds =
-        this.trackService.trackHelper.
-          getLengthHHMMSS(totalSeconds);
-
-      let value = '';
-
-      if (hoursMinutesSeconds[0] > 0) {
-        if (hoursMinutesSeconds[0] === 1) {
-          value = `${hoursMinutesSeconds[0]} hour `;
-        } else {
-          value = `${hoursMinutesSeconds[0]} hours `;
-        }
-      }
-      if (hoursMinutesSeconds[1] > 0) {
-        if (hoursMinutesSeconds[1] === 1) {
-          value = `${value}${hoursMinutesSeconds[1]} minute `;
-        } else {
-          value = `${value}${hoursMinutesSeconds[1]} minutes `;
-        }
-      }
-      if (hoursMinutesSeconds[2] > 0) {
-        if (hoursMinutesSeconds[2] === 1) {
-          value = `${value}${hoursMinutesSeconds[2]} second `;
-        } else {
-          value = `${value}${hoursMinutesSeconds[2]} seconds `;
-        }
-      }
-
-      if (value === '') {
-        value = '0 seconds.';
-      } else {
-        value = `${value.trimRight()}.`;
-      }
-
-      return value;
     }
+
+    let value = '';
+
+    if (hoursMinutesSeconds[0] > 0) {
+      if (hoursMinutesSeconds[0] === 1) {
+        value = `${hoursMinutesSeconds[0]} hour `;
+      } else {
+        value = `${hoursMinutesSeconds[0]} hours `;
+      }
+    }
+    if (hoursMinutesSeconds[1] > 0) {
+      if (hoursMinutesSeconds[1] === 1) {
+        value = `${value}${hoursMinutesSeconds[1]} minute `;
+      } else {
+        value = `${value}${hoursMinutesSeconds[1]} minutes `;
+      }
+    }
+    if (hoursMinutesSeconds[2] > 0) {
+      if (hoursMinutesSeconds[2] === 1) {
+        value = `${value}${hoursMinutesSeconds[2]} second `;
+      } else {
+        value = `${value}${hoursMinutesSeconds[2]} seconds `;
+      }
+    }
+
+    if (value === '') {
+      value = '0 seconds.';
+    } else {
+      value = `${value.trimEnd()}.`;
+    }
+
+    return value;
   }
 }

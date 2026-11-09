@@ -1,12 +1,8 @@
-import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
-import { AppTracklistService } from 'src/app/services/app-tracklist.service';
-import { environment } from 'src/environments/environment';
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { AppTracklistService } from '../../services/app-tracklist.service';
 import { AppTracklistComponent } from './app-tracklist.component';
 
 describe('AppTracklistComponent', () => {
@@ -16,21 +12,13 @@ describe('AppTracklistComponent', () => {
   let fixture: ComponentFixture<AppTracklistComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppTracklistComponent
       ],
       providers: [
-        provideZonelessChangeDetection(),
-        provideFirebaseApp(() =>
-          initializeApp(
-            environment.firebaseConfig)),
-        provideAuth(() =>
-          getAuth()),
-        provideFirestore(() =>
-          getFirestore()),
         provideRouter([])
-      ],
+      ]
     })
     .compileComponents();
 
@@ -40,8 +28,8 @@ describe('AppTracklistComponent', () => {
     tracklistService =
       TestBed.inject(AppTracklistService);
 
-    spyOn(tracklistService, 'retrieveTracklists').
-      and.returnValue(of([]));
+    vi.spyOn(tracklistService, 'retrieveTracklists').
+      mockReturnValue(of([]));
 
     await fixture.whenStable();
   });

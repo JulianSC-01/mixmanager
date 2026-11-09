@@ -1,6 +1,6 @@
-import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { beforeEach, describe, expect, it } from "vitest";
 import { AppNotFoundComponent } from './app-not-found.component';
 
 describe('AppNotFoundComponent', () => {
@@ -8,12 +8,11 @@ describe('AppNotFoundComponent', () => {
   let fixture: ComponentFixture<AppNotFoundComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppNotFoundComponent
       ],
       providers: [
-        provideZonelessChangeDetection(),
         provideRouter([])
       ]
     })

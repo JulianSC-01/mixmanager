@@ -60,7 +60,7 @@
       }
     </form>
   } @else {
-    @if (tracklistIsLoading()) {
+    @if (tracklist.isLoading()) {
       <p class="mb-2">
         <app-spinner
           spinnerSmall="true">
@@ -81,7 +81,7 @@
       id="editTitleButton"
       type="button"
       aria-label="Edit tracklist title"
-      [disabled]="tracklistIsLoading()"
+      [disabled]="tracklist.isLoading()"
       (click)="onEditTitle()">
       Edit title
     </button>
@@ -104,7 +104,7 @@
       </tr>
     </thead>
     <tbody>
-      @if (tracksAreLoading()) {
+      @if (tracks.isLoading()) {
         <tr>
           <td></td>
           <td colspan="3">
@@ -115,7 +115,7 @@
           </td>
         </tr>
       } @else {
-        @for (track of tracks();
+        @for (track of tracks.value();
           track track.id; let i = $index) {
           <tr>
             <td class="text-center">
@@ -179,7 +179,7 @@
   <button
     class="btn btn-primary mb-1 me-1"
     type="button"
-    [disabled]="tracksAreLoading()"
+    [disabled]="tracks.isLoading()"
     (click)="addTrack()">
     Add track
   </button>

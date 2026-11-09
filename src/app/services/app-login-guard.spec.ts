@@ -1,9 +1,6 @@
-import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
 import { CanActivateFn } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { beforeEach, describe, expect, it } from "vitest";
 import { loginGuard } from './app-login-guard';
 
 describe('loginGuard', () => {
@@ -13,16 +10,7 @@ describe('loginGuard', () => {
         loginGuard(...guardParameters));
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        provideZonelessChangeDetection(),
-        provideFirebaseApp(() =>
-          initializeApp(
-            environment.firebaseConfig)),
-        provideAuth(() =>
-          getAuth())
-      ]
-    });
+    TestBed.configureTestingModule({});
   });
 
   it('should be created', () => {

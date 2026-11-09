@@ -10,6 +10,12 @@ The application is written in TypeScript and HTML using the Angular framework.
 
 ## Change Log
 
+2026-09-25 (21.0.0)
+  - Upgraded to Angular 21
+  - Upgraded to Firebase 12.19.0
+  - Installed ngx-js-shared library 21.0.0
+  - Uninstalled @angular/fire and converted to firebase native API
+
 2026-02-27 (20.0.0)
   - Upgraded to Angular 20
 

@@ -1,5 +1,5 @@
-import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { beforeEach, describe, expect, it } from "vitest";
 import { AppMusicIconComponent } from './app-music-icon.component';
 
 describe('AppMusicIconComponent', () => {
@@ -7,12 +7,9 @@ describe('AppMusicIconComponent', () => {
   let fixture: ComponentFixture<AppMusicIconComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
+    await TestBed.configureTestingModule({
       imports: [
         AppMusicIconComponent
-      ],
-      providers: [
-        provideZonelessChangeDetection()
       ]
     })
     .compileComponents();

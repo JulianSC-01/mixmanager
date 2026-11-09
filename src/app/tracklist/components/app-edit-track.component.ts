@@ -1,16 +1,12 @@
-import {
-  ChangeDetectionStrategy, Component, computed,
-  inject, Injector, input, OnInit, Signal, signal
-} from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, computed, inject, input, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  FocusService, FormA11yDirective, FormErrorFeedbackComponent, FormErrorHeaderComponent,
-  FormInputNumberComponent, FormInputSelectComponent, FormInputTextComponent,
-  FormLabelComponent, PageHeaderComponent, SpinnerComponent
+  FocusService, FormA11yDirective, FormErrorFeedbackComponent,
+  FormErrorHeaderComponent, FormInputNumberComponent, FormInputSelectComponent,
+  FormInputTextComponent, FormLabelComponent, PageHeaderComponent, SpinnerComponent
 } from 'ngx-js-shared';
-import { catchError, of, tap } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { AppTrackService } from '../../services/app-track.service';
 import { AppTrack } from '../models/app-track';
 import { AppTracklistMessages } from '../util/app-tracklist-messages';
@@ -20,16 +16,16 @@ const BPM_PATTERN : RegExp = /^[0-9]{0,3}$/;
 interface TrackForm {
   trackArtist: FormControl<string>;
   trackTitle: FormControl<string>;
-  trackBPM: FormControl<number>;
+  trackBPM: FormControl<number | null>;
   trackKey: FormControl<string>;
   trackStartTime: FormGroup<TrackTimeForm>;
   trackEndTime: FormGroup<TrackTimeForm>;
 }
 
 interface TrackTimeForm {
-  trackHours: FormControl<number>;
-  trackMinutes: FormControl<number>;
-  trackSeconds: FormControl<number>;
+  trackHours: FormControl<number | null>;
+  trackMinutes: FormControl<number | null>;
+  trackSeconds: FormControl<number | null>;
 }
 
 @Component({
@@ -49,41 +45,37 @@ interface TrackTimeForm {
   templateUrl: './app-edit-track.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppEditTrackComponent implements OnInit {
+export class AppEditTrackComponent
+  implements OnInit {
   private readonly activatedRoute =
     inject(ActivatedRoute);
   private readonly focusService =
     inject(FocusService);
   private readonly formBuilder =
     inject(FormBuilder);
-  private readonly injector =
-    inject(Injector);
   private readonly trackService =
     inject(AppTrackService);
   private readonly router =
     inject(Router);
 
-  trackForm:
-    FormGroup<TrackForm>;
+  protected trackForm: FormGroup<TrackForm>;
 
   readonly tracklistId =
     input.required<string>();
   readonly trackId =
-    input.required<string>();
+    input<string>();
+
+  readonly isAdd =
+    computed(() => this.trackId() === undefined);
+  readonly isEdit =
+    computed(() => this.trackId() !== undefined);
 
   readonly formTitle =
-    computed(() => !this.trackId() ?
+    computed(() => this.isAdd() ?
       'Add track' : 'Edit track');
 
-  track: Signal<AppTrack>;
-
-  readonly trackIsLoading =
-    computed(() => this.track() === undefined);
   readonly trackIsUpdating =
     signal(false);
-  readonly trackWorkInProgress =
-    computed(() =>
-      this.trackIsLoading() || this.trackIsUpdating());
 
   readonly minorKeys =
     signal(['Ab','Eb','Bb','F','C','G','D','A','E','B','F#','Db']);
@@ -189,39 +181,29 @@ export class AppEditTrackComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.trackId()) {
-      this.loadTrack();
-    } else {
-      this.track =
-        signal<AppTrack>(null);
+    if (this.isEdit()) {
+      this.trackIsUpdating.set(true);
+
+      firstValueFrom(
+        this.trackService.
+          retrieveTrack(
+            this.tracklistId(),
+            this.trackId()!)).
+      then(track => {
+        if (track) {
+          this.populateForm(track);
+        } else {
+          this.router.navigate(['/notfound']);
+        }
+      }).
+      catch(() => {
+        this.displayErrorMessage(
+          AppTracklistMessages.MSG_RETRIEVE_TRACK_FAILED);
+      }).
+      finally(() => {
+        this.trackIsUpdating.set(false);
+      });
     }
-  }
-
-  private loadTrack() {
-    const tracks$ =
-      this.trackService.
-      retrieveTrack(
-        this.tracklistId(),
-        this.trackId()).pipe(
-          tap({
-            next: track => {
-              if (track) {
-                this.populateForm(track);
-              } else {
-                this.router.navigate(['/notfound']);
-              }
-            }
-          }),
-          catchError(() => {
-            this.displayErrorMessage(
-              AppTracklistMessages.MSG_RETRIEVE_TRACK_FAILED);
-
-            return of(null);
-          }));
-
-    this.track =
-      toSignal(tracks$,
-        { injector: this.injector });
   }
 
   submit() {
@@ -248,12 +230,12 @@ export class AppEditTrackComponent implements OnInit {
       let trackKey =
         this.trackForm.controls.trackKey.value;
 
-      let trackStartTimeHHMMSS : number[] = [
+      let trackStartTimeHHMMSS = [
         this.trackStartTimeForm.controls.trackHours.value,
         this.trackStartTimeForm.controls.trackMinutes.value,
         this.trackStartTimeForm.controls.trackSeconds.value
       ];
-      let trackEndTimeHHMMSS : number[] = [
+      let trackEndTimeHHMMSS = [
         this.trackEndTimeForm.controls.trackHours.value,
         this.trackEndTimeForm.controls.trackMinutes.value,
         this.trackEndTimeForm.controls.trackSeconds.value
@@ -276,7 +258,7 @@ export class AppEditTrackComponent implements OnInit {
           endTime: trackEndTime
         }
 
-      if (!this.trackId()) {
+      if (this.isAdd()) {
         this.trackService.addTrack(
           this.tracklistId(), track).
         then(() => {
@@ -291,10 +273,9 @@ export class AppEditTrackComponent implements OnInit {
         finally(() => {
           this.trackIsUpdating.set(false)
         });
-      }
-      else {
+      } else {
         this.trackService.updateTrack(
-          this.tracklistId(), this.trackId(), track).
+          this.tracklistId(), this.trackId()!, track).
         then(() => {
           this.trackService.
             recentlyUpdatedTrackTitle = trackTitle;
@@ -355,7 +336,8 @@ export class AppEditTrackComponent implements OnInit {
   }
 
   private displayPreviousPage() {
-    this.router.navigate(['..'], { relativeTo: this.activatedRoute });
+    this.router.navigate(['..'],
+      { relativeTo: this.activatedRoute });
   }
 
   private displayErrorMessage(errorMessage : string) {

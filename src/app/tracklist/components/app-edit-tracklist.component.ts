@@ -1,13 +1,13 @@
 import {
-  ChangeDetectionStrategy, Component, computed,
-  inject, Injector, input, OnDestroy, OnInit, signal, Signal
+  ChangeDetectionStrategy, Component, computed, inject, input,
+  OnDestroy, OnInit, signal
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { rxResource } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
-  AlertComponent, FocusService, FormInputTextComponent,
-  FormLabelComponent, LeadingZeroPipe, PageHeaderComponent, SpinnerComponent
+  AlertComponent, FocusService, FormInputTextComponent, FormLabelComponent,
+  LeadingZeroPipe, PageHeaderComponent, SpinnerComponent
 } from 'ngx-js-shared';
 import { catchError, of, tap } from 'rxjs';
 import { AppTrackService } from '../../services/app-track.service';
@@ -42,8 +42,6 @@ export class AppEditTracklistComponent
     inject(ActivatedRoute);
   private readonly focusService =
     inject(FocusService);
-  private readonly injector =
-    inject(Injector);
   private readonly trackService =
     inject(AppTrackService);
   private readonly tracklistService =
@@ -54,26 +52,12 @@ export class AppEditTracklistComponent
   readonly tracklistId =
     input.required<string>();
 
-  tracklist: Signal<AppTracklist>;
-
-  readonly tracklistIsLoading =
-    computed(() =>
-      this.tracklist() === undefined);
-  readonly tracklistTitle =
-    computed(() => !!this.tracklist() ?
-      this.tracklist().title : '');
-
   readonly tracklistTitleToEdit =
     signal('');
   readonly isTitleBeingEdited =
     signal(false);
   readonly isTitleBeingSaved =
     signal(false);
-
-  tracks: Signal<AppTrack[]>;
-
-  readonly tracksAreLoading =
-    computed(() => !this.tracks());
 
   readonly tracksSelected =
     signal<string[]>([]);
@@ -82,7 +66,7 @@ export class AppEditTracklistComponent
       this.tracksSelected().length);
 
   readonly trackTitleSelected =
-    signal<string>(null);
+    signal<string | null>(null);
   readonly tracksAreUpdating =
     signal(false);
 
@@ -90,6 +74,47 @@ export class AppEditTracklistComponent
     signal('');
   readonly successMessage =
     signal('');
+
+  readonly tracklist =
+    rxResource({
+      params: this.tracklistId,
+      stream: ({ params }) =>
+        this.tracklistService.
+          retrieveTracklist(params).pipe(
+        tap({
+          next: tracklist => {
+            if (!tracklist) {
+              this.router.navigate(['/notfound']);
+            }
+          }
+        }),
+        catchError(() => {
+          this.displayErrorMessage(
+            AppTracklistMessages.MSG_RETRIEVE_TITLE_FAILED);
+
+          return of(undefined);
+        }))
+    });
+
+  readonly tracks =
+    rxResource({
+      defaultValue: [],
+      params: this.tracklistId,
+      stream: ({ params }) =>
+        this.trackService.
+          retrieveTracks(params).pipe(
+        catchError(() => {
+          this.displayErrorMessage(
+            AppTracklistMessages.MSG_RETRIEVE_TRACKS_FAILED);
+
+          return of(Array<AppTrack>());
+        }))
+    });
+
+  readonly tracklistTitle =
+    computed(() =>
+      this.tracklist.hasValue() ?
+        this.tracklist.value().title : '');
 
   ngOnInit() {
     if (this.trackService.recentlyAddedTrackTitle) {
@@ -102,55 +127,11 @@ export class AppEditTracklistComponent
         AppTracklistMessages.MSG_UPDATE_SUCCESSFUL.
         replace('{0}', this.trackService.recentlyUpdatedTrackTitle));
     }
-
-    this.loadTracklist();
-    this.loadTracks();
   }
 
   ngOnDestroy() {
     this.trackService.recentlyAddedTrackTitle = null;
     this.trackService.recentlyUpdatedTrackTitle = null;
-  }
-
-  private loadTracklist() {
-    const tracklist$ =
-      this.tracklistService.
-      retrieveTracklist(
-        this.tracklistId()).pipe(
-        tap({
-          next: tracklist => {
-            if (!tracklist) {
-              this.router.navigate(['/notfound']);
-            }
-          }
-        }),
-        catchError(() => {
-          this.displayErrorMessage(
-            AppTracklistMessages.MSG_RETRIEVE_TITLE_FAILED);
-
-          return of(null);
-        }));
-
-    this.tracklist =
-      toSignal(tracklist$,
-        { injector: this.injector });
-  }
-
-  private loadTracks() {
-    const tracks$ =
-      this.trackService.
-      retrieveTracks(
-        this.tracklistId()).pipe(
-        catchError(() => {
-          this.displayErrorMessage(
-            AppTracklistMessages.MSG_RETRIEVE_TRACKS_FAILED);
-
-          return of(Array<AppTrack>());
-        }));
-
-    this.tracks =
-      toSignal(tracks$,
-        { injector: this.injector });
   }
 
   onEditTitle() {
@@ -221,7 +202,7 @@ export class AppEditTracklistComponent
           if (this.trackTitleSelected()) {
             this.displaySuccessMessage(
               AppTracklistMessages.MSG_REMOVE_SUCCESSFUL.
-                replace('{0}', this.trackTitleSelected()));
+                replace('{0}', this.trackTitleSelected()!));
           } else {
             this.displaySuccessMessage(
               AppTracklistMessages.MSG_REMOVE_TRACKS_SUCCESSFUL.
@@ -277,9 +258,12 @@ export class AppEditTracklistComponent
           id => id !== trackId));
     }
 
+    const tracks =
+      this.tracks.value();
+
     if (this.tracksSelectedCount() === 1) {
       this.trackTitleSelected.set(
-        this.tracks().find(track =>
+        tracks.find(track =>
           this.tracksSelected()[0] ===
             track.id)?.title ?? null);
     } else {
